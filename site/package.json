@@ -1,0 +1,19 @@
+{
+  "name": "signbox-docs-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "gen": "node scripts/build-content.mjs",
+    "dev": "node scripts/build-content.mjs && astro dev",
+    "prebuild": "node scripts/build-content.mjs",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.40.0",
+    "astro": "^6.4.8",
+    "medium-zoom": "^1.1.0",
+    "sharp": "^0.35.1"
+  }
+}

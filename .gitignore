@@ -1,0 +1,11 @@
+# Astro Starlight docs site (everything generated/installed is rebuilt in CI)
+site/node_modules/
+site/dist/
+site/.astro/
+# content + assets generated from README.md at build time
+site/src/content/docs/
+site/public/images/
+site/src/assets/screens/
+# misc
+.DS_Store
+*.log

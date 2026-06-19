@@ -1,0 +1,72 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+import { ClientRouter } from 'astro:transitions';
+---
+<Default><slot /></Default>
+<ClientRouter />
+
+<script>
+  import mediumZoom from 'medium-zoom';
+
+  // keep a single zoom instance across view transitions
+  let zoom: ReturnType<typeof mediumZoom> | null = null;
+
+  function enhance() {
+    const content = document.querySelector('.sl-markdown-content');
+
+    // 1) Click-to-zoom lightbox on screenshots
+    if (zoom) {
+      try { zoom.detach(); } catch {}
+    }
+    zoom = mediumZoom('.sl-markdown-content img', {
+      background: 'rgba(6, 10, 22, 0.94)',
+      margin: 28,
+    });
+
+    // 2) Scroll-reveal for headings / images / tables / lists / quotes
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (content) {
+      const targets = content.querySelectorAll(
+        ':scope > h2, :scope > h3, :scope > p > img, :scope > img, :scope > table, :scope > ol, :scope > ul, :scope > blockquote, :scope > figure'
+      );
+      if (reduce || !('IntersectionObserver' in window)) {
+        targets.forEach((t) => t.classList.add('reveal', 'revealed'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('revealed');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -6% 0px', threshold: 0.05 }
+        );
+        targets.forEach((t) => {
+          t.classList.add('reveal');
+          io.observe(t);
+        });
+      }
+    }
+
+    // 3) Reading-progress bar
+    let bar = document.getElementById('reading-progress');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'reading-progress';
+      document.body.appendChild(bar);
+    }
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+      bar!.style.width = p + '%';
+    };
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  document.addEventListener('astro:page-load', enhance);
+</script>
