@@ -23,12 +23,11 @@ import { ClientRouter } from 'astro:transitions';
       margin: 28,
     });
 
-    // 2) Scroll-reveal for headings / images / tables / lists / quotes
+    // 2) Scroll-reveal — media only (screenshots / figures). Reading content
+    //    (headings, text, tables, lists) renders instantly to avoid "pop-in".
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (content) {
-      const targets = content.querySelectorAll(
-        ':scope > h2, :scope > h3, :scope > p > img, :scope > img, :scope > table, :scope > ol, :scope > ul, :scope > blockquote, :scope > figure'
-      );
+      const targets = content.querySelectorAll('p > img, figure, img');
       if (reduce || !('IntersectionObserver' in window)) {
         targets.forEach((t) => t.classList.add('reveal', 'revealed'));
       } else {
