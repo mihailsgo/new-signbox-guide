@@ -189,19 +189,34 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
 .sl-markdown-content ol ol > li { padding-left: 1.2rem; }
 .sl-markdown-content ol ol > li::before { display: none; }
 
-/* tables */
+/* tables — clean, scannable data tables */
 .sl-markdown-content table {
-  box-shadow: 0 8px 24px -18px rgba(0, 0, 0, 0.55);
-  border-radius: 10px;
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 10px 28px -20px rgba(0, 0, 0, 0.5);
 }
+.sl-markdown-content th,
+.sl-markdown-content td { vertical-align: top; word-break: break-word; }
+/* tighten the first (term) column so definitions sit closer */
+.sl-markdown-content th:first-child,
+.sl-markdown-content td:first-child { width: 25%; }
 .sl-markdown-content th {
-  background: var(--sl-color-gray-6);
-  border-bottom: 2px solid color-mix(in srgb, var(--tl-gold) 60%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--tl-gold) 55%, transparent);
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78em;
 }
-:root[data-theme='light'] .sl-markdown-content th { background: #f6efe0; }
-:root[data-theme='dark'] .sl-markdown-content th { background: #1b2742; }
+:root[data-theme='light'] .sl-markdown-content th { background: #f6efe0; color: #6f5d34; }
+:root[data-theme='dark'] .sl-markdown-content th { background: #1b2742; color: #c7d0e2; }
+/* zebra + hover help the eye track across the wide column */
+:root[data-theme='light'] .sl-markdown-content tbody tr:nth-child(even) { background: #faf7f0; }
+:root[data-theme='dark'] .sl-markdown-content tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.025); }
+.sl-markdown-content tbody tr { transition: background 0.15s ease; }
+.sl-markdown-content tbody tr:hover { background: color-mix(in srgb, var(--tl-gold) 9%, transparent); }
 
 /* blockquotes / notes (gold) */
 .sl-markdown-content blockquote {
