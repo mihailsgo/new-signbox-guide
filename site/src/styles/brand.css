@@ -199,7 +199,13 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
   box-shadow: 0 10px 28px -20px rgba(0, 0, 0, 0.5);
 }
 .sl-markdown-content th,
-.sl-markdown-content td { vertical-align: top; word-break: break-word; }
+.sl-markdown-content td {
+  vertical-align: top;
+  word-break: break-word;
+  /* uniform, comfortable padding — incl. left inset (Starlight zeroes it for
+     borderless tables, but ours is bordered, so text must not hug the edge) */
+  padding: 0.7rem 1.1rem;
+}
 /* tighten the first (term) column so definitions sit closer */
 .sl-markdown-content th:first-child,
 .sl-markdown-content td:first-child { width: 25%; }
