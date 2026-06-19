@@ -1,0 +1,19 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+<Default><slot /></Default>
+
+<footer class="tl-footer">
+  <div class="tl-footer__inner">
+    <div class="tl-footer__brand">
+      <span class="tl-footer__title">TrustLynx SignBox</span>
+      <span class="tl-footer__tag">Electronic signing, end&#8209;to&#8209;end.</span>
+    </div>
+    <nav class="tl-footer__links" aria-label="Footer links">
+      <a href="https://developer.trustlynx.com/" target="_blank" rel="noopener noreferrer">Developer Portal</a>
+      <a href="https://github.com/mihailsgo/new-signbox-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="mailto:sales@trustlynx.io">Contact</a>
+    </nav>
+  </div>
+  <div class="tl-footer__bar">© 2026 TrustLynx · SignBox user guide</div>
+</footer>

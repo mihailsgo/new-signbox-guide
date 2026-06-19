@@ -13,9 +13,16 @@ export default defineConfig({
       description:
         'User guide for the TrustLynx SignBox e-signing solution — login, initiating a signing process, Smart-ID signing, templates, tracking and more.',
       tagline: 'Electronic signing, end to end.',
+      logo: {
+        light: './src/assets/trustlynx-logo.png',
+        dark: './src/assets/trustlynx-logo-dark.png',
+        replacesTitle: true,
+      },
+      favicon: '/favicon.ico',
       customCss: ['./src/styles/brand.css'],
       components: {
         Head: './src/components/Head.astro',
+        Footer: './src/components/Footer.astro',
       },
       social: [
         {
