@@ -116,40 +116,58 @@
 }
 .sl-markdown-content p:has(> img):hover::after { opacity: 1; transform: scale(1); }
 
-/* close button + hint shown while an image is zoomed */
+/* close button + hint shown while an image is zoomed.
+   High-contrast white pill (icon + label) so it's unmistakable on the dark
+   overlay — a ghost circle was too easy to miss. */
 .tl-zoom-close {
   position: fixed;
-  top: 18px;
-  right: 18px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #fff;
+  top: 20px;
+  right: 20px;
   display: none;
-  place-items: center;
+  align-items: center;
+  gap: 7px;
+  height: 44px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: none;
+  color: var(--tl-navy-bg, #0f1726);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   cursor: pointer;
   z-index: 10000;
-  backdrop-filter: blur(4px);
-  transition: background 0.18s ease, transform 0.18s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 0 4px rgba(255, 255, 255, 0.18);
+  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
-.tl-zoom-close:hover { background: rgba(255, 255, 255, 0.26); transform: scale(1.06); }
+.tl-zoom-close svg { display: block; }
+.tl-zoom-close:hover {
+  background: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5), 0 0 0 6px var(--tl-gold, #b58635);
+}
+.tl-zoom-close:focus-visible {
+  outline: none;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5), 0 0 0 4px var(--tl-gold, #b58635);
+}
 .tl-zoom-hint {
   position: fixed;
-  bottom: 22px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: none;
   z-index: 10000;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.82rem;
-  background: rgba(9, 14, 26, 0.55);
-  padding: 6px 14px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(9, 14, 26, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 16px;
   border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
 }
-body.tl-zoom-open .tl-zoom-close { display: grid; }
+body.tl-zoom-open .tl-zoom-close { display: inline-flex; }
 body.tl-zoom-open .tl-zoom-hint { display: block; }
 @media (prefers-reduced-motion: no-preference) {
   body.tl-zoom-open .tl-zoom-close { animation: tl-fade 0.25s ease both; }
