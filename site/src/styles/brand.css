@@ -78,8 +78,10 @@
 .sl-markdown-content p:has(> em:only-child) {
   text-align: center;
   font-size: 0.88em;
+  line-height: 1.5;
   color: var(--sl-color-gray-3);
-  margin-top: -0.6rem;
+  margin-top: 0.6rem;   /* clear gap below the image (was overlapping it) */
+  margin-bottom: 0.25rem;
 }
 .sl-markdown-content p:has(> em:only-child) em { font-style: normal; }
 
@@ -96,7 +98,7 @@
   counter-increment: step;
   position: relative;
   padding-left: 2.9rem;
-  margin: 0.55rem 0;
+  margin: 0.7rem 0;
 }
 .sl-markdown-content ol > li::before {
   content: counter(step);
@@ -128,8 +130,10 @@
   border-inline-start: 3px solid var(--sb-blue);
   background: color-mix(in srgb, var(--sb-blue) 8%, transparent);
   border-radius: 0 10px 10px 0;
-  padding: 0.4rem 1rem;
+  padding: 0.85rem 1.15rem;
 }
+.sl-markdown-content blockquote > :first-child { margin-top: 0; }
+.sl-markdown-content blockquote > :last-child { margin-bottom: 0; }
 
 /* ============================================================
    Animations
@@ -140,7 +144,7 @@
   .sl-markdown-content .reveal {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 0.45s ease, transform 0.45s ease;
+    transition: opacity 0.4s ease-out, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
   .sl-markdown-content .reveal.revealed {
@@ -148,10 +152,10 @@
     transform: none;
   }
 
-  /* hero entrance */
-  .hero h1 { animation: sb-rise 0.7s both; }
-  .hero .tagline { animation: sb-rise 0.7s 0.12s both; }
-  .hero .actions { animation: sb-rise 0.7s 0.24s both; }
+  /* hero entrance (ease-out for a natural settle) */
+  .hero h1 { animation: sb-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .hero .tagline { animation: sb-rise 0.7s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .hero .actions { animation: sb-rise 0.7s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
   @keyframes sb-rise {
     from { opacity: 0; transform: translateY(18px); }
     to { opacity: 1; transform: none; }
@@ -200,4 +204,10 @@
   transform: translateY(-3px);
   border-color: var(--sl-color-accent);
   box-shadow: 0 16px 36px -20px rgba(0, 0, 0, 0.7);
+}
+.card:active, .sl-link-card:active { transform: translateY(-1px); }
+
+/* smooth anchor scrolling (disabled when the user prefers reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
