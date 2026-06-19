@@ -23,6 +23,9 @@ export default defineConfig({
       components: {
         Head: './src/components/Head.astro',
         Footer: './src/components/Footer.astro',
+        // default to dark mode for first-time visitors (toggle still works)
+        ThemeProvider: './src/components/ThemeProvider.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
       },
       social: [
         {
