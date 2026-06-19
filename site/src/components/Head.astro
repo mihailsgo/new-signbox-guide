@@ -22,6 +22,26 @@ import { ClientRouter } from 'astro:transitions';
       background: 'rgba(6, 10, 22, 0.94)',
       margin: 28,
     });
+    (window as any).__zoom = zoom;
+
+    // close button + hint (medium-zoom has none by default)
+    if (!document.getElementById('tl-zoom-close')) {
+      const btn = document.createElement('button');
+      btn.id = 'tl-zoom-close';
+      btn.className = 'tl-zoom-close';
+      btn.setAttribute('aria-label', 'Close enlarged image');
+      btn.innerHTML =
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+      btn.addEventListener('click', () => (window as any).__zoom && (window as any).__zoom.close());
+      document.body.appendChild(btn);
+      const hint = document.createElement('div');
+      hint.id = 'tl-zoom-hint';
+      hint.className = 'tl-zoom-hint';
+      hint.textContent = 'Click anywhere or press Esc to close';
+      document.body.appendChild(hint);
+    }
+    zoom.on('opened', () => document.body.classList.add('tl-zoom-open'));
+    zoom.on('closed', () => document.body.classList.remove('tl-zoom-open'));
 
     // 2) Scroll-reveal — media only (screenshots / figures). Reading content
     //    (headings, text, tables, lists) renders instantly to avoid "pop-in".
