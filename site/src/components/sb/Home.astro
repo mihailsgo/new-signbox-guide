@@ -1,0 +1,355 @@
+---
+/**
+ * Home.astro — TrustLynx SignBox product-story landing.
+ * Rendered inside Starlight's `splash` template (Starlight provides the
+ * header, nav, search, theme toggle and <head>). Composes the animated
+ * explainer components into a business-level product story above the guide.
+ * Styles are scoped + namespaced under `.sb-home`; theming follows
+ * Starlight's html[data-theme]; all motion respects prefers-reduced-motion.
+ */
+import HeroFlow from './HeroFlow.astro';
+import PortalSplitAnimation from './PortalSplitAnimation.astro';
+import SigningModesAnimation from './SigningModesAnimation.astro';
+import StatusLifecycle from './StatusLifecycle.astro';
+import TrustLayerAnimation from './TrustLayerAnimation.astro';
+import BusinessWorkflowExamples from './BusinessWorkflowExamples.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (slug) => `${base}/${slug}/`;
+
+const audiences = [
+  {
+    t: 'For initiators',
+    d: 'Create and manage signing processes — upload documents, add recipients, set roles and due dates, then start and track.',
+    href: u('initiating'),
+    cta: 'Start a process',
+    icon: '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8"/>',
+  },
+  {
+    t: 'For signers',
+    d: 'Open a secure invitation, authenticate with Smart-ID / e-ID and sign — no account required.',
+    href: u('signing'),
+    cta: 'Sign a document',
+    icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>',
+  },
+  {
+    t: 'For administrators',
+    d: 'Manage document profiles, attributes, contacts, templates and e-seal settings for the whole organization.',
+    href: u('management'),
+    cta: 'Manage settings',
+    icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  },
+];
+
+const benefits = [
+  {
+    t: 'End-to-end process control',
+    d: 'Follow every process through Draft, Started, Completed and Finished — nothing slips through the cracks.',
+    href: u('tracking'),
+    icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  },
+  {
+    t: 'Trusted e-ID signing',
+    d: 'Smart-ID, Mobile-ID, eParaksts, ID card and country-specific methods — backed by national identity providers.',
+    href: u('appendix'),
+    icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>',
+  },
+  {
+    t: 'Reusable workflows',
+    d: 'Save templates, contacts and document profiles so recurring processes start in seconds.',
+    href: u('templates-contacts'),
+    icon: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  },
+  {
+    t: 'Audit-ready result',
+    d: 'An ASiC-E container with QES and XAdES-LT signatures and built-in validation — verifiable long after signing.',
+    href: u('signing'),
+    icon: '<path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/><path d="M9 12l2 2 4-4"/>',
+  },
+];
+
+const roles = [
+  { t: 'Signer', d: 'Applies a legally valid signature.', cls: 'gold' },
+  { t: 'Approver', d: 'Approves the process without signing.', cls: 'blue' },
+  { t: 'Viewer', d: 'Can only view the document.', cls: 'muted' },
+];
+
+const docs = [
+  { t: 'Before you start', d: 'Concepts, the two portals and prerequisites.', href: u('before-you-start') },
+  { t: 'Initiating a signing process', d: 'Upload, add recipients, choose a signing mode.', href: u('initiating') },
+  { t: 'Signing with Smart-ID', d: 'Authenticate and sign on the external portal.', href: u('signing') },
+  { t: 'Tracking & status', d: 'Follow a process from draft to finished container.', href: u('tracking') },
+];
+---
+
+<div class="sb-home">
+  <!-- 1 · HERO -->
+  <header class="sb-hero">
+    <div class="hero-copy">
+      <span class="eyebrow">TrustLynx SignBox</span>
+      <h1>Secure electronic signing — from document upload to a legally valid signed&nbsp;container.</h1>
+      <p>Create signing workflows, invite recipients, sign with trusted e-ID methods, and track every process from draft to finished container.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href={u('before-you-start')}>Start guide</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+        <a class="btn ghost" href={u('appendix')}>Signing methods</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <HeroFlow showCaption={false} />
+    </div>
+  </header>
+
+  <!-- WHEN TO USE -->
+  <section class="band">
+    <span class="band-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+    <p><strong>When to use SignBox.</strong> When your organization needs to send documents for legally valid electronic signing, manage multiple signers, support national e-ID methods, and track the signing process until the final validated container is ready.</p>
+  </section>
+
+  <!-- 2 · HOW SIGNBOX WORKS -->
+  <section id="how" class="sec">
+    <div class="sec-head">
+      <h2>How SignBox works</h2>
+      <p>One document, one workflow — from upload to a sealed, validated container.</p>
+    </div>
+    <HeroFlow />
+  </section>
+
+  <!-- 3 · WHO IS THIS FOR -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Who is this for?</h2>
+      <p>Whether you start processes, sign them, or administer the platform — there's a clear path for you.</p>
+    </div>
+    <div class="aud-grid">
+      {audiences.map((a) => (
+        <a class="aud-card" href={a.href}>
+          <span class="aud-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={a.icon} /></span>
+          <h3>{a.t}</h3>
+          <p>{a.d}</p>
+          <span class="aud-link">{a.cta}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 4 · INTERNAL VS EXTERNAL PORTAL -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Internal &amp; external portals</h2>
+      <p>Initiators build and track processes internally; signers act externally through a secure handoff.</p>
+    </div>
+    <PortalSplitAnimation />
+  </section>
+
+  <!-- 5 · PARALLEL VS SEQUENTIAL -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Parallel or sequential signing</h2>
+      <p>Send to everyone at once, or enforce a strict signing order group by group.</p>
+    </div>
+    <SigningModesAnimation />
+  </section>
+
+  <!-- 6 · STATUS LIFECYCLE -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>A clear process lifecycle</h2>
+      <p>Every process moves through four well-defined statuses — and <em>Completed</em> is not the same as <em>Finished</em>.</p>
+    </div>
+    <StatusLifecycle />
+  </section>
+
+  <!-- ROLES AT A GLANCE -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Roles at a glance</h2>
+      <p>Each recipient is added with one of three roles.</p>
+    </div>
+    <div class="role-grid">
+      {roles.map((r) => (
+        <div class={`role-card ${r.cls}`}>
+          <span class="role-dot"></span>
+          <div><h3>{r.t}</h3><p>{r.d}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 7 · KEY BENEFITS -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Key business benefits</h2>
+      <p>Why teams choose SignBox for organization-wide signing.</p>
+    </div>
+    <div class="ben-grid">
+      {benefits.map((b) => (
+        <a class="ben-card" href={b.href}>
+          <span class="ben-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} /></span>
+          <h3>{b.t}</h3>
+          <p>{b.d}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 8 · TRUST LAYER -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>A legally trustworthy result</h2>
+      <p>Not just a visual signature — a certified, independently verifiable container.</p>
+    </div>
+    <TrustLayerAnimation />
+  </section>
+
+  <!-- 9 · BUSINESS WORKFLOWS -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Real business workflows</h2>
+      <p>How teams put SignBox to work day to day.</p>
+    </div>
+    <BusinessWorkflowExamples />
+  </section>
+
+  <!-- 10 · DOC ENTRY CARDS -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Start reading the guide</h2>
+      <p>Jump straight to the pages that matter most.</p>
+    </div>
+    <div class="doc-grid">
+      {docs.map((d) => (
+        <a class="doc-card" href={d.href}>
+          <div class="doc-tx"><h3>{d.t}</h3><p>{d.d}</p></div>
+          <span class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 11 · CTA -->
+  <section class="cta">
+    <div class="cta-inner">
+      <h2>Bring legally valid e-signing to your organization</h2>
+      <p>Talk to TrustLynx about rolling out SignBox, or explore the developer resources.</p>
+      <div class="cta-actions">
+        <a class="btn primary" href="mailto:sales@trustlynx.io?subject=SignBox%20demo%20request">Request a demo</a>
+        <a class="btn ghost" href="mailto:sales@trustlynx.io">Contact TrustLynx</a>
+        <a class="btn ghost" href="https://developer.trustlynx.com/" target="_blank" rel="noopener noreferrer">Developer portal</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .sb-home{
+    --hp-ink:var(--sl-color-white);
+    --hp-ink-soft:var(--sl-color-gray-2);
+    --hp-surface:var(--sl-color-gray-7,#f6f7f9);
+    --hp-border:var(--sl-color-gray-5);
+    --hp-gold:#b58635; --hp-gold-2:#d8a84e; --hp-eyebrow:#8a6519; --hp-blue:#2f6bff;
+    max-width:1080px;margin-inline:auto;
+  }
+  :global([data-theme="dark"]) .sb-home{
+    --hp-surface:#0f1626; --hp-gold:#d8a84e; --hp-eyebrow:#d8a84e; --hp-blue:#5b8bff;
+  }
+  .sb-home :where(h1,h2,h3,p){margin:0;}
+
+  /* hero */
+  .sb-hero{display:grid;grid-template-columns:1.02fr 1.3fr;gap:40px;align-items:center;padding:8px 0 48px;}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--hp-eyebrow);margin-bottom:14px;}
+  .hero-copy h1{font-size:clamp(30px,4.4vw,46px);line-height:1.06;letter-spacing:-.025em;font-weight:800;text-wrap:balance;margin-bottom:18px;}
+  .hero-copy p{font-size:17px;line-height:1.6;color:var(--hp-ink-soft);max-width:48ch;margin-bottom:26px;}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:12px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;border:1px solid transparent;cursor:pointer;}
+  .btn.primary{background:linear-gradient(160deg,var(--hp-gold-2),var(--hp-gold));color:#241a07;box-shadow:0 10px 26px -12px rgba(181,134,53,.7);}
+  .btn.primary:hover{transform:translateY(-2px);}
+  .btn.ghost{background:var(--hp-surface);color:var(--hp-ink);border-color:var(--hp-border);}
+  .btn.ghost:hover{border-color:var(--hp-gold);transform:translateY(-2px);}
+
+  /* when-to-use band */
+  .band{display:flex;gap:16px;align-items:flex-start;padding:20px 22px;border-radius:16px;
+    border:1px solid color-mix(in srgb,var(--hp-gold) 35%,var(--hp-border));
+    background:color-mix(in srgb,var(--hp-gold) 7%,transparent);margin-bottom:8px;}
+  .band-ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 14%,transparent);}
+  .band-ic svg{width:19px;height:19px;}
+  .band p{font-size:15.5px;line-height:1.6;color:var(--hp-ink-soft);}
+  .band strong{color:var(--hp-ink);}
+
+  /* sections */
+  .sec{padding:44px 0;border-top:1px solid var(--hp-border);}
+  .sec-head{margin-bottom:24px;max-width:62ch;}
+  .sec-head h2{font-size:clamp(23px,3.2vw,31px);letter-spacing:-.02em;font-weight:800;margin-bottom:8px;}
+  .sec-head p{font-size:16px;color:var(--hp-ink-soft);}
+  .sec-head em{font-style:normal;color:var(--hp-gold);font-weight:700;}
+
+  /* audience cards */
+  .aud-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .aud-card{display:flex;flex-direction:column;gap:12px;background:var(--hp-surface);border:1px solid var(--hp-border);border-radius:18px;padding:24px;text-decoration:none;color:inherit;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
+  .aud-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--hp-gold) 45%,var(--hp-border));box-shadow:0 18px 38px -20px rgba(15,27,46,.4);}
+  .aud-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,#23408e,var(--hp-blue));}
+  .aud-ic svg{width:22px;height:22px;}
+  .aud-card h3{font-size:17px;letter-spacing:-.01em;}
+  .aud-card p{font-size:14px;color:var(--hp-ink-soft);line-height:1.55;flex:1;}
+  .aud-link{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--hp-gold);}
+  .aud-link svg{width:15px;height:15px;transition:transform .25s ease;}
+  .aud-card:hover .aud-link svg{transform:translateX(4px);}
+
+  /* roles */
+  .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .role-card{display:flex;gap:12px;align-items:flex-start;background:var(--hp-surface);border:1px solid var(--hp-border);border-radius:14px;padding:16px 18px;}
+  .role-card h3{font-size:15px;margin-bottom:2px;}
+  .role-card p{font-size:13px;color:var(--hp-ink-soft);}
+  .role-dot{width:11px;height:11px;border-radius:999px;flex:none;margin-top:5px;}
+  .role-card.gold .role-dot{background:var(--hp-gold);}
+  .role-card.blue .role-dot{background:var(--hp-blue);}
+  .role-card.muted .role-dot{background:var(--hp-ink-soft);}
+
+  /* benefits */
+  .ben-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .ben-card{display:flex;flex-direction:column;gap:10px;background:var(--hp-surface);border:1px solid var(--hp-border);border-radius:16px;padding:22px;text-decoration:none;color:inherit;transition:transform .25s ease,border-color .25s ease;}
+  .ben-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--hp-gold) 40%,var(--hp-border));}
+  .ben-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 12%,transparent);}
+  .ben-ic svg{width:21px;height:21px;}
+  .ben-card h3{font-size:16px;letter-spacing:-.01em;}
+  .ben-card p{font-size:14px;color:var(--hp-ink-soft);line-height:1.55;}
+
+  /* doc cards */
+  .doc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .doc-card{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--hp-surface);border:1px solid var(--hp-border);border-radius:16px;padding:20px 22px;text-decoration:none;color:inherit;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
+  .doc-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--hp-gold) 45%,var(--hp-border));box-shadow:0 16px 34px -18px rgba(15,27,46,.35);}
+  .doc-tx h3{font-size:16px;margin-bottom:3px;letter-spacing:-.01em;}
+  .doc-tx p{font-size:13.5px;color:var(--hp-ink-soft);}
+  .doc-arrow{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 12%,transparent);}
+  .doc-arrow svg{width:17px;height:17px;transition:transform .25s ease;}
+  .doc-card:hover .doc-arrow{transform:translateX(4px);}
+
+  /* CTA */
+  .cta{margin-top:48px;border-radius:22px;padding:44px;background:linear-gradient(150deg,#1b2a44,#0f1726);border:1px solid var(--hp-border);}
+  .cta-inner{max-width:60ch;}
+  .cta h2{color:#fff;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;font-weight:800;margin-bottom:10px;}
+  .cta p{color:#c7d0e2;font-size:16px;margin-bottom:22px;}
+  .cta-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .cta .btn.ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22);}
+  .cta .btn.ghost:hover{border-color:var(--hp-gold-2);}
+
+  @media (max-width:880px){
+    .sb-hero{grid-template-columns:1fr;gap:26px;padding:4px 0 32px;}
+    .hero-art{order:2;}
+    .aud-grid,.ben-grid,.doc-grid,.role-grid{grid-template-columns:1fr;}
+    .cta{padding:30px 24px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .btn,.aud-card,.ben-card,.doc-card,.aud-link svg,.doc-arrow{transition:none;}
+  }
+</style>
+
+<style is:global>
+  /* Splash homepage only: hide Starlight's auto page-title panel —
+     Home.astro provides its own hero <h1>. Guarded by :has(.sb-home) so the
+     inner guide pages keep their normal page title. */
+  main:has(.sb-home) .content-panel:has(> .sl-container > h1#_top){ display:none; }
+  /* let the homepage use a touch more width than the default splash gutter */
+  .sl-markdown-content:has(.sb-home){ width:100%; }
+</style>

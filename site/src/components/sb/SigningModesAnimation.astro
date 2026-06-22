@@ -1,0 +1,122 @@
+---
+/**
+ * SigningModesAnimation.astro — Parallel vs Sequential signing.
+ * Parallel: SignBox sends to all signers at once. Sequential: each step
+ * unlocks only after the previous completes. Theme-aware + reduced-motion safe.
+ */
+import '../../styles/signbox-anim.css';
+interface Props { class?: string; caption?: string; showCaption?: boolean; }
+const {
+  class: className = '',
+  caption = 'Parallel sends every request at once — signers act in any order. Sequential locks each step until the previous signer is done, enforcing a strict order before the process completes.',
+  showCaption = true,
+} = Astro.props;
+---
+<figure class={`sb-anim signing-modes ${className}`} role="group" aria-label="Parallel signing versus sequential signing">
+  <div class="sm-grid" aria-hidden="true">
+    <div class="sm-card sm-par">
+      <div class="sm-title"><span class="t">Parallel signing</span><span class="k">All at once</span></div>
+      <div class="sm-body">
+        <div class="sm-hub">
+          <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/></svg></div>
+          <div class="lbl">SignBox</div>
+        </div>
+        <div class="sm-arrows">
+          <svg viewBox="0 0 48 160" preserveAspectRatio="none">
+            <path class="ln" d="M2 80 H46"/><path class="ln" d="M2 80 C24 80 24 26 46 26"/><path class="ln" d="M2 80 C24 80 24 134 46 134"/>
+          </svg>
+        </div>
+        <div class="sm-signers">
+          <div class="sm-signer"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span><span class="nm">Signer 1</span><span class="state"><span class="sb-chip gold req">Sent</span><span class="sb-tick ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span></span></div>
+          <div class="sm-signer"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span><span class="nm">Signer 2</span><span class="state"><span class="sb-chip gold req">Sent</span><span class="sb-tick ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span></span></div>
+          <div class="sm-signer approver"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span><span class="nm">Approver</span><span class="state"><span class="sb-chip gold req">Sent</span><span class="sb-tick ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span></span></div>
+        </div>
+      </div>
+      <div class="sm-foot"><span class="sb-chip green"><span class="sb-icon ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>All actions completed</span></div>
+    </div>
+
+    <div class="sm-card sm-seq">
+      <div class="sm-title"><span class="t">Sequential signing</span><span class="k">In order</span></div>
+      <div class="sm-step s1"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span><span class="nm">Signer 1</span><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span class="sb-tick ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span></div>
+      <div class="sm-step s2 locked"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span><span class="nm">Signer 2</span><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span class="sb-tick ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span></div>
+      <div class="sm-step s3 approver locked"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span><span class="nm">Approver</span><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span class="sb-tick ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span></div>
+      <div class="sm-foot"><span class="sb-chip green"><span class="sb-icon ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Completed</span></div>
+    </div>
+  </div>
+  {showCaption && <figcaption class="sb-cap">{caption}</figcaption>}
+</figure>
+
+<style>
+  .signing-modes{margin:0;display:flex;flex-direction:column;gap:14px;}
+  .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
+
+  .sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .sm-card{border-radius:18px;padding:18px;background:var(--sb-card);border:1px solid var(--sb-border);box-shadow:var(--sb-shadow-sm);display:flex;flex-direction:column;gap:14px;min-height:300px;}
+  .sm-title{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .sm-title .t{font-size:14px;font-weight:800;letter-spacing:-.01em;}
+  .sm-title .k{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--sb-muted);}
+  .sm-body{flex:1;display:flex;align-items:center;gap:14px;}
+  .ci{width:13px;height:13px;}
+
+  .sm-hub{flex:none;width:62px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .sm-hub .box{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,var(--sb-navy),var(--sb-blue));}
+  .sm-hub .box svg{width:24px;height:24px;color:var(--sb-gold-2);}
+  .sm-hub .lbl{font-size:10px;font-weight:700;color:var(--sb-ink-soft);}
+  .sm-arrows{flex:none;width:48px;position:relative;align-self:stretch;}
+  .sm-arrows svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .sm-arrows .ln{stroke:var(--sb-border-strong);stroke-width:2;stroke-dasharray:4 5;fill:none;}
+  .sm-signers{flex:1;display:flex;flex-direction:column;gap:9px;}
+  .sm-signer{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:var(--sb-card-2);border:1px solid var(--sb-border);font-size:12px;font-weight:600;}
+  .sm-signer .av{width:24px;height:24px;border-radius:999px;flex:none;display:grid;place-items:center;color:#fff;background:var(--sb-blue);}
+  .sm-signer.approver .av{background:var(--sb-gold);}
+  .sm-signer .av svg{width:13px;height:13px;}
+  .sm-signer .nm{flex:1;}
+  .sm-signer .state{display:flex;align-items:center;position:relative;width:22px;height:22px;justify-content:center;}
+  .sm-signer .req{opacity:0;position:absolute;}
+  .sm-signer .ok{opacity:1;}
+
+  .sm-foot{display:flex;justify-content:center;}
+
+  .sm-seq{flex:1;}
+  .sm-step{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:12px;background:var(--sb-card-2);border:1px solid var(--sb-border);font-size:12px;font-weight:600;position:relative;}
+  .sm-step .av{width:24px;height:24px;border-radius:999px;flex:none;display:grid;place-items:center;color:#fff;background:var(--sb-blue);}
+  .sm-step.approver .av{background:var(--sb-gold);}
+  .sm-step .av svg{width:13px;height:13px;}
+  .sm-step .nm{flex:1;}
+  .sm-step .lock,.sm-step .ok{width:22px;height:22px;display:grid;place-items:center;flex:none;}
+  .sm-step .lock{color:var(--sb-muted);opacity:0;}
+  .sm-step .lock svg{width:14px;height:14px;}
+  .sm-step .ok{opacity:1;position:absolute;right:11px;}
+
+  @media (max-width:760px){ .sm-grid{grid-template-columns:1fr;} }
+
+  @media (prefers-reduced-motion: no-preference){
+    .sm-par .sm-arrows .ln{animation:sbDash 1.4s linear infinite;}
+    .sm-signer .ok{opacity:0;animation:smOk 5s ease-in-out infinite;}
+    .sm-signer .req{animation:smReq 5s ease-in-out infinite;}
+    .sm-foot :global(.sb-chip){opacity:0;}
+    .sm-par .sm-foot :global(.sb-chip){animation:smReveal 5s ease-in-out infinite;animation-delay:-1.5s;}
+
+    .sm-seq .sm-step .lock{opacity:1;}
+    .sm-seq .sm-step .ok{opacity:0;}
+    .sm-seq .s2,.sm-seq .s3{opacity:.55;}
+    .sm-seq .s1 .ok{animation:smSeqOk 6.5s ease-in-out infinite;animation-delay:-5.2s;}
+    .sm-seq .s1 .lock{animation:smHideLock 6.5s ease-in-out infinite;animation-delay:-5.2s;}
+    .sm-seq .s2{animation:smUnlock 6.5s ease-in-out infinite;animation-delay:-4.7s;}
+    .sm-seq .s2 .lock{animation:smHideLock 6.5s ease-in-out infinite;animation-delay:-3.5s;}
+    .sm-seq .s2 .ok{animation:smSeqOk 6.5s ease-in-out infinite;animation-delay:-3.5s;}
+    .sm-seq .s3{animation:smUnlock 6.5s ease-in-out infinite;animation-delay:-3.0s;}
+    .sm-seq .s3 .lock{animation:smHideLock 6.5s ease-in-out infinite;animation-delay:-1.8s;}
+    .sm-seq .s3 .ok{animation:smSeqOk 6.5s ease-in-out infinite;animation-delay:-1.8s;}
+    .sm-seq .sm-foot :global(.sb-chip){animation:smReveal 6.5s ease-in-out infinite;animation-delay:-1.3s;}
+  }
+  @keyframes smReveal{0%,4%{opacity:0;transform:translateY(6px);}12%,94%{opacity:1;transform:translateY(0);}99%,100%{opacity:0;}}
+  @keyframes smReq{0%,26%{opacity:0;transform:scale(.6);}31%,42%{opacity:1;transform:scale(1);}46%,100%{opacity:0;transform:scale(.6);}}
+  @keyframes smOk{0%,42%{opacity:0;transform:scale(.4);}48%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;}}
+  @keyframes smSeqOk{0%,2%{opacity:0;transform:scale(.4);}8%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;}}
+  @keyframes smHideLock{0%,3%{opacity:1;}8%,100%{opacity:0;}}
+  @keyframes smUnlock{0%,2%{opacity:.55;}9%,100%{opacity:1;}}
+
+  html[data-theme="dark"] .sm-hub .box{background:linear-gradient(160deg,#1b2a52,#23408e);}
+  @media (prefers-color-scheme: dark){ html:not([data-theme="light"]) .sm-hub .box{background:linear-gradient(160deg,#1b2a52,#23408e);} }
+</style>

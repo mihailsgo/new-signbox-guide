@@ -1,0 +1,156 @@
+---
+/**
+ * HeroFlow.astro — the full SignBox journey in one looping visual.
+ * Upload → SignBox workflow → Recipients → e-ID signing → Signed container.
+ * Pure SVG + CSS. Theme-aware. Respects prefers-reduced-motion (shows final state).
+ */
+import '../../styles/signbox-anim.css';
+interface Props { class?: string; caption?: string; showCaption?: boolean; }
+const {
+  class: className = '',
+  caption = 'A PDF is uploaded into a SignBox workflow, routed to recipients, signed with a national e-ID, then sealed into a legally valid signature container.',
+  showCaption = true,
+} = Astro.props;
+---
+<figure class={`sb-anim hero-flow ${className}`} role="group" aria-label="How a document flows through SignBox">
+  <div class="sb-stage">
+    <div class="hf" aria-hidden="true">
+      <div class="hf-node">
+        <div class="sb-card hf-pdf">
+          <div class="corner"></div>
+          <div class="lines"><i></i><i></i><i></i></div>
+          <div class="tag">PDF</div>
+        </div>
+        <div class="hf-stagelabel">Upload</div>
+      </div>
+      <div class="hf-conn c1"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg></div>
+      <div class="hf-node">
+        <div class="hf-box">
+          <div class="glow"></div>
+          <span class="sb-icon bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg></span>
+          <div class="blabel">SignBox</div>
+        </div>
+        <div class="hf-stagelabel">Workflow</div>
+      </div>
+      <div class="hf-conn c2"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg><span class="hf-dot"></span></div>
+      <div class="hf-node">
+        <div class="hf-recips">
+          <div class="sb-card hf-rc r1"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span>Signer 1</div>
+          <div class="sb-card hf-rc r2"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span>Signer 2</div>
+          <div class="sb-card hf-rc r3 approver"><span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6"/></svg></span>Approver</div>
+        </div>
+        <div class="hf-stagelabel">Recipients</div>
+      </div>
+      <div class="hf-conn c3"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg></div>
+      <div class="hf-node">
+        <div class="sb-card hf-phone">
+          <div class="ring"></div>
+          <div class="scr">
+            <span class="sb-icon pidicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/></svg></span>
+            <div class="plabel">Smart-ID / eID</div>
+          </div>
+          <div class="hf-check sb-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        </div>
+        <div class="hf-stagelabel">e-ID signing</div>
+      </div>
+      <div class="hf-conn c4"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg></div>
+      <div class="hf-node">
+        <div class="sb-card hf-final">
+          <span class="sb-icon seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <div class="flabel">ASiC-E / eDoc</div>
+          <div class="badges">
+            <span class="sb-badge gold b1">QES</span>
+            <span class="sb-badge blue b2">XAdES-LT</span>
+            <span class="sb-badge green b3">Valid</span>
+          </div>
+        </div>
+        <div class="hf-stagelabel">Signed container</div>
+      </div>
+    </div>
+  </div>
+  {showCaption && <figcaption class="sb-cap">{caption}</figcaption>}
+</figure>
+
+<style>
+  .hero-flow{margin:0;display:flex;flex-direction:column;gap:14px;}
+  .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
+
+  .hf{display:flex;align-items:stretch;gap:0;min-height:300px;}
+  .hf-node{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;position:relative;padding:6px;}
+  .hf-stagelabel{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--sb-muted);}
+  .hf-conn{flex:0 0 46px;align-self:center;position:relative;height:2px;margin-top:-26px;}
+  .hf-conn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .hf-conn .ln{stroke:var(--sb-border-strong);stroke-width:2;stroke-dasharray:5 6;fill:none;}
+  .hf-dot{position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:999px;margin-top:-3.5px;background:var(--sb-gold);box-shadow:0 0 10px var(--sb-glow-gold);opacity:0;}
+
+  .hf-pdf{width:84px;height:104px;border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;position:relative;}
+  .hf-pdf .corner{position:absolute;top:0;right:0;width:24px;height:24px;background:var(--sb-card-2);border-left:1px solid var(--sb-border);border-bottom:1px solid var(--sb-border);border-bottom-left-radius:8px;}
+  .hf-pdf .lines{display:flex;flex-direction:column;gap:5px;margin-bottom:6px;}
+  .hf-pdf .lines i{height:4px;border-radius:3px;background:var(--sb-border-strong);display:block;}
+  .hf-pdf .lines i:nth-child(2){width:70%;}
+  .hf-pdf .tag{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--sb-gold);}
+
+  .hf-box{width:128px;height:128px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;
+    background:linear-gradient(160deg,var(--sb-navy),color-mix(in srgb,var(--sb-blue) 60%,var(--sb-navy)));
+    border:1px solid color-mix(in srgb,var(--sb-blue) 50%,transparent);color:#fff;}
+  .hf-box .bicon{width:34px;height:34px;color:var(--sb-gold-2);}
+  .hf-box .blabel{font-size:13px;font-weight:800;letter-spacing:.02em;}
+  .hf-box .glow{position:absolute;inset:-2px;border-radius:24px;box-shadow:0 0 0 0 var(--sb-glow-blue);pointer-events:none;}
+
+  .hf-recips{display:flex;flex-direction:column;gap:8px;width:100%;max-width:150px;}
+  .hf-rc{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:600;}
+  .hf-rc .av{width:22px;height:22px;border-radius:999px;flex:none;display:grid;place-items:center;color:#fff;background:var(--sb-blue);}
+  .hf-rc .av svg{width:13px;height:13px;}
+  .hf-rc.approver .av{background:var(--sb-gold);}
+
+  .hf-phone{width:78px;height:128px;border-radius:18px;padding:8px;display:flex;flex-direction:column;gap:6px;align-items:center;position:relative;}
+  .hf-phone .scr{flex:1;width:100%;border-radius:11px;background:var(--sb-card-2);border:1px solid var(--sb-border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;}
+  .hf-phone .pidicon{width:26px;height:26px;color:var(--sb-blue);}
+  .hf-phone .plabel{font-size:9.5px;font-weight:700;text-align:center;color:var(--sb-ink-soft);line-height:1.25;padding:0 4px;}
+  .hf-phone .ring{position:absolute;inset:-3px;border-radius:21px;border:2px solid var(--sb-success);opacity:0;}
+  .hf-check{position:absolute;bottom:-10px;left:50%;margin-left:-13px;opacity:0;}
+
+  .hf-final{width:118px;border-radius:18px;padding:12px 12px 14px;display:flex;flex-direction:column;gap:9px;align-items:center;position:relative;}
+  .hf-final .seal{width:30px;height:30px;color:var(--sb-gold);}
+  .hf-final .flabel{font-size:11px;font-weight:800;letter-spacing:.02em;text-align:center;}
+  .hf-final .badges{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
+  .hf-final :global(.sb-badge){padding:4px 7px;font-size:9.5px;}
+
+  html[data-theme="dark"] .hf-box{background:linear-gradient(160deg,#1b2a52,#23408e);color:#eaf0ff;}
+  @media (prefers-color-scheme: dark){ html:not([data-theme="light"]) .hf-box{background:linear-gradient(160deg,#1b2a52,#23408e);color:#eaf0ff;} }
+
+  @media (max-width:760px){
+    .hf{flex-direction:column;align-items:center;}
+    .hf-node{width:100%;max-width:300px;}
+    .hf-conn{flex:0 0 30px;width:2px;height:30px;margin:-4px 0;}
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .hf-conn .ln{animation:sbDash 1.6s linear infinite;}
+    .hf-pdf{animation:hfPdf 8s ease-in-out infinite;}
+    .hf-box{animation:hfBoxIn 8s ease-in-out infinite;}
+    .hf-box .glow{animation:hfGlow 3.4s ease-in-out infinite;}
+    .hf-rc{opacity:0;transform:translateY(8px);}
+    .hf-rc.r1{animation:hfReveal 8s ease-in-out infinite;animation-delay:-7.75s;}
+    .hf-rc.r2{animation:hfReveal 8s ease-in-out infinite;animation-delay:-7.45s;}
+    .hf-rc.r3{animation:hfReveal 8s ease-in-out infinite;animation-delay:-7.15s;}
+    .hf-conn.c2 .hf-dot{animation:hfDot 8s ease-in-out infinite;}
+    .hf-phone{animation:hfPhone 8s ease-in-out infinite;}
+    .hf-phone .ring{animation:hfRing 8s ease-in-out infinite;}
+    .hf-check{animation:hfCheck 8s ease-in-out infinite;}
+    .hf-final{animation:hfFinal 8s ease-in-out infinite;}
+    .hf-final :global(.sb-badge){opacity:0;}
+    .hf-final :global(.b1){animation:hfReveal 8s ease-in-out infinite;animation-delay:-2.4s;}
+    .hf-final :global(.b2){animation:hfReveal 8s ease-in-out infinite;animation-delay:-2.15s;}
+    .hf-final :global(.b3){animation:hfReveal 8s ease-in-out infinite;animation-delay:-1.9s;}
+  }
+  @keyframes hfReveal{0%,4%{opacity:0;transform:translateY(8px);}9%,94%{opacity:1;transform:translateY(0);}98%,100%{opacity:0;transform:translateY(8px);}}
+  @keyframes hfPdf{0%,3%{opacity:0;transform:translateX(-26px);}9%{opacity:1;transform:translateX(-26px);}19%{opacity:1;transform:translateX(8px);}24%{opacity:0;transform:translateX(20px) scale(.96);}94%{opacity:0;transform:translateX(20px) scale(.96);}100%{opacity:0;transform:translateX(-26px);}}
+  @keyframes hfBoxIn{0%,2%{opacity:0;transform:scale(.94);}10%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;transform:scale(.94);}}
+  @keyframes hfGlow{0%,100%{box-shadow:0 0 0 0 var(--sb-glow-blue);}50%{box-shadow:0 0 34px 4px var(--sb-glow-blue);}}
+  @keyframes hfDot{0%,33%{opacity:0;transform:translateX(0);}36%{opacity:1;}42%{opacity:1;transform:translateX(40px);}45%,100%{opacity:0;transform:translateX(44px);}}
+  @keyframes hfPhone{0%,40%{opacity:0;transform:translateY(10px);}47%,94%{opacity:1;transform:translateY(0);}99%,100%{opacity:0;transform:translateY(10px);}}
+  @keyframes hfRing{0%,46%{opacity:0;transform:scale(.96);}50%{opacity:.9;transform:scale(1);}60%{opacity:0;transform:scale(1.08);}100%{opacity:0;}}
+  @keyframes hfCheck{0%,50%{opacity:0;transform:scale(.5);}55%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;}}
+  @keyframes hfFinal{0%,58%{opacity:0;transform:translateY(10px) scale(.96);}65%,94%{opacity:1;transform:translateY(0) scale(1);}99%,100%{opacity:0;transform:translateY(10px) scale(.96);}}
+</style>

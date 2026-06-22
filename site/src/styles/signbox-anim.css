@@ -1,0 +1,136 @@
+/* =========================================================================
+   SignBox animation components — shared design tokens + primitives
+   Imported (and auto-deduped) by every SignBox *.astro animation component.
+   Theme-aware: reacts to Starlight's html[data-theme] AND OS preference.
+   ========================================================================= */
+
+:root,
+.sb-anim {
+  --sb-bg:#eef1f6;
+  --sb-stage-1:#fbfcff;
+  --sb-stage-2:#eef2f9;
+  --sb-card:#ffffff;
+  --sb-card-2:#f6f8fc;
+  --sb-ink:#0f1b2e;
+  --sb-ink-soft:#516074;
+  --sb-muted:#8a97a8;
+  --sb-border:rgba(15,27,46,.10);
+  --sb-border-strong:rgba(15,27,46,.16);
+  --sb-gold:#d9961f;
+  --sb-gold-2:#f3b94a;
+  --sb-blue:#2f6bff;
+  --sb-navy:#23408e;
+  --sb-success:#15a35a;
+  --sb-success-soft:rgba(21,163,90,.14);
+  --sb-glow-gold:rgba(217,150,31,.30);
+  --sb-glow-blue:rgba(47,107,255,.24);
+  --sb-shadow:0 12px 32px -12px rgba(15,27,46,.22);
+  --sb-shadow-sm:0 4px 14px -6px rgba(15,27,46,.20);
+}
+
+/* --- Dark via Starlight's explicit theme attribute --- */
+:root[data-theme="dark"],
+[data-theme="dark"] .sb-anim,
+.sb-anim[data-theme="dark"] {
+  --sb-bg:#0a0f1a;
+  --sb-stage-1:#0e1626;
+  --sb-stage-2:#0a1120;
+  --sb-card:#172134;
+  --sb-card-2:#10192a;
+  --sb-ink:#eef3fb;
+  --sb-ink-soft:#9fb0c7;
+  --sb-muted:#64748b;
+  --sb-border:rgba(148,176,214,.14);
+  --sb-border-strong:rgba(148,176,214,.24);
+  --sb-gold:#f3b94a;
+  --sb-gold-2:#ffd070;
+  --sb-blue:#5b8bff;
+  --sb-navy:#9bb4ff;
+  --sb-success:#34d27f;
+  --sb-success-soft:rgba(52,210,127,.16);
+  --sb-glow-gold:rgba(243,185,74,.34);
+  --sb-glow-blue:rgba(91,139,255,.30);
+  --sb-shadow:0 18px 44px -16px rgba(0,0,0,.6);
+  --sb-shadow-sm:0 8px 22px -10px rgba(0,0,0,.55);
+}
+
+/* --- Dark via OS preference when no explicit light theme is forced
+       (covers non-Starlight usage / SSR before theme JS runs) --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sb-bg:#0a0f1a;
+    --sb-stage-1:#0e1626;
+    --sb-stage-2:#0a1120;
+    --sb-card:#172134;
+    --sb-card-2:#10192a;
+    --sb-ink:#eef3fb;
+    --sb-ink-soft:#9fb0c7;
+    --sb-muted:#64748b;
+    --sb-border:rgba(148,176,214,.14);
+    --sb-border-strong:rgba(148,176,214,.24);
+    --sb-gold:#f3b94a;
+    --sb-gold-2:#ffd070;
+    --sb-blue:#5b8bff;
+    --sb-navy:#9bb4ff;
+    --sb-success:#34d27f;
+    --sb-success-soft:rgba(52,210,127,.16);
+    --sb-glow-gold:rgba(243,185,74,.34);
+    --sb-glow-blue:rgba(91,139,255,.30);
+    --sb-shadow:0 18px 44px -16px rgba(0,0,0,.6);
+    --sb-shadow-sm:0 8px 22px -10px rgba(0,0,0,.55);
+  }
+}
+
+/* ---------------------------------------------------------------- primitives */
+.sb-anim *{ box-sizing:border-box; }
+
+.sb-stage{
+  position:relative;border-radius:22px;overflow:hidden;
+  background:radial-gradient(120% 120% at 12% 0%, var(--sb-stage-1), var(--sb-stage-2));
+  border:1px solid var(--sb-border);
+  box-shadow:var(--sb-shadow);
+  padding:30px;
+}
+.sb-stage::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(to right, var(--sb-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--sb-border) 1px, transparent 1px);
+  background-size:34px 34px;
+  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 100%);
+          mask-image:radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 100%);
+}
+
+.sb-card{
+  background:var(--sb-card);border:1px solid var(--sb-border);border-radius:16px;
+  box-shadow:var(--sb-shadow-sm);color:var(--sb-ink);
+}
+.sb-icon{display:inline-flex;width:18px;height:18px;flex:none;}
+.sb-icon svg{width:100%;height:100%;display:block;}
+
+.sb-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.03em;
+  padding:5px 10px;border-radius:999px;line-height:1;white-space:nowrap;
+  border:1px solid var(--sb-border-strong);background:var(--sb-card-2);color:var(--sb-ink-soft);
+}
+.sb-badge.gold{color:var(--sb-gold);border-color:color-mix(in srgb,var(--sb-gold) 45%,transparent);background:color-mix(in srgb,var(--sb-gold) 12%,transparent);}
+.sb-badge.blue{color:var(--sb-blue);border-color:color-mix(in srgb,var(--sb-blue) 40%,transparent);background:color-mix(in srgb,var(--sb-blue) 10%,transparent);}
+.sb-badge.green{color:var(--sb-success);border-color:color-mix(in srgb,var(--sb-success) 45%,transparent);background:var(--sb-success-soft);}
+
+.sb-chip{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  padding:4px 9px;border-radius:8px;line-height:1;
+  background:var(--sb-card-2);border:1px solid var(--sb-border);color:var(--sb-ink-soft);
+}
+.sb-chip.green{color:var(--sb-success);background:var(--sb-success-soft);border-color:color-mix(in srgb,var(--sb-success) 40%,transparent);}
+.sb-chip.gold{color:var(--sb-gold);background:color-mix(in srgb,var(--sb-gold) 12%,transparent);border-color:color-mix(in srgb,var(--sb-gold) 40%,transparent);}
+
+.sb-tick{
+  width:22px;height:22px;border-radius:999px;display:grid;place-items:center;flex:none;
+  background:var(--sb-success);color:#fff;
+}
+.sb-tick svg{width:13px;height:13px;}
+
+/* shared connector dash-flow */
+@keyframes sbDash{ to{ stroke-dashoffset:-22; } }

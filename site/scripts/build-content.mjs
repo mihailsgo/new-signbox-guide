@@ -135,50 +135,19 @@ for (const sec of sections) {
   fs.writeFileSync(path.join(DOCS, `${slug}.md`), fm + body + '\n', 'utf8');
 }
 
-// --- landing (splash) page ----------------------------------------------
-const about = fixCrossLinks(fixImages(intro.join('\n')))
-  .split('\n')
-  .filter((l) => l.trim().startsWith('>'))
-  .join('\n');
-
-const cards = [
-  ['concepts', 'Key concepts', 'Glossary: processes, containers, roles, Smart-ID, QES.'],
-  ['login', 'Sign in', 'Log in to the internal portal to start signing.'],
-  ['initiating', 'Start a process', 'Upload, add signers, roles, due dates, Sign First.'],
-  ['signing', 'Sign with Smart-ID', 'Authenticate and sign on the external portal.'],
-  ['tracking', 'Track progress', 'History, statuses, Completed vs Finished, drafts.'],
-  ['appendix', 'Reference & FAQ', 'Methods by country and frequently asked questions.'],
-];
-
+// --- landing (splash) page: product-story homepage via <Home/> ----------
+// The homepage is a bespoke business landing (composed in Home.astro with the
+// animated explainer components) — not derived from the README. The README
+// remains the single source only for the inner guide pages.
 const index = `---
 title: TrustLynx SignBox
-description: A complete, illustrated guide to the TrustLynx SignBox e-signing portal — sign in, initiate a signing process, and sign documents with Smart-ID.
+description: SignBox manages full electronic signing workflows — document upload, recipients, e-ID signing and a legally valid signature container — for initiators, signers and administrators.
 template: splash
-hero:
-  tagline: Electronic signing, end&#8209;to&#8209;end — a complete, illustrated guide to initiating and signing documents in SignBox.
-  actions:
-    - text: Get started
-      link: ${BASE}/concepts/
-      icon: right-arrow
-      variant: primary
-    - text: Sign a document
-      link: ${BASE}/signing/
-      icon: external
-      variant: minimal
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Home from '../../components/sb/Home.astro';
 
-<CardGrid>
-${cards
-  .map(
-    ([slug, title, desc]) =>
-      `  <LinkCard title=${yaml(title)} href="${BASE}/${slug}/" description=${yaml(desc)} />`
-  )
-  .join('\n')}
-</CardGrid>
-
-${about}
+<Home />
 `;
 fs.writeFileSync(path.join(DOCS, 'index.mdx'), index, 'utf8');
 

@@ -1,0 +1,92 @@
+---
+/**
+ * TrustLayerAnimation.astro — SignBox produces a legally trustworthy container,
+ * not just a visual PDF signature. Layers (signature, timestamp, validation) are
+ * stacked onto the document and sealed into a QES / XAdES-LT container.
+ * Theme-aware + reduced-motion safe (shows fully sealed final state).
+ */
+import '../../styles/signbox-anim.css';
+interface Props { class?: string; caption?: string; showCaption?: boolean; }
+const {
+  class: className = '',
+  caption = 'Each layer — signature, timestamp, validation — is stacked onto the document and sealed into a QES-grade, XAdES-LT container. The output is a certified, independently verifiable record.',
+  showCaption = true,
+} = Astro.props;
+---
+<figure class={`sb-anim trust-layer ${className}`} role="group" aria-label="How SignBox builds a legally trustworthy signature container">
+  <div class="sb-stage">
+    <div class="tl" aria-hidden="true">
+      <div class="tl-stack">
+        <div class="tl-seal"><span class="sb-badge green"><span class="sb-icon ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Valid</span></div>
+        <div class="tl-frame"></div>
+        <div class="tl-layer tl-val"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/><path d="M9 12l2 2 4-4"/></svg></span>Validation</div>
+        <div class="tl-layer tl-time"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span>Timestamp</div>
+        <div class="tl-layer tl-sig"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19c3 0 3-12 6-12s2 8 4 8 2-4 5-4"/><path d="M3 21h18"/></svg></span>Electronic signature</div>
+        <div class="tl-layer tl-doc"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>Document</div>
+      </div>
+      <div class="tl-side">
+        <div class="row r-qes"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/></svg></span><span class="tx"><b>QES</b><span>Qualified electronic signature</span></span></div>
+        <div class="row r-xades"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></span><span class="tx"><b>XAdES-LT</b><span>Long-term validation format</span></span></div>
+        <div class="row r-valid"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span class="tx"><b>Signed container</b><span>Legally trustworthy result</span></span></div>
+      </div>
+    </div>
+  </div>
+  {showCaption && <figcaption class="sb-cap">{caption}</figcaption>}
+</figure>
+
+<style>
+  .trust-layer{margin:0;display:flex;flex-direction:column;gap:14px;}
+  .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
+
+  .tl{display:flex;align-items:center;justify-content:center;gap:34px;min-height:300px;}
+  .tl-stack{position:relative;width:188px;height:236px;flex:none;}
+  .tl-layer{position:absolute;left:50%;width:160px;border-radius:14px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:11px 13px;font-size:12px;font-weight:700;
+    background:var(--sb-card);border:1px solid var(--sb-border);box-shadow:var(--sb-shadow-sm);color:var(--sb-ink);}
+  .tl-layer .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;}
+  .tl-layer .ic svg{width:15px;height:15px;}
+  .tl-doc{top:150px;z-index:1;}
+  .tl-doc .ic{background:color-mix(in srgb,var(--sb-blue) 14%,transparent);color:var(--sb-blue);}
+  .tl-sig{top:108px;z-index:2;}
+  .tl-sig .ic{background:color-mix(in srgb,var(--sb-blue) 14%,transparent);color:var(--sb-blue);}
+  .tl-time{top:66px;z-index:3;}
+  .tl-time .ic{background:color-mix(in srgb,var(--sb-gold) 16%,transparent);color:var(--sb-gold);}
+  .tl-val{top:24px;z-index:4;}
+  .tl-val .ic{background:var(--sb-success-soft);color:var(--sb-success);}
+  .tl-frame{position:absolute;left:50%;top:0;transform:translateX(-50%);width:188px;height:236px;border-radius:20px;border:2px solid var(--sb-gold);box-shadow:0 0 0 0 var(--sb-glow-gold);opacity:1;pointer-events:none;}
+  .tl-seal{position:absolute;left:50%;top:-14px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;opacity:1;z-index:5;}
+  .ci{width:13px;height:13px;}
+
+  .tl-side{display:flex;flex-direction:column;gap:12px;max-width:230px;}
+  .tl-side .row{display:flex;align-items:center;gap:10px;}
+  .tl-side .row .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;color:#fff;}
+  .tl-side .row.r-qes .ic{background:var(--sb-gold);}
+  .tl-side .row.r-xades .ic{background:var(--sb-blue);}
+  .tl-side .row.r-valid .ic{background:var(--sb-success);}
+  .tl-side .row .ic svg{width:16px;height:16px;}
+  .tl-side .row .tx{display:flex;flex-direction:column;}
+  .tl-side .row .tx b{font-size:13px;}
+  .tl-side .row .tx span{font-size:11px;color:var(--sb-muted);}
+
+  @media (max-width:680px){
+    .tl{flex-direction:column;gap:24px;}
+    .tl-side{max-width:280px;width:100%;}
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .tl-frame,.tl-seal{opacity:0;}
+    .tl-layer{opacity:0;transform:translateX(-50%) translateY(14px);}
+    .tl-doc{animation:tlLayer 7s ease-in-out infinite;animation-delay:-7s;}
+    .tl-sig{animation:tlLayer 7s ease-in-out infinite;animation-delay:-6.2s;}
+    .tl-time{animation:tlLayer 7s ease-in-out infinite;animation-delay:-5.4s;}
+    .tl-val{animation:tlLayer 7s ease-in-out infinite;animation-delay:-4.6s;}
+    .tl-side .r-qes{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-3.8s;}
+    .tl-side .r-xades{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-3.0s;}
+    .tl-side .r-valid{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-2.2s;}
+    .tl-frame{animation:tlFrame 7s ease-in-out infinite;}
+    .tl-seal{animation:tlSeal 7s ease-in-out infinite;}
+  }
+  @keyframes tlLayer{0%,3%{opacity:0;transform:translateX(-50%) translateY(14px);}9%,95%{opacity:1;transform:translateX(-50%) translateY(0);}99%,100%{opacity:0;}}
+  @keyframes tlRow{0%,4%{opacity:0;transform:translateX(8px);}10%,95%{opacity:1;transform:translateX(0);}99%,100%{opacity:0;}}
+  @keyframes tlFrame{0%,66%{opacity:0;box-shadow:0 0 0 0 var(--sb-glow-gold);}72%{opacity:1;}80%{opacity:1;box-shadow:0 0 26px 2px var(--sb-glow-gold);}95%{opacity:1;box-shadow:0 0 0 0 var(--sb-glow-gold);}99%,100%{opacity:0;}}
+  @keyframes tlSeal{0%,76%{opacity:0;transform:translateX(-50%) scale(.5);}82%,95%{opacity:1;transform:translateX(-50%) scale(1);}99%,100%{opacity:0;}}
+</style>
