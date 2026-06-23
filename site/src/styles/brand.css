@@ -1,12 +1,12 @@
 /* ============================================================
-   TrustLynx SignBox — brand theme, matched to developer.trustlynx.com
+   TrustLynx SignBox - brand theme, matched to developer.trustlynx.com
    (gold #b58635 + navy #1b2a44 on white; navy + gold in dark mode).
    Page CONTENT is generated verbatim from README.md; this file only
    styles the presentation layer.
    ============================================================ */
 
 :root {
-  --tl-gold: #b58635;          /* brand gold — banner, accents, stepper */
+  --tl-gold: #b58635;          /* brand gold - banner, accents, stepper */
   --tl-gold-bright: #d8a84e;   /* gold on dark surfaces */
   --tl-gold-link: #8a6519;     /* AA gold link text on white (~5.5:1) */
   --tl-navy: #1b2a44;          /* logo navy */
@@ -98,7 +98,7 @@
 .medium-zoom-overlay { background: rgba(9, 14, 26, 0.95) !important; z-index: 9998 !important; }
 .medium-zoom-image--opened { z-index: 9999 !important; }
 
-/* "click to enlarge" affordance — magnifier badge on screenshot hover */
+/* "click to enlarge" affordance - magnifier badge on screenshot hover */
 .sl-markdown-content p:has(> img) { position: relative; }
 .sl-markdown-content p:has(> img)::after {
   content: '';
@@ -118,7 +118,7 @@
 
 /* close button + hint shown while an image is zoomed.
    High-contrast white pill (icon + label) so it's unmistakable on the dark
-   overlay — a ghost circle was too easy to miss. */
+   overlay - a ghost circle was too easy to miss. */
 .tl-zoom-close {
   position: fixed;
   top: 20px;
@@ -196,7 +196,7 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
   height: 1.85rem;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--tl-gold), var(--tl-gold-bright));
-  color: var(--tl-ink);            /* navy number on gold — AA in both themes */
+  color: var(--tl-ink);            /* navy number on gold - AA in both themes */
   display: grid;
   place-items: center;
   font-size: 0.82rem;
@@ -207,7 +207,7 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
 .sl-markdown-content ol ol > li { padding-left: 1.2rem; }
 .sl-markdown-content ol ol > li::before { display: none; }
 
-/* tables — clean, scannable data tables */
+/* tables - clean, scannable data tables */
 .sl-markdown-content table {
   width: 100%;
   table-layout: fixed;
@@ -220,7 +220,7 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
 .sl-markdown-content td {
   vertical-align: top;
   word-break: break-word;
-  /* uniform, comfortable padding — incl. left inset (Starlight zeroes it for
+  /* uniform, comfortable padding - incl. left inset (Starlight zeroes it for
      borderless tables, but ours is bordered, so text must not hug the edge) */
   padding: 0.7rem 1.1rem;
 }
@@ -338,7 +338,7 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
    Animations
    ============================================================ */
 @media (prefers-reduced-motion: no-preference) {
-  /* scroll reveal — media only (toggled by Head.astro) */
+  /* scroll reveal - media only (toggled by Head.astro) */
   .sl-markdown-content .reveal {
     opacity: 0;
     transform: translateY(10px);

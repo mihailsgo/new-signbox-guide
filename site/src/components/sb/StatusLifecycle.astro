@@ -1,6 +1,6 @@
 ---
 /**
- * StatusLifecycle.astro — Draft → Started → Completed → Finished stepper.
+ * StatusLifecycle.astro - Draft → Started → Completed → Finished stepper.
  * A gold progress indicator fills through each status. "Completed" (people are
  * done) and "Finished" (container is ready) are intentionally distinct.
  * Theme-aware + reduced-motion safe (shows Finished active).
@@ -9,7 +9,7 @@ import '../../styles/signbox-anim.css';
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
 const {
   class: className = '',
-  caption = 'Completed means every person is done. Finished means the final signed container has been generated — two distinct milestones, not the same thing.',
+  caption = 'Completed means every person is done. Finished means the final signed container has been generated - two distinct milestones, not the same thing.',
   showCaption = true,
 } = Astro.props;
 ---

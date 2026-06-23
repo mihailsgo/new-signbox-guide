@@ -1,6 +1,6 @@
 ---
 /**
- * Home.astro — TrustLynx SignBox product-story landing.
+ * Home.astro - TrustLynx SignBox product-story landing.
  * Rendered inside Starlight's `splash` template (Starlight provides the
  * header, nav, search, theme toggle and <head>). Composes the animated
  * explainer components into a business-level product story above the guide.
@@ -20,14 +20,14 @@ const u = (slug) => `${base}/${slug}/`;
 const audiences = [
   {
     t: 'For initiators',
-    d: 'Create and manage signing processes — upload documents, add recipients, set roles and due dates, then start and track.',
+    d: 'Create and manage signing processes - upload documents, add recipients, set roles and due dates, then start and track.',
     href: u('initiating'),
     cta: 'Start a process',
     icon: '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8"/>',
   },
   {
     t: 'For signers',
-    d: 'Open a secure invitation, authenticate with Smart-ID / e-ID and sign — no account required.',
+    d: 'Open a secure invitation, authenticate with Smart-ID / e-ID and sign - no account required.',
     href: u('signing'),
     cta: 'Sign a document',
     icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>',
@@ -44,13 +44,13 @@ const audiences = [
 const benefits = [
   {
     t: 'End-to-end process control',
-    d: 'Follow every process through Draft, Started, Completed and Finished — nothing slips through the cracks.',
+    d: 'Follow every process through Draft, Started, Completed and Finished - nothing slips through the cracks.',
     href: u('tracking'),
     icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
   },
   {
     t: 'Trusted e-ID signing',
-    d: 'Smart-ID, Mobile-ID, eParaksts, ID card and country-specific methods — backed by national identity providers.',
+    d: 'Smart-ID, Mobile-ID, eParaksts, ID card and country-specific methods - backed by national identity providers.',
     href: u('appendix'),
     icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>',
   },
@@ -62,7 +62,7 @@ const benefits = [
   },
   {
     t: 'Audit-ready result',
-    d: 'An ASiC-E container with QES and XAdES-LT signatures and built-in validation — verifiable long after signing.',
+    d: 'An ASiC-E container with QES and XAdES-LT signatures and built-in validation - verifiable long after signing.',
     href: u('signing'),
     icon: '<path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/><path d="M9 12l2 2 4-4"/>',
   },
@@ -96,7 +96,7 @@ const methods = [
   { t: 'ASiC-E', k: 'container', icon: sealIcon },
 ];
 
-// "How SignBox works" — 5 named steps (distinct from the hero's flow animation)
+// "How SignBox works" - 5 named steps (distinct from the hero's flow animation)
 const steps = [
   { t: 'Upload document', icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/>' },
   { t: 'Define signers & roles', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.3"/><path d="M21 19c0-2.3-1.6-4.3-3.7-4.85"/>' },
@@ -106,11 +106,11 @@ const steps = [
 ];
 
 const faqs = [
-  { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container — the highest assurance level under eIDAS, with built-in validation.' },
+  { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container - the highest assurance level under eIDAS, with built-in validation.' },
   { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
-  { q: 'Do external signers need an account?', a: 'No. A signer opens a secure invitation link, authenticates with their e-ID and signs — no SignBox account required.' },
-  { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed container has been generated and the process is closed — two distinct milestones.' },
-  { q: 'Can I reuse a recurring signing setup?', a: 'Yes — save templates, contacts and document profiles so a recurring process starts pre-filled in seconds.' },
+  { q: 'Do external signers need an account?', a: 'No. A signer opens a secure invitation link, authenticates with their e-ID and signs - no SignBox account required.' },
+  { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed container has been generated and the process is closed - two distinct milestones.' },
+  { q: 'Can I reuse a recurring signing setup?', a: 'Yes - save templates, contacts and document profiles so a recurring process starts pre-filled in seconds.' },
 ];
 ---
 
@@ -119,7 +119,7 @@ const faqs = [
   <header class="sb-hero">
     <div class="hero-copy">
       <span class="eyebrow">TrustLynx SignBox</span>
-      <h1>Secure electronic signing — from document upload to a legally valid signed&nbsp;container.</h1>
+      <h1>Secure electronic signing - from document upload to a legally valid signed&nbsp;container.</h1>
       <p>Create signing workflows, invite recipients, sign with trusted e-ID methods, and track every process from draft to finished container.</p>
       <div class="hero-cta">
         <a class="btn primary" href={u('before-you-start')}>Start guide</a>
@@ -142,7 +142,7 @@ const faqs = [
   <section id="how" class="sec">
     <div class="sec-head">
       <h2>How SignBox works</h2>
-      <p>One document, one workflow — five steps from upload to a sealed, validated container.</p>
+      <p>One document, one workflow - five steps from upload to a sealed, validated container.</p>
     </div>
     <ol class="flow5">
       {steps.map((s, i) => (
@@ -159,7 +159,7 @@ const faqs = [
   <section class="sec">
     <div class="sec-head">
       <h2>Who is this for?</h2>
-      <p>Whether you start processes, sign them, or administer the platform — there's a clear path for you.</p>
+      <p>Whether you start processes, sign them, or administer the platform - there's a clear path for you.</p>
     </div>
     <div class="aud-grid">
       {audiences.map((a) => (
@@ -195,7 +195,7 @@ const faqs = [
   <section class="sec">
     <div class="sec-head">
       <h2>A clear process lifecycle</h2>
-      <p>Every process moves through four well-defined statuses — and <em>Completed</em> is not the same as <em>Finished</em>.</p>
+      <p>Every process moves through four well-defined statuses - and <em>Completed</em> is not the same as <em>Finished</em>.</p>
     </div>
     <StatusLifecycle />
   </section>
@@ -253,7 +253,7 @@ const faqs = [
   <section class="sec">
     <div class="sec-head">
       <h2>A legally trustworthy result</h2>
-      <p>Not just a visual signature — a certified, independently verifiable container.</p>
+      <p>Not just a visual signature - a certified, independently verifiable container.</p>
     </div>
     <TrustLayerAnimation />
   </section>
@@ -327,9 +327,9 @@ const faqs = [
   }
   .sb-home :where(h1,h2,h3,p){margin:0;}
 
-  /* hero — single column: copy above a full-width process animation.
+  /* hero - single column: copy above a full-width process animation.
      (a 2-col hero can't fit the ~820px-wide HeroFlow inside the 1080px
-     content column, so it would clip — full width avoids that entirely) */
+     content column, so it would clip - full width avoids that entirely) */
   .sb-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:30px;padding:14px 0 44px;}
   .hero-copy{max-width:54rem;margin-inline:auto;}
   .hero-art{width:100%;}
@@ -458,7 +458,7 @@ const faqs = [
 </style>
 
 <style is:global>
-  /* Splash homepage only: hide Starlight's auto page-title panel —
+  /* Splash homepage only: hide Starlight's auto page-title panel -
      Home.astro provides its own hero <h1>. Guarded by :has(.sb-home) so the
      inner guide pages keep their normal page title. */
   main:has(.sb-home) .content-panel:has(> .sl-container > h1#_top){ display:none; }

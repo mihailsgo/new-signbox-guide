@@ -1,5 +1,5 @@
 // Generates Starlight pages from the canonical README.md.
-// README.md and images/ are READ ONLY — never modified. Output is git-ignored.
+// README.md and images/ are READ ONLY - never modified. Output is git-ignored.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -37,7 +37,7 @@ function ensure(dir) {
 const md = fs.readFileSync(README, 'utf8').replace(/\r\n/g, '\n');
 const lines = md.split('\n');
 
-let h1 = 'TrustLynx SignBox — User Guide';
+let h1 = 'TrustLynx SignBox - User Guide';
 const intro = []; // lines after H1 before first H2 (incl. "About this guide" blockquote)
 const sections = []; // { num, title, body[] }
 let cur = null;
@@ -137,11 +137,11 @@ for (const sec of sections) {
 
 // --- landing (splash) page: product-story homepage via <Home/> ----------
 // The homepage is a bespoke business landing (composed in Home.astro with the
-// animated explainer components) — not derived from the README. The README
+// animated explainer components) - not derived from the README. The README
 // remains the single source only for the inner guide pages.
 const index = `---
 title: TrustLynx SignBox
-description: SignBox manages full electronic signing workflows — document upload, recipients, e-ID signing and a legally valid signature container — for initiators, signers and administrators.
+description: SignBox manages full electronic signing workflows - document upload, recipients, e-ID signing and a legally valid signature container - for initiators, signers and administrators.
 template: splash
 ---
 

@@ -1,5 +1,5 @@
 /* =========================================================================
-   SignBox animation components — shared design tokens + primitives
+   SignBox animation components - shared design tokens + primitives
    Imported (and auto-deduped) by every SignBox *.astro animation component.
    Theme-aware: reacts to Starlight's html[data-theme] AND OS preference.
    ========================================================================= */

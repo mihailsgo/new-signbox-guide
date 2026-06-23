@@ -11,7 +11,7 @@ export default defineConfig({
     starlight({
       title: 'TrustLynx SignBox',
       description:
-        'User guide for the TrustLynx SignBox e-signing solution — login, initiating a signing process, Smart-ID signing, templates, tracking and more.',
+        'User guide for the TrustLynx SignBox e-signing solution - login, initiating a signing process, Smart-ID signing, templates, tracking and more.',
       tagline: 'Electronic signing, end to end.',
       logo: {
         light: './src/assets/trustlynx-logo.png',

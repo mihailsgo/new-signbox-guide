@@ -1,4 +1,4 @@
-# TrustLynx SignBox — User Guide
+# TrustLynx SignBox - User Guide
 
 A complete, illustrated walk‑through of the **TrustLynx SignBox** electronic‑signing
 solution: signing in, creating a signing process (with every option explained),
@@ -7,9 +7,9 @@ external portal.
 
 > **About this guide.** Every screenshot and step in this manual was produced from the live
 > demo environment in June 2026:
-> - **Internal portal** — `https://signbox.trustlynx.com` — where you *initiate* and *manage*
+> - **Internal portal** - `https://signbox.trustlynx.com` - where you *initiate* and *manage*
 >   signing processes.
-> - **External (signing) portal** — `https://esign.trustlynx.com` — where recipients
+> - **External (signing) portal** - `https://esign.trustlynx.com` - where recipients
 >   *authenticate and sign*.
 >
 > Personal identity codes and other personal data have been masked in the screenshots.
@@ -32,10 +32,10 @@ external portal.
    - [4.6 Several signers & sequential signing (recipient groups)](#46-several-signers--sequential-signing-recipient-groups)
    - [4.7 Due date](#47-due-date)
    - [4.8 Comments](#48-comments)
-   - [4.9 Sign First — the initiator signs first](#49-sign-first--the-initiator-signs-first)
+   - [4.9 Sign First - the initiator signs first](#49-sign-first---the-initiator-signs-first)
    - [4.10 Start the process](#410-start-the-process)
 5. [Templates & Contacts](#5-templates--contacts)
-6. [Management — document profiles & attributes](#6-management--document-profiles--attributes)
+6. [Management - document profiles & attributes](#6-management---document-profiles--attributes)
 7. [Signing a document on the external portal](#7-signing-a-document-on-the-external-portal)
    - [7.1 How a signer reaches the portal](#71-how-a-signer-reaches-the-portal)
    - [7.2 Smart‑ID login (external portal)](#72-smart-id-login-external-portal)
@@ -65,7 +65,7 @@ external portal.
 | **Document profile / Document type** | A pre‑defined template of settings (and optional custom attributes / e‑seal) chosen when creating a process. |
 | **Smart‑ID** | A mobile e‑identity app used to authenticate and sign. Confirmation always happens on the user's phone with a PIN. |
 | **PIN1 / PIN2** | Smart‑ID PINs: **PIN1** authenticates (logs you in); **PIN2** signs. |
-| **QES** | *Qualified Electronic Signature* — the highest legal level of e‑signature in the EU. |
+| **QES** | *Qualified Electronic Signature* - the highest legal level of e‑signature in the EU. |
 | **XAdES‑LT** | Signature format with a timestamp and long‑term validation data (LT = Long‑Term). |
 | **Anonymous recipient** | A recipient who is **not** bound to a personal code in advance; their identity is captured from the Smart‑ID/eID they use at signing time. |
 
@@ -73,9 +73,9 @@ external portal.
 
 ## 2. Before you start
 
-- **Internal portal** (`signbox.trustlynx.com`) — for people who *send* documents for signing.
+- **Internal portal** (`signbox.trustlynx.com`) - for people who *send* documents for signing.
   You sign in with a **username/email and password**.
-- **External portal** (`esign.trustlynx.com`) — for people who *sign*. They authenticate with
+- **External portal** (`esign.trustlynx.com`) - for people who *sign*. They authenticate with
   a national e‑ID such as **Smart‑ID**, **Mobile‑ID**, **eParaksts**, **ID‑card**, or a bank.
 - A modern browser (Chrome, Edge, Firefox, Safari).
 - To **sign**, you need a working e‑ID. This guide uses **Smart‑ID**, so you need the Smart‑ID
@@ -91,7 +91,7 @@ Open `https://signbox.trustlynx.com`. You are redirected to the SignBox sign‑i
 
 ![SignBox internal portal sign-in page with username/email and password fields and a Sign In button](images/01-login.png)
 
-***SignBox sign‑in page — enter your username or email and password, then click **Sign In**.***
+***SignBox sign‑in page - enter your username or email and password, then click **Sign In**.***
 
 1. Enter your **Username or email**.
 2. Enter your **Password** (use the eye icon to reveal it).
@@ -110,11 +110,11 @@ area of the portal.
 
 ***The Home page doubles as the "Create new process" form.***
 
-1. **Navigation bar** — **Home** (create a process), **Drafts**, **History**, **Contacts**,
+1. **Navigation bar** - **Home** (create a process), **Drafts**, **History**, **Contacts**,
    **Management**, and **Log out**.
-2. **Upload area** — drag a file here or click to choose one.
-3. **Document type** — the document profile (required).
-4. **Recipient group 1** — where you add the people who must sign.
+2. **Upload area** - drag a file here or click to choose one.
+3. **Document type** - the document profile (required).
+4. **Recipient group 1** - where you add the people who must sign.
 
 ### 4.1 Upload the document
 
@@ -125,10 +125,10 @@ supported file). After upload, SignBox adds the container settings:
 
 ***After uploading, the container name and format appear.***
 
-1. **Container name** — auto‑filled from the file name; it becomes the signed `.edoc` container
+1. **Container name** - auto‑filled from the file name; it becomes the signed `.edoc` container
    name. You can rename it.
-2. **Asice** — the container format (ASiC‑E). Leave it ticked unless told otherwise.
-3. **Document type** — still required; choose it next.
+2. **Asice** - the container format (ASiC‑E). Leave it ticked unless told otherwise.
+3. **Document type** - still required; choose it next.
 
 ### 4.2 Choose the document type
 
@@ -139,7 +139,7 @@ Click the **Document type** field to open the list of available document profile
 
 ***Choose a document type (profile). The list is managed under **Management → Document profiles**.***
 
-1. The available document types — e.g. *B2B services agreement, Board decision,
+1. The available document types - e.g. *B2B services agreement, Board decision,
    Customer contract, DMSSDoc‑contract, LHR document, Other*.
 
 ### 4.3 Add recipients (signers)
@@ -152,8 +152,8 @@ For a Signer identified by personal code you provide: **Full name**, **Country**
 
 ***Fill in the recipient and pick their role.***
 
-1. **Recipient fields** — Full name, Country (EE / LV / LT / PL), the identifier, Email and Role.
-2. **Role** — **Signer** (signs the document), **Approver** (approves it without signing) or
+1. **Recipient fields** - Full name, Country (EE / LV / LT / PL), the identifier, Email and Role.
+2. **Role** - **Signer** (signs the document), **Approver** (approves it without signing) or
    **Viewer** (can only view it).
 
 > The **Email** is always required. It is the address the signing invitation is sent to.
@@ -165,14 +165,14 @@ Use the small dropdown next to the identifier field to switch between them.
 
 ![Recipient identifier-type dropdown showing the choice between Phone number and Personal code](images/06-idtype.png)
 
-***Choose how the recipient is identified — by **Personal code** or **Phone number**.***
+***Choose how the recipient is identified - by **Personal code** or **Phone number**.***
 
-1. **Identifier type** — *Personal code* (for Smart‑ID / ID‑card) or *Phone number* (for Mobile‑ID).
+1. **Identifier type** - *Personal code* (for Smart‑ID / ID‑card) or *Phone number* (for Mobile‑ID).
 
 Two per‑recipient switches sit at the end of the row:
 
-- **Anonymous** — see [4.5](#45-anonymous-signing-in-depth).
-- **Do not notify** — when ticked, SignBox does **not** send this recipient an email invitation
+- **Anonymous** - see [4.5](#45-anonymous-signing-in-depth).
+- **Do not notify** - when ticked, SignBox does **not** send this recipient an email invitation
   (use it when you will share the link another way).
 
 ### 4.5 Anonymous signing (in depth)
@@ -185,7 +185,7 @@ The **Anonymous** toggle (tooltip *"Share Document Anonymously"*) lets you invit
 
 ***With **Anonymous** on, no identity (country / personal code) is required up‑front.***
 
-1. **Anonymous** ticked — only **Full name**, **Email** and **Role** remain.
+1. **Anonymous** ticked - only **Full name**, **Email** and **Role** remain.
 
 **What it means:**
 
@@ -198,7 +198,7 @@ The **Anonymous** toggle (tooltip *"Share Document Anonymously"*) lets you invit
   "sign by link" scenarios.
 - **Behaviour note.** Because an anonymous recipient is not matched to a named slot, the process
   can still show **Started (0/1)** in History even after a valid signature has been added to the
-  container — the signature is cryptographically valid, but the workflow slot is not auto‑closed.
+  container - the signature is cryptographically valid, but the workflow slot is not auto‑closed.
   For strict completion tracking, use a **named** recipient (with personal code) instead.
 
 ### 4.6 Several signers & sequential signing (recipient groups)
@@ -213,9 +213,9 @@ The **Anonymous** toggle (tooltip *"Share Document Anonymously"*) lets you invit
 
 ***Two recipient groups = sequential signing (Group 1 signs, then Group 2).***
 
-1. **Add signer** — add another recipient to the *same* group (they sign in parallel).
-2. **Remove group** — delete this recipient group.
-3. **+ (add another recipient group)** — adds the next group, which signs *after* the previous one.
+1. **Add signer** - add another recipient to the *same* group (they sign in parallel).
+2. **Remove group** - delete this recipient group.
+3. **+ (add another recipient group)** - adds the next group, which signs *after* the previous one.
 
 ### 4.7 Due date
 
@@ -226,23 +226,23 @@ Each group can have a **due date**. Choose **Fixed** (a calendar date/time) or *
 
 ***Set an optional deadline per recipient group (Fixed date or Relative number of days).***
 
-1. The **due‑date picker** — pick a date (and time). Leave empty for no deadline.
+1. The **due‑date picker** - pick a date (and time). Leave empty for no deadline.
 
 ### 4.8 Comments
 
-- **Comment for all recipients** — an optional message shown to every recipient (the large text
+- **Comment for all recipients** - an optional message shown to every recipient (the large text
   box near the bottom of the form).
-- **Per‑recipient comment** — click the **speech‑bubble icon** next to a recipient to add a
+- **Per‑recipient comment** - click the **speech‑bubble icon** next to a recipient to add a
   comment *just for that person*, and to set the **E‑Mail language** of their invitation.
 
 ![Per-recipient comment box and E-Mail language selector opened for one recipient](images/10-comment.png)
 
 ***A per‑recipient comment with its own E‑Mail language.***
 
-1. **Comment** — text shown only to this recipient.
-2. **E‑Mail lang.** — the language of this recipient's email invitation.
+1. **Comment** - text shown only to this recipient.
+2. **E‑Mail lang.** - the language of this recipient's email invitation.
 
-### 4.9 Sign First — the initiator signs first
+### 4.9 Sign First - the initiator signs first
 
 Tick **Sign first** (bottom‑left of the form) when **you, the initiator, must sign the document
 first**, before any recipient is invited.
@@ -251,11 +251,11 @@ first**, before any recipient is invited.
 
 ***Enable **Sign first** to sign the document yourself before recipients are invited.***
 
-1. **Sign first** — when ticked, after you start the process you are immediately taken to the
+1. **Sign first** - when ticked, after you start the process you are immediately taken to the
    signing screen to sign first (the same Smart‑ID signing flow described in
    [section 7](#7-signing-a-document-on-the-external-portal)). Only after your signature are the
    recipients notified.
-2. **Start signing process** — launches the process.
+2. **Start signing process** - launches the process.
 
 - **Without Sign first:** recipients are invited immediately when you start the process.
 - **With Sign first:** you sign first → then the recipients are invited.
@@ -268,10 +268,10 @@ Click **Start signing process**. SignBox creates the process and sends invitatio
 
 ***Confirmation that the process was created.***
 
-1. **Go to created process** — open the new process to track it or to sign it yourself.
+1. **Go to created process** - open the new process to track it or to sign it yourself.
 
-> Prefer to finish later? Use the form's **Save template** (to reuse the setup) — see
-> [section 5](#5-templates--contacts) — or open the **Drafts** tab to work with unstarted
+> Prefer to finish later? Use the form's **Save template** (to reuse the setup) - see
+> [section 5](#5-templates--contacts) - or open the **Drafts** tab to work with unstarted
 > processes (see [8.3](#83-drafts)).
 
 ---
@@ -288,10 +288,10 @@ reuse it for recurring workflows.
 
 ![New template dialog with the Name field and the Scope dropdown (All / Group / Personal) highlighted](images/30-save-template.png)
 
-***Saving a template — name it and choose who can use it.***
+***Saving a template - name it and choose who can use it.***
 
-1. **Name** — the template name.
-2. **Scope** — **Personal** (only you), **Group** (your team), or **All** (everyone).
+1. **Name** - the template name.
+2. **Scope** - **Personal** (only you), **Group** (your team), or **All** (everyone).
 
 - **Use a template:** click **Select template** (top of the create‑process form), search/filter
   by name and scope, then pick a template to pre‑fill the form.
@@ -300,7 +300,7 @@ reuse it for recurring workflows.
 
 ***Loading a saved template pre‑fills the create‑process form.***
 
-1. **Saved template row** — click it to load it; the trash icon deletes it.
+1. **Saved template row** - click it to load it; the trash icon deletes it.
 
 ### Contacts
 
@@ -309,17 +309,17 @@ pick a saved contact instead of typing their details. Manage the list from the *
 
 ![Contacts page with the New button and the Scope filter highlighted; sensitive columns are masked](images/32-contacts.png)
 
-***The Contacts directory — reusable recipients.***
+***The Contacts directory - reusable recipients.***
 
-1. **New** — add a contact (name, email, personal code / phone, role, scope, optional signature).
-2. **Filters** — search by name, email, personal code, and by **Scope** (Personal / Group / All).
+1. **New** - add a contact (name, email, personal code / phone, role, scope, optional signature).
+2. **Filters** - search by name, email, personal code, and by **Scope** (Personal / Group / All).
 
 > *In the screenshot the Name, Email and Personal‑code columns are masked for privacy; in the
 > product they show the contact's real details.*
 
 ---
 
-## 6. Management — document profiles & attributes
+## 6. Management - document profiles & attributes
 
 The **Management** area (admin) defines the building blocks used when creating processes.
 
@@ -330,8 +330,8 @@ has an owner group, an optional set of custom attributes, and an optional **E‑
 
 ***Document profiles populate the "Document type" choices.***
 
-1. **Sidebar** — switch between **Document profiles** and **Document attributes**.
-2. **Create new profile** — add a new document type.
+1. **Sidebar** - switch between **Document profiles** and **Document attributes**.
+2. **Create new profile** - add a new document type.
 
 **Document attributes** are custom fields that can be attached to a document profile (each has a
 name, a type, and a *required* flag).
@@ -340,7 +340,7 @@ name, a type, and a *required* flag).
 
 ***Custom attributes that can be attached to document profiles.***
 
-1. **Create new attribute** — define a custom field (name, type, required).
+1. **Create new attribute** - define a custom field (name, type, required).
 
 ---
 
@@ -353,17 +353,17 @@ authenticates with their e‑ID and signs. This section shows the **Smart‑ID**
 
 A recipient reaches the signing portal in one of two ways:
 
-- **By email invitation** — they click the link in the "invitation to sign" email and land on the
+- **By email invitation** - they click the link in the "invitation to sign" email and land on the
   external portal's authentication screen (described in [7.2](#72-smart-id-login-external-portal)).
-- **From the internal portal** — the initiator (or a signer who is also a SignBox user) opens the
+- **From the internal portal** - the initiator (or a signer who is also a SignBox user) opens the
   process and clicks **Sign**, which redirects to the external signing portal.
 
 ![Process details page showing the Sign button and the Started status badge highlighted](images/13-process-sign.png)
 
-***Opening a process — **Sign** takes you to the external signing portal.***
+***Opening a process - **Sign** takes you to the external signing portal.***
 
-1. **Sign** — start signing this document on the external portal.
-2. **Status badge** — the current process status (here, *Started*).
+1. **Sign** - start signing this document on the external portal.
+2. **Status badge** - the current process status (here, *Started*).
 
 ### 7.2 Smart‑ID login (external portal)
 
@@ -373,9 +373,9 @@ available e‑ID methods.
 
 ![External portal Please Authorize screen with the country tabs and the EU methods highlighted](images/50-ext-login-eu.png)
 
-***The external portal authentication screen — pick your country, then a method.***
+***The external portal authentication screen - pick your country, then a method.***
 
-1. **Country tabs** — **EU**, **EE**, **LV**, **LT**, **PL**, **CA**. Pick the one that matches
+1. **Country tabs** - **EU**, **EE**, **LV**, **LT**, **PL**, **CA**. Pick the one that matches
    your e‑ID.
 
 Select your country (e.g. **EE**) to reveal that country's methods, then choose **Smart‑ID**:
@@ -384,17 +384,17 @@ Select your country (e.g. **EE**) to reveal that country's methods, then choose 
 
 ***Each country shows its own methods; choose **Smart‑ID**.***
 
-1. **Smart‑ID** — the method this guide uses.
+1. **Smart‑ID** - the method this guide uses.
 
 Smart‑ID then shows a **QR code** *and* a **Personal ID‑code** field. Either scan the QR with the
 Smart‑ID app, **or** type your personal code and click **Authenticate**:
 
 ![Smart-ID authentication dialog with the QR code and the Personal ID-code field highlighted](images/52-ext-login-smartid.png)
 
-***Authenticate with Smart‑ID — scan the QR **or** enter your personal code.***
+***Authenticate with Smart‑ID - scan the QR **or** enter your personal code.***
 
-1. **QR code** — scan it with the Smart‑ID app on your phone.
-2. **Personal ID‑code** — alternatively, type your code and click **Authenticate**.
+1. **QR code** - scan it with the Smart‑ID app on your phone.
+2. **Personal ID‑code** - alternatively, type your code and click **Authenticate**.
 
 You then **confirm on your phone**: open the Smart‑ID app, check that the code matches, and enter
 your **PIN1**. You are now logged in and can open the document to sign.
@@ -408,33 +408,33 @@ signing method** by country:
 
 ***Choose the country whose e‑ID you will sign with.***
 
-1. **Country** — EU / PL / **Latvia** / Estonia / Lithuania (and others). Pick yours.
+1. **Country** - EU / PL / **Latvia** / Estonia / Lithuania (and others). Pick yours.
 
 Latvia expands to show its signing methods; choose **Smart‑ID**:
 
 ![Latvia expanded showing Smart-ID, eParaksts Mobile and ID Card, with Smart-ID highlighted](images/56-ext-sign-lv.png)
 
-***Latvia's signing methods — Smart‑ID, eParaksts Mobile, ID Card.***
+***Latvia's signing methods - Smart‑ID, eParaksts Mobile, ID Card.***
 
-1. **Smart‑ID** — the signing method.
+1. **Smart‑ID** - the signing method.
 
 The Smart‑ID dialog appears. You can **enter your personal code** and click **Send data**, or
 click **Scan QR code** to sign by scanning instead:
 
 ![Smart-ID signing dialog with the Personal code field and the Scan QR code link highlighted](images/57-ext-sign-smartid.png)
 
-***Start the signature — enter your personal code, or use **Scan QR code**.***
+***Start the signature - enter your personal code, or use **Scan QR code**.***
 
-1. **Personal code** + **Send data** — sends the signing request to your phone.
-2. **Scan QR code** — sign by scanning the QR with the Smart‑ID app instead of typing a code.
+1. **Personal code** + **Send data** - sends the signing request to your phone.
+2. **Scan QR code** - sign by scanning the QR with the Smart‑ID app instead of typing a code.
 
-If you choose the QR option, a QR code with a short timer is shown — scan it with the Smart‑ID app:
+If you choose the QR option, a QR code with a short timer is shown - scan it with the Smart‑ID app:
 
 ![Smart-ID QR code shown for scanning with the Smart-ID app, with a countdown timer](images/58-ext-sign-qr.png)
 
 ***Scan this QR with the Smart‑ID app (it refreshes on a timer).***
 
-1. **QR code** — scan it with the Smart‑ID app.
+1. **QR code** - scan it with the Smart‑ID app.
 
 A **verification code** then appears on screen. **On your phone**, open the Smart‑ID app, check
 that the code shown there matches the one on screen, and enter your **PIN2** to sign:
@@ -443,7 +443,7 @@ that the code shown there matches the one on screen, and enter your **PIN2** to 
 
 ***Match this code in the Smart‑ID app, then enter **PIN2** on your phone to sign.***
 
-1. **Verification code** — confirm this exact number in the Smart‑ID app, then enter PIN2.
+1. **Verification code** - confirm this exact number in the Smart‑ID app, then enter PIN2.
 
 ### 7.4 The signed result
 
@@ -452,9 +452,9 @@ and shows the signer with the signature level:
 
 ![External portal confirming the document signatures are valid, listing the signer with QES and XAdES-LT badges](images/60-ext-signed.png)
 
-***Signature complete — the document signatures are valid.***
+***Signature complete - the document signatures are valid.***
 
-1. **Signatures valid** — *"Document signatures are valid"* with **Profile: LT**, the signer's
+1. **Signatures valid** - *"Document signatures are valid"* with **Profile: LT**, the signer's
    name and date, and the **QES** (Qualified Electronic Signature) and **XAdES‑LT** badges.
 
 The signed container can be downloaded from the portal (**Download**) or from the process details
@@ -472,10 +472,10 @@ signed/total count (e.g. *0/1*, *1/1*).
 
 ![History page with the filter area and the Status column highlighted; document names are masked](images/70-history.png)
 
-***History — filter and track all your processes.***
+***History - filter and track all your processes.***
 
-1. **Filters** — Find container, Find initiator, **Status**, **Period**, **Document type**.
-2. **Status column** — the live status of each process (with the signed/total counter).
+1. **Filters** - Find container, Find initiator, **Status**, **Period**, **Document type**.
+2. **Status column** - the live status of each process (with the signed/total counter).
 
 Click any row to open the **process details** (container ID, content preview/download, validation,
 signatures, recipient groups and their statuses).
@@ -488,20 +488,20 @@ Open the **Status** filter to see all process states:
 
 ***All process statuses you can filter by.***
 
-1. **Statuses** — **Started**, **Completed**, **Canceled**, **Draft**, **Finished**, **All**
+1. **Statuses** - **Started**, **Completed**, **Canceled**, **Draft**, **Finished**, **All**
    (plus *Pending*, *Signed*, *Approved* and *E‑Sealed* used internally).
 
 **Status meanings**
 
 | Status | Meaning |
 |--------|---------|
-| **Draft** | Saved but **not started** — no invitations sent yet. |
-| **Started** | In progress — waiting for one or more recipients to act. |
-| **Completed** | **All recipients have signed** — every required signature has been collected. |
-| **Finished** | The process has been **closed / finalised** (terminal) — the signed container is final. |
+| **Draft** | Saved but **not started** - no invitations sent yet. |
+| **Started** | In progress - waiting for one or more recipients to act. |
+| **Completed** | **All recipients have signed** - every required signature has been collected. |
+| **Finished** | The process has been **closed / finalised** (terminal) - the signed container is final. |
 | **Canceled** | The process was cancelled. |
 
-**Completed vs Finished — how the process view differs.** Inside a process these two operate at
+**Completed vs Finished - how the process view differs.** Inside a process these two operate at
 different levels:
 
 - a **recipient group** shows **Completed** once everyone in that group has signed;
@@ -512,13 +512,13 @@ action:
 
 ![Finished process details: process badge Finished, recipient group badge Completed, recipient badge Signed, and the Complete button; signer details masked](images/72-finished-detail.png)
 
-***A finished process — process = **Finished**, group = **Completed**, recipient = **Signed**.***
+***A finished process - process = **Finished**, group = **Completed**, recipient = **Signed**.***
 
-1. **Process status = Finished** — the process itself is closed/finalised.
-2. **Recipient group = Completed** — every signer in this group has signed.
-3. **Recipient = Signed** — this individual recipient has signed (with **QES / XAdES‑LT** and a
+1. **Process status = Finished** - the process itself is closed/finalised.
+2. **Recipient group = Completed** - every signer in this group has signed.
+3. **Recipient = Signed** - this individual recipient has signed (with **QES / XAdES‑LT** and a
    valid‑signatures check shown above).
-4. **Complete** — the initiator can manually **Complete** (close) a process. *"This action cannot
+4. **Complete** - the initiator can manually **Complete** (close) a process. *"This action cannot
    be undone."*
 
 So in practice: **Completed** = all signatures collected; **Finished** = the process is closed and
@@ -534,16 +534,16 @@ you can reopen a draft to continue editing it, start it, or delete it.
 
 ***The Drafts tab lists processes saved but not yet started.***
 
-1. **Drafts** tab — opens History filtered to Draft status.
-2. **Status = Draft** — only draft (unstarted) processes are shown.
+1. **Drafts** tab - opens History filtered to Draft status.
+2. **Status = Draft** - only draft (unstarted) processes are shown.
 
 ### 8.4 Process visibility (scope)
 
 Who can see a process, contact or template is governed by **scope** and **owner group**:
 
-- **Personal** — visible only to the owner.
-- **Group / Owner group** — visible to the owner's team.
-- **All / Global** — visible to everyone.
+- **Personal** - visible only to the owner.
+- **Group / Owner group** - visible to the owner's team.
+- **All / Global** - visible to everyone.
 
 You set the scope when you save a **template** or **contact** (Personal / Group / All), and each
 document profile and process belongs to an **owner group**. The History and Contacts lists show the
@@ -571,7 +571,7 @@ instance:
 ### Frequently asked questions
 
 **Do I need a SignBox account to sign?**
-No. Signers do not need an internal‑portal account — they authenticate on the external portal with
+No. Signers do not need an internal‑portal account - they authenticate on the external portal with
 their e‑ID (Smart‑ID, Mobile‑ID, eParaksts, ID‑card, bank…). Only the **initiator** needs a SignBox
 login.
 

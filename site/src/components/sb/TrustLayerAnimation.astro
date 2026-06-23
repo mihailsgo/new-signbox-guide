@@ -1,6 +1,6 @@
 ---
 /**
- * TrustLayerAnimation.astro — SignBox produces a legally trustworthy container,
+ * TrustLayerAnimation.astro - SignBox produces a legally trustworthy container,
  * not just a visual PDF signature. Layers (signature, timestamp, validation) are
  * stacked onto the document and sealed into a QES / XAdES-LT container.
  * Theme-aware + reduced-motion safe (shows fully sealed final state).
@@ -9,7 +9,7 @@ import '../../styles/signbox-anim.css';
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
 const {
   class: className = '',
-  caption = 'Each layer — signature, timestamp, validation — is stacked onto the document and sealed into a QES-grade, XAdES-LT container. The output is a certified, independently verifiable record.',
+  caption = 'Each layer - signature, timestamp, validation - is stacked onto the document and sealed into a QES-grade, XAdES-LT container. The output is a certified, independently verifiable record.',
   showCaption = true,
 } = Astro.props;
 ---

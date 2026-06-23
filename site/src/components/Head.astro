@@ -43,7 +43,7 @@ import { ClientRouter } from 'astro:transitions';
     zoom.on('opened', () => document.body.classList.add('tl-zoom-open'));
     zoom.on('closed', () => document.body.classList.remove('tl-zoom-open'));
 
-    // 2) Scroll-reveal — media only (screenshots / figures). Reading content
+    // 2) Scroll-reveal - media only (screenshots / figures). Reading content
     //    (headings, text, tables, lists) renders instantly to avoid "pop-in".
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (content) {

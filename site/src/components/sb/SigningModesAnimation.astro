@@ -1,6 +1,6 @@
 ---
 /**
- * SigningModesAnimation.astro — Parallel vs Sequential signing.
+ * SigningModesAnimation.astro - Parallel vs Sequential signing.
  * Parallel: SignBox sends to all signers at once. Sequential: each step
  * unlocks only after the previous completes. Theme-aware + reduced-motion safe.
  */
@@ -8,7 +8,7 @@ import '../../styles/signbox-anim.css';
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
 const {
   class: className = '',
-  caption = 'Parallel sends every request at once — signers act in any order. Sequential locks each step until the previous signer is done, enforcing a strict order before the process completes.',
+  caption = 'Parallel sends every request at once - signers act in any order. Sequential locks each step until the previous signer is done, enforcing a strict order before the process completes.',
   showCaption = true,
 } = Astro.props;
 ---

@@ -1,6 +1,6 @@
 ---
 /**
- * PortalSplitAnimation.astro — Internal portal vs External portal.
+ * PortalSplitAnimation.astro - Internal portal vs External portal.
  * A process is created internally, a secure invitation hands off to the
  * external signer, the signed status returns. Theme-aware + reduced-motion safe.
  */
@@ -8,7 +8,7 @@ import '../../styles/signbox-anim.css';
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
 const {
   class: className = '',
-  caption = 'Initiators build and track processes in the internal portal. A secure invitation hands off to the external portal, where the signer authenticates and signs — and the signed status travels straight back.',
+  caption = 'Initiators build and track processes in the internal portal. A secure invitation hands off to the external portal, where the signer authenticates and signs - and the signed status travels straight back.',
   showCaption = true,
 } = Astro.props;
 ---
