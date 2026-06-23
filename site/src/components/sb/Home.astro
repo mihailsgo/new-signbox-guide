@@ -327,8 +327,12 @@ const faqs = [
   }
   .sb-home :where(h1,h2,h3,p){margin:0;}
 
-  /* hero */
-  .sb-hero{display:grid;grid-template-columns:1.02fr 1.3fr;gap:40px;align-items:center;padding:8px 0 48px;}
+  /* hero — single column: copy above a full-width process animation.
+     (a 2-col hero can't fit the ~820px-wide HeroFlow inside the 1080px
+     content column, so it would clip — full width avoids that entirely) */
+  .sb-hero{display:flex;flex-direction:column;gap:30px;padding:8px 0 44px;}
+  .hero-copy{max-width:60ch;}
+  .hero-art{width:100%;}
   .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--hp-eyebrow);margin-bottom:14px;}
   .hero-copy h1{font-size:clamp(30px,4.4vw,46px);line-height:1.06;letter-spacing:-.025em;font-weight:800;text-wrap:balance;margin-bottom:18px;}
   .hero-copy p{font-size:17px;line-height:1.6;color:var(--hp-ink-soft);max-width:48ch;margin-bottom:26px;}
@@ -444,14 +448,7 @@ const faqs = [
   .cta .btn.ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22);}
   .cta .btn.ghost:hover{border-color:var(--hp-gold-2);}
 
-  /* the horizontal HeroFlow needs ~820px; stack the hero below that so it
-     never overflows its column (card grids keep their own 880 breakpoint) */
-  @media (max-width:1140px){
-    .sb-hero{grid-template-columns:1fr;gap:26px;padding:4px 0 32px;}
-    .hero-art{order:2;}
-  }
   @media (max-width:880px){
-    .hero-art{order:2;}
     .aud-grid,.ben-grid,.doc-grid,.role-grid{grid-template-columns:1fr;}
     .cta{padding:30px 24px;}
   }
