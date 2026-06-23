@@ -96,6 +96,15 @@ const methods = [
   { t: 'ASiC-E', k: 'container', icon: sealIcon },
 ];
 
+// "How SignBox works" — 5 named steps (distinct from the hero's flow animation)
+const steps = [
+  { t: 'Upload document', icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/>' },
+  { t: 'Define signers & roles', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.3"/><path d="M21 19c0-2.3-1.6-4.3-3.7-4.85"/>' },
+  { t: 'Send invitation', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>' },
+  { t: 'Sign with e-ID', icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>' },
+  { t: 'Download valid container', icon: '<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="m9 14 2 2 4-4"/>' },
+];
+
 const faqs = [
   { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container — the highest assurance level under eIDAS, with built-in validation.' },
   { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
@@ -129,13 +138,21 @@ const faqs = [
     <p><strong>When to use SignBox.</strong> When your organization needs to send documents for legally valid electronic signing, manage multiple signers, support national e-ID methods, and track the signing process until the final validated container is ready.</p>
   </section>
 
-  <!-- 2 · HOW SIGNBOX WORKS -->
+  <!-- 2 · HOW SIGNBOX WORKS (5 named steps) -->
   <section id="how" class="sec">
     <div class="sec-head">
       <h2>How SignBox works</h2>
-      <p>One document, one workflow — from upload to a sealed, validated container.</p>
+      <p>One document, one workflow — five steps from upload to a sealed, validated container.</p>
     </div>
-    <HeroFlow />
+    <ol class="flow5">
+      {steps.map((s, i) => (
+        <li class="flow5-step">
+          <span class="flow5-num">{i + 1}</span>
+          <span class="flow5-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={s.icon} /></span>
+          <span class="flow5-t">{s.t}</span>
+        </li>
+      ))}
+    </ol>
   </section>
 
   <!-- 3 · WHO IS THIS FOR -->
@@ -338,6 +355,24 @@ const faqs = [
   .sec-head h2{font-size:clamp(23px,3.2vw,31px);letter-spacing:-.02em;font-weight:800;margin-bottom:8px;}
   .sec-head p{font-size:16px;color:var(--hp-ink-soft);}
   .sec-head em{font-style:normal;color:var(--hp-gold);font-weight:700;}
+
+  /* how-it-works 5-step strip */
+  .flow5{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;counter-reset:none;}
+  /* cancel brand.css's global ordered-list "gold stepper" (ol>li::before) */
+  .flow5 > .flow5-step::before{content:none !important;}
+  .flow5-step{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:4px 6px;}
+  .flow5-step:not(:last-child)::after{content:"";position:absolute;top:35px;left:calc(50% + 32px);width:calc(100% - 64px);height:2px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--hp-gold) 60%,transparent) 0 6px,transparent 6px 12px);}
+  .flow5-ic{position:relative;z-index:1;width:56px;height:56px;border-radius:15px;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,#23408e,var(--hp-blue));box-shadow:0 10px 22px -12px rgba(35,64,142,.7);}
+  .flow5-ic svg{width:26px;height:26px;}
+  .flow5-num{position:absolute;top:-6px;left:calc(50% + 14px);width:22px;height:22px;border-radius:999px;background:linear-gradient(160deg,var(--hp-gold-2),var(--hp-gold));color:#241a07;font-size:12px;font-weight:800;display:grid;place-items:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.2);}
+  .flow5-t{font-size:13.5px;font-weight:700;line-height:1.3;color:var(--hp-ink);max-width:16ch;}
+  @media (max-width:720px){
+    .flow5{grid-template-columns:1fr;gap:6px;}
+    .flow5-step{flex-direction:row;justify-content:flex-start;text-align:left;gap:14px;padding:8px 4px;}
+    .flow5-step:not(:last-child)::after{top:56px;left:27px;width:2px;height:calc(100% - 44px);background:repeating-linear-gradient(180deg,color-mix(in srgb,var(--hp-gold) 60%,transparent) 0 6px,transparent 6px 12px);}
+    .flow5-num{top:-4px;left:38px;}
+    .flow5-t{max-width:none;}
+  }
 
   /* audience cards */
   .aud-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
