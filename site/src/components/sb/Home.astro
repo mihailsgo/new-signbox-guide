@@ -80,6 +80,29 @@ const docs = [
   { t: 'Signing with Smart-ID', d: 'Authenticate and sign on the external portal.', href: u('signing') },
   { t: 'Tracking & status', d: 'Follow a process from draft to finished container.', href: u('tracking') },
 ];
+
+// e-ID + signature-standard icon chips
+const phoneIcon = '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>';
+const cardIcon = '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8" cy="11" r="2"/><path d="M13 9h6M13 13h6M5 16h8"/>';
+const penIcon = '<path d="M12 19l7-7a2.1 2.1 0 0 0-3-3l-7 7-1 4z"/><path d="M5 21h14"/>';
+const sealIcon = '<path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/><path d="M9 12l2 2 4-4"/>';
+const methods = [
+  { t: 'Smart-ID', k: 'e-ID', icon: phoneIcon },
+  { t: 'Mobile-ID', k: 'e-ID', icon: phoneIcon },
+  { t: 'eParaksts', k: 'e-ID', icon: penIcon },
+  { t: 'ID card', k: 'e-ID', icon: cardIcon },
+  { t: 'QES', k: 'standard', icon: sealIcon },
+  { t: 'XAdES-LT', k: 'standard', icon: sealIcon },
+  { t: 'ASiC-E', k: 'container', icon: sealIcon },
+];
+
+const faqs = [
+  { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container — the highest assurance level under eIDAS, with built-in validation.' },
+  { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
+  { q: 'Do external signers need an account?', a: 'No. A signer opens a secure invitation link, authenticates with their e-ID and signs — no SignBox account required.' },
+  { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed container has been generated and the process is closed — two distinct milestones.' },
+  { q: 'Can I reuse a recurring signing setup?', a: 'Yes — save templates, contacts and document profiles so a recurring process starts pre-filled in seconds.' },
+];
 ---
 
 <div class="sb-home">
@@ -193,6 +216,22 @@ const docs = [
     </div>
   </section>
 
+  <!-- TRUSTED e-ID METHODS -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Trusted e-ID &amp; signature standards</h2>
+      <p>Signers authenticate with national e-ID; the result is a standards-based, verifiable container.</p>
+    </div>
+    <div class="method-strip">
+      {methods.map((m) => (
+        <span class={`method-chip ${m.k}`}>
+          <span class="method-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={m.icon} /></span>
+          {m.t}
+        </span>
+      ))}
+    </div>
+  </section>
+
   <!-- 8 · TRUST LAYER -->
   <section class="sec">
     <div class="sec-head">
@@ -227,6 +266,22 @@ const docs = [
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>Frequently asked questions</h2>
+      <p>The essentials for evaluating SignBox.</p>
+    </div>
+    <div class="faq">
+      {faqs.map((f) => (
+        <details class="faq-item">
+          <summary>{f.q}<span class="faq-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
   <!-- 11 · CTA -->
   <section class="cta">
     <div class="cta-inner">
@@ -248,7 +303,7 @@ const docs = [
     --hp-surface:var(--sl-color-gray-7,#f6f7f9);
     --hp-border:var(--sl-color-gray-5);
     --hp-gold:#b58635; --hp-gold-2:#d8a84e; --hp-eyebrow:#8a6519; --hp-blue:#2f6bff;
-    max-width:1080px;margin-inline:auto;
+    max-width:1080px;margin-inline:auto;overflow-x:clip;
   }
   :global([data-theme="dark"]) .sb-home{
     --hp-surface:#0f1626; --hp-gold:#d8a84e; --hp-eyebrow:#d8a84e; --hp-blue:#5b8bff;
@@ -325,6 +380,26 @@ const docs = [
   .doc-arrow svg{width:17px;height:17px;transition:transform .25s ease;}
   .doc-card:hover .doc-arrow{transform:translateX(4px);}
 
+  /* methods strip */
+  .method-strip{display:flex;flex-wrap:wrap;gap:10px;}
+  .method-chip{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:10px 16px 10px 12px;border-radius:999px;background:var(--hp-surface);border:1px solid var(--hp-border);}
+  .method-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;}
+  .method-ic svg{width:16px;height:16px;}
+  .method-chip.e-ID .method-ic{color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 12%,transparent);}
+  .method-chip.standard .method-ic,.method-chip.container .method-ic{color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 14%,transparent);}
+  .method-chip.standard,.method-chip.container{border-color:color-mix(in srgb,var(--hp-gold) 35%,var(--hp-border));}
+
+  /* faq */
+  .faq{display:flex;flex-direction:column;gap:10px;}
+  .faq-item{background:var(--hp-surface);border:1px solid var(--hp-border);border-radius:14px;padding:0 18px;overflow:hidden;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;list-style:none;padding:16px 0;font-size:15.5px;font-weight:700;color:var(--hp-ink);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-mark{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 12%,transparent);transition:transform .25s ease;}
+  .faq-mark svg{width:15px;height:15px;}
+  .faq-item[open] .faq-mark{transform:rotate(180deg);}
+  .faq-item > p{margin:0 0 16px;font-size:14.5px;line-height:1.6;color:var(--hp-ink-soft);max-width:74ch;}
+  .faq-item[open]{border-color:color-mix(in srgb,var(--hp-gold) 35%,var(--hp-border));}
+
   /* CTA */
   .cta{margin-top:48px;border-radius:22px;padding:44px;background:linear-gradient(150deg,#1b2a44,#0f1726);border:1px solid var(--hp-border);}
   .cta-inner{max-width:60ch;}
@@ -334,14 +409,19 @@ const docs = [
   .cta .btn.ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22);}
   .cta .btn.ghost:hover{border-color:var(--hp-gold-2);}
 
-  @media (max-width:880px){
+  /* the horizontal HeroFlow needs ~820px; stack the hero below that so it
+     never overflows its column (card grids keep their own 880 breakpoint) */
+  @media (max-width:1140px){
     .sb-hero{grid-template-columns:1fr;gap:26px;padding:4px 0 32px;}
+    .hero-art{order:2;}
+  }
+  @media (max-width:880px){
     .hero-art{order:2;}
     .aud-grid,.ben-grid,.doc-grid,.role-grid{grid-template-columns:1fr;}
     .cta{padding:30px 24px;}
   }
   @media (prefers-reduced-motion: reduce){
-    .btn,.aud-card,.ben-card,.doc-card,.aud-link svg,.doc-arrow{transition:none;}
+    .btn,.aud-card,.ben-card,.doc-card,.aud-link svg,.doc-arrow,.faq-mark{transition:none;}
   }
 </style>
 
