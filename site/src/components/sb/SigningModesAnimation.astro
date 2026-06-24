@@ -91,7 +91,7 @@ const sequentialSteps = [
 </figure>
 
 <style>
-  .signing-modes{margin:0;display:flex;flex-direction:column;gap:14px}.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .signing-modes{margin:0;display:flex;flex-direction:column;gap:14px;container-type:inline-size}.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   .sm-panel{position:relative;overflow:hidden;display:flex;flex-direction:column;min-width:0;min-height:440px;border:1px solid var(--sb-border-strong);border-radius:20px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm)}
   .sm-panel::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--sb-blue)}.sm-sequential::before{background:var(--sb-gold)}
   .sm-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 18px 14px;border-bottom:1px solid var(--sb-border)}.sm-header h4{margin:0;color:var(--sb-ink);font-size:16px;line-height:1.25;letter-spacing:-.015em}.sm-header p{margin:4px 0 0;color:var(--sb-ink-soft);font-size:10.5px;line-height:1.4;max-width:31ch}.sm-complete{display:flex;align-items:center;gap:4px;padding:5px 7px;border-radius:7px;background:var(--sb-success-soft);color:var(--sb-success);font-size:8px;font-weight:800;white-space:nowrap}.sm-complete svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
@@ -117,6 +117,10 @@ const sequentialSteps = [
   @keyframes smMail{0%,10%{opacity:0;transform:translateX(-15px)}13%,21%{opacity:1;transform:translateX(22px)}24%,100%{opacity:0;transform:translateX(25px)}}@keyframes smSent{0%,18%{opacity:0}21%,31%{opacity:1}34%,100%{opacity:0}}@keyframes smWaiting{0%,29%{opacity:0}33%,43%{opacity:1}47%,100%{opacity:0}}@keyframes smParallelDone{0%,42%{opacity:0;transform:scale(.8)}47%,97%{opacity:1;transform:scale(1)}100%{opacity:0}}
   @keyframes smRail{0%,8%{transform:scaleY(.05)}69%,100%{transform:scaleY(1)}}@keyframes smLock{0%,5%{opacity:1}12%,100%{opacity:0}}@keyframes smUnlock{0%,6%{opacity:0}11%,17%{opacity:1}22%,100%{opacity:0}}@keyframes smSeqDone{0%,17%{opacity:0;transform:scale(.8)}22%,97%{opacity:1;transform:scale(1)}100%{opacity:0}}@keyframes smComplete{0%,67%{opacity:0;transform:translateY(3px)}72%,97%{opacity:1;transform:none}100%{opacity:0}}
   @media (max-width:860px){.sm-grid{grid-template-columns:1fr}.sm-panel{min-height:420px}}
+  /* Stack the two panels when the CONTAINER is narrow (e.g. inside the
+     half-width "Compare signing modes" disclosure), not just when the
+     viewport is narrow - otherwise the recipient column gets crushed. */
+  @container (max-width:560px){.sm-grid{grid-template-columns:1fr}.sm-panel{min-height:420px}}
   @media (max-width:440px){.sm-header{padding:16px 13px 12px}.sm-header p{font-size:9.5px}.sm-parallel-flow{grid-template-columns:86px 31px minmax(0,1fr);padding:14px 11px}.sm-process{padding:8px}.sm-recipient{grid-template-columns:26px minmax(42px,1fr) auto;gap:6px;padding:7px}.sm-avatar{width:26px;height:26px}.sm-status-stack{width:38px}.sm-seq-flow{padding-left:43px;padding-right:11px}.sm-seq-rail{left:25px}.sm-step-index{left:-29px}.sm-timeline{margin-inline:12px}}
 </style>
 

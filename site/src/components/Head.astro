@@ -40,8 +40,30 @@ import { ClientRouter } from 'astro:transitions';
       hint.textContent = 'Click anywhere or press Esc to close';
       document.body.appendChild(hint);
     }
-    zoom.on('opened', () => document.body.classList.add('tl-zoom-open'));
-    zoom.on('closed', () => document.body.classList.remove('tl-zoom-open'));
+    // Reflect the open/closed state on <body> from medium-zoom's OWN marker
+    // class, set up exactly once. The zoom instance is rebuilt on every view
+    // transition; per-instance `.on('opened')` handlers proved unreliable after
+    // a client-side (ClientRouter) navigation, leaving the image enlarged but
+    // the Close button + hint hidden ("just a bigger image, no zoom-out UI").
+    // Observing the DOM marker instead is instance-independent and bulletproof.
+    if (!(window as any).__sbZoomObserver) {
+      const syncZoomState = () =>
+        document.body.classList.toggle(
+          'tl-zoom-open',
+          !!document.querySelector('.medium-zoom-image--opened')
+        );
+      const mo = new MutationObserver(syncZoomState);
+      // Observe <html>, not <body>: Astro's ClientRouter REPLACES the <body>
+      // element on every navigation, which would orphan a body-bound observer.
+      // <html> persists, so a single subtree observer keeps working forever.
+      mo.observe(document.documentElement, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+      (window as any).__sbZoomObserver = mo;
+      syncZoomState();
+    }
 
     // 2) Scroll-reveal - media only (screenshots / figures). Reading content
     //    (headings, text, tables, lists) renders instantly to avoid "pop-in".
@@ -82,7 +104,12 @@ import { ClientRouter } from 'astro:transitions';
       const p = max > 0 ? (h.scrollTop / max) * 100 : 0;
       bar!.style.width = p + '%';
     };
-    window.removeEventListener('scroll', onScroll);
+    // Replace the previous handler (a fresh closure each navigation) so scroll
+    // listeners don't accumulate across view transitions.
+    if ((window as any).__sbScroll) {
+      window.removeEventListener('scroll', (window as any).__sbScroll);
+    }
+    (window as any).__sbScroll = onScroll;
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
