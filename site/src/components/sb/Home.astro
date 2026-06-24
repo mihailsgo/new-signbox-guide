@@ -115,30 +115,32 @@ const faqs = [
 ---
 
 <div class="sb-home">
-  <!-- 1 · HERO -->
+  <!-- ============ HERO ============ -->
   <header class="sb-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-copy">
       <span class="eyebrow">TrustLynx SignBox · e-signing platform</span>
-      <h1>Secure electronic signing - from document upload to a legally valid signed&nbsp;container.</h1>
+      <h1>Secure electronic signing, from document upload to a legally valid signed&nbsp;container.</h1>
       <p>Create signing workflows, invite recipients, sign with trusted e-ID methods, and track every process from draft to finished container.</p>
       <div class="hero-cta">
-        <a class="btn primary" href={u('before-you-start')}>Start guide</a>
+        <a class="btn primary" href="mailto:sales@trustlynx.io?subject=SignBox%20demo%20request">Request a demo</a>
         <a class="btn ghost" href="#how">See how it works</a>
-        <a class="btn ghost" href={u('appendix')}>Signing methods</a>
+        <a class="btn ghost" href={u('before-you-start')}>Read the guide</a>
       </div>
+      <p class="hero-segments">Built for HR, legal, procurement, finance, public sector, and enterprise document workflows.</p>
     </div>
     <div class="hero-art">
       <HeroFlow showCaption={false} />
     </div>
   </header>
 
-  <!-- WHEN TO USE -->
+  <!-- when to use (compact context band) -->
   <section class="band">
     <span class="band-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-    <p><strong>When to use SignBox.</strong> When your organization needs to send documents for legally valid electronic signing, manage multiple signers, support national e-ID methods, and track the signing process until the final validated container is ready.</p>
+    <p><strong>When to use SignBox.</strong> When your organization needs to send documents for legally valid electronic signing, manage multiple signers, support national e-ID methods, and track every process until the final validated container is ready.</p>
   </section>
 
-  <!-- 2 · HOW SIGNBOX WORKS (5 named steps) -->
+  <!-- ============ HOW SIGNBOX WORKS ============ -->
   <section id="how" class="sec">
     <div class="sec-head">
       <h2>How SignBox works</h2>
@@ -155,10 +157,84 @@ const faqs = [
     </ol>
   </section>
 
-  <!-- 3 · WHO IS THIS FOR -->
+  <section class="sec tight">
+    <div class="sec-head">
+      <h3 class="subhead">Parallel or sequential signing</h3>
+      <p>Send to everyone at once, or enforce a strict signing order group by group.</p>
+    </div>
+    <SigningModesAnimation />
+  </section>
+
+  <section class="sec tight">
+    <div class="sec-head">
+      <h3 class="subhead">A clear process lifecycle</h3>
+      <p>Every process moves through four well-defined statuses - and <em>Completed</em> is not the same as <em>Finished</em>.</p>
+    </div>
+    <StatusLifecycle />
+  </section>
+
+  <!-- ============ WHY ORGANIZATIONS USE IT ============ -->
   <section class="sec">
     <div class="sec-head">
-      <h2>Who is this for?</h2>
+      <h2>Why organizations use it</h2>
+      <p>The reasons teams standardize on SignBox for organization-wide signing.</p>
+    </div>
+    <div class="ben-grid">
+      {benefits.map((b) => (
+        <a class="ben-card" href={b.href}>
+          <span class="ben-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} /></span>
+          <h3>{b.t}</h3>
+          <p>{b.d}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec tight">
+    <div class="sec-head">
+      <h3 class="subhead">Real business workflows</h3>
+      <p>How teams put SignBox to work day to day.</p>
+    </div>
+    <BusinessWorkflowExamples />
+  </section>
+
+  <!-- ============ TRUST / LEGAL RESULT ============ -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>A legally trustworthy result</h2>
+      <p>Not just a visual signature - a certified, independently verifiable container.</p>
+    </div>
+    <TrustLayerAnimation />
+    <div class="method-strip">
+      {methods.map((m) => (
+        <span class={`method-chip ${m.k}`}>
+          <span class="method-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={m.icon} /></span>
+          {m.t}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ USER ROLES / PORTALS ============ -->
+  <section class="sec">
+    <div class="sec-head">
+      <h2>User roles &amp; portals</h2>
+      <p>Initiators build and track processes internally; signers act externally through a secure handoff.</p>
+    </div>
+    <PortalSplitAnimation />
+    <div class="role-grid">
+      {roles.map((r) => (
+        <div class={`role-card ${r.cls}`}>
+          <span class="role-dot"></span>
+          <div><h3>{r.t}</h3><p>{r.d}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec tight">
+    <div class="sec-head">
+      <h3 class="subhead">Who is this for?</h3>
       <p>Whether you start processes, sign them, or administer the platform - there's a clear path for you.</p>
     </div>
     <div class="aud-grid">
@@ -173,104 +249,10 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 4 · INTERNAL VS EXTERNAL PORTAL -->
+  <!-- ============ DOCUMENTATION ENTRY ============ -->
   <section class="sec">
     <div class="sec-head">
-      <h2>Internal &amp; external portals</h2>
-      <p>Initiators build and track processes internally; signers act externally through a secure handoff.</p>
-    </div>
-    <PortalSplitAnimation />
-  </section>
-
-  <!-- 5 · PARALLEL VS SEQUENTIAL -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>Parallel or sequential signing</h2>
-      <p>Send to everyone at once, or enforce a strict signing order group by group.</p>
-    </div>
-    <SigningModesAnimation />
-  </section>
-
-  <!-- 6 · STATUS LIFECYCLE -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>A clear process lifecycle</h2>
-      <p>Every process moves through four well-defined statuses - and <em>Completed</em> is not the same as <em>Finished</em>.</p>
-    </div>
-    <StatusLifecycle />
-  </section>
-
-  <!-- ROLES AT A GLANCE -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>Roles at a glance</h2>
-      <p>Each recipient is added with one of three roles.</p>
-    </div>
-    <div class="role-grid">
-      {roles.map((r) => (
-        <div class={`role-card ${r.cls}`}>
-          <span class="role-dot"></span>
-          <div><h3>{r.t}</h3><p>{r.d}</p></div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- 7 · KEY BENEFITS -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>Key business benefits</h2>
-      <p>Why teams choose SignBox for organization-wide signing.</p>
-    </div>
-    <div class="ben-grid">
-      {benefits.map((b) => (
-        <a class="ben-card" href={b.href}>
-          <span class="ben-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} /></span>
-          <h3>{b.t}</h3>
-          <p>{b.d}</p>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- TRUSTED e-ID METHODS -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>Trusted e-ID &amp; signature standards</h2>
-      <p>Signers authenticate with national e-ID; the result is a standards-based, verifiable container.</p>
-    </div>
-    <div class="method-strip">
-      {methods.map((m) => (
-        <span class={`method-chip ${m.k}`}>
-          <span class="method-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={m.icon} /></span>
-          {m.t}
-        </span>
-      ))}
-    </div>
-  </section>
-
-  <!-- 8 · TRUST LAYER -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>A legally trustworthy result</h2>
-      <p>Not just a visual signature - a certified, independently verifiable container.</p>
-    </div>
-    <TrustLayerAnimation />
-  </section>
-
-  <!-- 9 · BUSINESS WORKFLOWS -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>Real business workflows</h2>
-      <p>How teams put SignBox to work day to day.</p>
-    </div>
-    <BusinessWorkflowExamples />
-  </section>
-
-  <!-- 10 · DOC ENTRY CARDS -->
-  <section class="sec">
-    <div class="sec-head">
-      <h2>Start reading the guide</h2>
+      <h2>Read the documentation</h2>
       <p>Jump straight to the pages that matter most.</p>
     </div>
     <div class="doc-grid">
@@ -283,10 +265,9 @@ const faqs = [
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="sec">
+  <section class="sec tight">
     <div class="sec-head">
-      <h2>Frequently asked questions</h2>
+      <h3 class="subhead">Frequently asked questions</h3>
       <p>The essentials for evaluating SignBox.</p>
     </div>
     <div class="faq">
@@ -299,15 +280,16 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 11 · CTA -->
+  <!-- ============ CTA ============ -->
   <section class="cta">
     <div class="cta-inner">
+      <span class="cta-eyebrow">Get started with TrustLynx</span>
       <h2>Bring legally valid e-signing to your organization</h2>
-      <p>Talk to TrustLynx about rolling out SignBox, or explore the developer resources.</p>
+      <p>Talk to our team about rolling out SignBox, or explore the developer resources.</p>
       <div class="cta-actions">
-        <a class="btn primary" href="mailto:sales@trustlynx.io?subject=SignBox%20demo%20request">Request a demo</a>
-        <a class="btn ghost" href="mailto:sales@trustlynx.io">Contact TrustLynx</a>
-        <a class="btn ghost" href="https://developer.trustlynx.com/" target="_blank" rel="noopener noreferrer">Developer portal</a>
+        <a class="btn primary lg" href="mailto:sales@trustlynx.io?subject=SignBox%20demo%20request">Request a demo</a>
+        <a class="btn ghost lg" href="mailto:sales@trustlynx.io?subject=SignBox%20enquiry">Contact TrustLynx</a>
+        <a class="btn link" href="https://developer.trustlynx.com/" target="_blank" rel="noopener noreferrer">Developer portal<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
       </div>
     </div>
   </section>
@@ -327,16 +309,18 @@ const faqs = [
   }
   .sb-home :where(h1,h2,h3,p){margin:0;}
 
-  /* hero - single column: copy above a full-width process animation.
-     (a 2-col hero can't fit the ~820px-wide HeroFlow inside the 1080px
-     content column, so it would clip - full width avoids that entirely) */
-  .sb-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:30px;padding:14px 0 44px;}
-  .hero-copy{max-width:54rem;margin-inline:auto;}
+  /* hero - single column: copy above a full-width process animation. */
+  .sb-hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:34px;padding:30px 0 52px;}
+  .hero-glow{position:absolute;inset:-60px -20% auto;height:460px;pointer-events:none;z-index:0;
+    background:radial-gradient(55% 80% at 50% 0%, color-mix(in srgb,var(--hp-gold) 20%,transparent), transparent 72%);}
+  .hero-copy,.hero-art{position:relative;z-index:1;}
+  .hero-copy{max-width:56rem;margin-inline:auto;}
   .hero-art{width:100%;}
-  .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--hp-eyebrow);margin-bottom:14px;}
-  .hero-copy h1{font-size:clamp(30px,4.4vw,46px);line-height:1.06;letter-spacing:-.025em;font-weight:800;text-wrap:balance;margin-bottom:18px;}
-  .hero-copy p{font-size:17px;line-height:1.6;color:var(--hp-ink-soft);max-width:56ch;margin:0 auto 26px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--hp-eyebrow);margin-bottom:18px;padding:6px 14px;border-radius:999px;border:1px solid color-mix(in srgb,var(--hp-gold) 35%,var(--hp-border));background:color-mix(in srgb,var(--hp-gold) 9%,transparent);}
+  .hero-copy h1{font-size:clamp(32px,5.2vw,55px);line-height:1.03;letter-spacing:-.03em;font-weight:800;text-wrap:balance;margin-bottom:20px;}
+  .hero-copy p{font-size:clamp(16px,1.6vw,19px);line-height:1.6;color:var(--hp-ink-soft);max-width:58ch;margin:0 auto 30px;}
   .hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .hero-segments{margin:26px auto 0;font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--hp-ink-soft);opacity:.82;max-width:54ch;}
 
   .btn{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:12px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;border:1px solid transparent;cursor:pointer;}
   .btn.primary{background:linear-gradient(160deg,var(--hp-gold-2),var(--hp-gold));color:#241a07;box-shadow:0 10px 26px -12px rgba(181,134,53,.7);}
@@ -354,10 +338,14 @@ const faqs = [
   .band strong{color:var(--hp-ink);}
 
   /* sections */
-  .sec{padding:44px 0;border-top:1px solid var(--hp-border);}
-  .sec-head{margin-bottom:24px;max-width:62ch;}
-  .sec-head h2{font-size:clamp(23px,3.2vw,31px);letter-spacing:-.02em;font-weight:800;margin-bottom:8px;}
+  .sec{padding:54px 0;border-top:1px solid var(--hp-border);}
+  .sec.tight{padding:30px 0;}                     /* de-emphasized supporting sections */
+  .sec-head{margin-bottom:28px;max-width:64ch;}
+  .sec.tight .sec-head{margin-bottom:18px;}
+  .sec-head h2{font-size:clamp(24px,3.4vw,34px);letter-spacing:-.025em;font-weight:800;margin-bottom:8px;}
+  .sec-head h3.subhead{font-size:clamp(17px,2.1vw,21px);letter-spacing:-.01em;font-weight:800;margin:0 0 6px;color:var(--hp-ink);}
   .sec-head p{font-size:16px;color:var(--hp-ink-soft);}
+  .sec.tight .sec-head p{font-size:15px;}
   .sec-head em{font-style:normal;color:var(--hp-gold);font-weight:700;}
 
   /* how-it-works 5-step strip */
@@ -390,8 +378,8 @@ const faqs = [
   .aud-link svg{width:15px;height:15px;transition:transform .25s ease;}
   .aud-card:hover .aud-link svg{transform:translateX(4px);}
 
-  /* roles */
-  .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  /* roles (sit under the portals animation) */
+  .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;}
   .role-card{display:flex;gap:12px;align-items:flex-start;background:var(--hp-surface);border:1px solid var(--hp-border);border-radius:14px;padding:16px 18px;}
   .role-card h3{font-size:15px;margin-bottom:2px;}
   .role-card p{font-size:13px;color:var(--hp-ink-soft);}
@@ -419,8 +407,8 @@ const faqs = [
   .doc-arrow svg{width:17px;height:17px;transition:transform .25s ease;}
   .doc-card:hover .doc-arrow{transform:translateX(4px);}
 
-  /* methods strip */
-  .method-strip{display:flex;flex-wrap:wrap;gap:10px;}
+  /* methods strip (sits under the trust-layer animation) */
+  .method-strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
   .method-chip{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:10px 16px 10px 12px;border-radius:999px;background:var(--hp-surface);border:1px solid var(--hp-border);}
   .method-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;}
   .method-ic svg{width:16px;height:16px;}
@@ -444,13 +432,18 @@ const faqs = [
   .faq-answer p{margin:0;padding-top:14px;border-top:1px solid var(--hp-border);font-size:14.5px;line-height:1.65;color:var(--hp-ink-soft);}
 
   /* CTA */
-  .cta{margin-top:48px;border-radius:22px;padding:48px 44px;background:radial-gradient(120% 140% at 0% 0%, #243a63 0%, transparent 55%), linear-gradient(150deg,#1b2a44,#0f1726);border:1px solid var(--hp-border);text-align:center;}
-  .cta-inner{max-width:56ch;margin-inline:auto;}
-  .cta h2{color:#fff;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;font-weight:800;margin-bottom:10px;}
-  .cta p{color:#c7d0e2;font-size:16px;margin-bottom:24px;}
-  .cta-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
-  .cta .btn.ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22);}
-  .cta .btn.ghost:hover{border-color:var(--hp-gold-2);}
+  .cta{margin-top:56px;border-radius:24px;padding:56px 44px;background:radial-gradient(110% 130% at 0% 0%, #27406e 0%, transparent 55%), radial-gradient(90% 120% at 100% 100%, color-mix(in srgb,var(--hp-gold) 22%,transparent) 0%, transparent 50%), linear-gradient(150deg,#1b2a44,#0f1726);border:1px solid var(--hp-border);text-align:center;}
+  .cta-inner{max-width:54ch;margin-inline:auto;}
+  .cta-eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--hp-gold-2);margin-bottom:14px;}
+  .cta h2{color:#fff;font-size:clamp(24px,3.2vw,34px);letter-spacing:-.025em;font-weight:800;margin-bottom:12px;}
+  .cta p{color:#c7d0e2;font-size:16px;margin-bottom:28px;}
+  .cta-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center;}
+  .btn.lg{padding:14px 28px;font-size:16px;}
+  .cta .btn.ghost{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.24);}
+  .cta .btn.ghost:hover{border-color:var(--hp-gold-2);background:rgba(255,255,255,.12);}
+  .cta .btn.link{background:transparent;border-color:transparent;color:#c7d0e2;padding:14px 8px;gap:6px;}
+  .cta .btn.link svg{width:15px;height:15px;}
+  .cta .btn.link:hover{color:#fff;transform:none;}
 
   @media (max-width:880px){
     .aud-grid,.ben-grid,.doc-grid,.role-grid{grid-template-columns:1fr;}
