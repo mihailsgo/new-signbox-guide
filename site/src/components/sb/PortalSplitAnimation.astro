@@ -117,13 +117,13 @@ const person = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy=
   /* panels + workspace stay solid; only the handoff story animates */
   .ps-signed{opacity:0;}
   @media (prefers-reduced-motion: no-preference){
-    .ps-conn .ln{animation:sbDash 1.8s linear infinite;}
-    .ps-trav.fwd{animation:psFwd 6.5s ease-in-out infinite;}
-    .ps-trav.back{animation:psBack 6.5s ease-in-out infinite;}
-    .ps-item.auth{animation:psHot 6.5s ease-in-out infinite;}
-    .ps-item.sign{animation:psHot 6.5s ease-in-out infinite;animation-delay:-3.2s;}
-    .ps-signed{animation:psReveal 6.5s ease-in-out infinite;animation-delay:-2.6s;}
-    .ps-final{animation:psReveal 6.5s ease-in-out infinite;animation-delay:-1.3s;}
+    :global(.in-view) .ps-conn .ln{animation:sbDash 1.8s linear infinite;}
+    :global(.in-view) .ps-trav.fwd{animation:psFwd 6.5s ease-in-out infinite;}
+    :global(.in-view) .ps-trav.back{animation:psBack 6.5s ease-in-out infinite;}
+    :global(.in-view) .ps-item.auth{animation:psHot 6.5s ease-in-out infinite;}
+    :global(.in-view) .ps-item.sign{animation:psHot 6.5s ease-in-out infinite;animation-delay:-3.2s;}
+    :global(.in-view) .ps-signed{animation:psReveal 6.5s ease-in-out infinite;animation-delay:-2.6s;}
+    :global(.in-view) .ps-final{animation:psReveal 6.5s ease-in-out infinite;animation-delay:-1.3s;}
   }
   @media (prefers-reduced-motion: reduce){ .ps-signed{opacity:1;} }
   @keyframes psReveal{0%,30%{opacity:0;transform:translateY(6px);}38%,92%{opacity:1;transform:translateY(0);}99%,100%{opacity:0;transform:translateY(6px);}}
@@ -131,3 +131,26 @@ const person = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy=
   @keyframes psFwd{0%,18%{opacity:0;left:6%;}22%{opacity:1;}32%{opacity:1;left:88%;}35%,100%{opacity:0;left:90%;}}
   @keyframes psBack{0%,62%{opacity:0;left:88%;}66%{opacity:1;}76%{opacity:1;left:8%;}79%,100%{opacity:0;left:6%;}}
 </style>
+
+<script>
+  function initPortalSplit() {
+    const container = document.querySelector('.portal-split');
+    if (!container) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          container.classList.add('in-view');
+        } else {
+          container.classList.remove('in-view');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(container);
+  }
+
+  initPortalSplit();
+  document.addEventListener('astro:after-swap', initPortalSplit);
+</script>
+

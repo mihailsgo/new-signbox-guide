@@ -15,19 +15,107 @@ const {
 ---
 <figure class={`sb-anim trust-layer ${className}`} role="group" aria-label="How SignBox builds a legally trustworthy signature container">
   <div class="sb-stage">
-    <div class="tl" aria-hidden="true">
+    <div class="tl">
       <div class="tl-stack">
-        <div class="tl-seal"><span class="sb-badge green"><span class="sb-icon ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Valid</span></div>
+        <div class="tl-seal">
+          <span class="sb-badge green">
+            <span class="sb-icon ci">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            Valid
+          </span>
+        </div>
         <div class="tl-frame"></div>
-        <div class="tl-layer tl-val"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/><path d="M9 12l2 2 4-4"/></svg></span>Validation</div>
-        <div class="tl-layer tl-time"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span>Timestamp</div>
-        <div class="tl-layer tl-sig"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19c3 0 3-12 6-12s2 8 4 8 2-4 5-4"/><path d="M3 21h18"/></svg></span>Electronic signature</div>
-        <div class="tl-layer tl-doc"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>Document</div>
+        
+        <button class="tl-layer tl-val" aria-label="Validation Layer details">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </span>
+          Validation
+          <span class="tl-tooltip" role="tooltip">
+            <strong>Verification Data</strong>: Embedded certificate status proof (CRL/OCSP) proving the e-ID was active and not revoked at signing time.
+          </span>
+        </button>
+
+        <button class="tl-layer tl-time" aria-label="Timestamp Layer details">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8.5"/>
+              <path d="M12 7v5l3 2"/>
+            </svg>
+          </span>
+          Timestamp
+          <span class="tl-tooltip" role="tooltip">
+            <strong>Trusted Timestamp</strong>: Secure time token from an official Time-Stamping Authority proving exactly when the signature was made.
+          </span>
+        </button>
+
+        <button class="tl-layer tl-sig" aria-label="Electronic Signature Layer details">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 19c3 0 3-12 6-12s2 8 4 8 2-4 5-4"/>
+              <path d="M3 21h18"/>
+            </svg>
+          </span>
+          Electronic signature
+          <span class="tl-tooltip" role="tooltip">
+            <strong>Digital Signature</strong>: Cryptographic block applied by the signer (PIN2) that links their identity uniquely to the document hash.
+          </span>
+        </button>
+
+        <button class="tl-layer tl-doc" aria-label="Document Layer details">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 3v5h5"/>
+            </svg>
+          </span>
+          Document
+          <span class="tl-tooltip" role="tooltip">
+            <strong>Original Document</strong>: The raw document binary hash. Any subsequent tampering or alteration breaks the signature chain.
+          </span>
+        </button>
       </div>
+      
       <div class="tl-side">
-        <div class="row r-qes"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/></svg></span><span class="tx"><b>QES</b><span>Qualified electronic signature</span></span></div>
-        <div class="row r-xades"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></span><span class="tx"><b>XAdES-LT</b><span>Long-term validation format</span></span></div>
-        <div class="row r-valid"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span class="tx"><b>Signed container</b><span>Legally trustworthy result</span></span></div>
+        <div class="row r-qes" tabindex="0">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/>
+            </svg>
+          </span>
+          <span class="tx">
+            <b>QES</b>
+            <span>Qualified electronic signature</span>
+          </span>
+        </div>
+        <div class="row r-xades" tabindex="0">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+            </svg>
+          </span>
+          <span class="tx">
+            <b>XAdES-LT</b>
+            <span>Long-term validation format</span>
+          </span>
+        </div>
+        <div class="row r-valid" tabindex="0">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"/>
+            </svg>
+          </span>
+          <span class="tx">
+            <b>Signed container</b>
+            <span>Legally trustworthy result</span>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -40,10 +128,42 @@ const {
 
   .tl{display:flex;align-items:center;justify-content:center;gap:34px;min-height:300px;}
   .tl-stack{position:relative;width:188px;height:236px;flex:none;}
-  .tl-layer{position:absolute;left:50%;width:160px;border-radius:14px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:11px 13px;font-size:12px;font-weight:700;
-    background:var(--sb-card);border:1px solid var(--sb-border);box-shadow:var(--sb-shadow-sm);color:var(--sb-ink);}
-  .tl-layer .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;}
-  .tl-layer .ic svg{width:15px;height:15px;}
+  
+  button.tl-layer {
+    position: absolute;
+    left: 50%;
+    width: 160px;
+    border-radius: 14px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--sb-card);
+    border: 1px solid var(--sb-border);
+    box-shadow: var(--sb-shadow-sm);
+    color: var(--sb-ink);
+    cursor: pointer;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  button.tl-layer:hover {
+    border-color: var(--sb-gold);
+    transform: translateX(-50%) translateY(-2px);
+    z-index: 10;
+  }
+  button.tl-layer:focus-visible {
+    border-color: var(--sb-gold);
+    box-shadow: 0 0 0 2px var(--sb-glow-gold);
+    transform: translateX(-50%) translateY(-2px);
+    z-index: 10;
+  }
+  
+  button.tl-layer .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;}
+  button.tl-layer .ic svg{width:15px;height:15px;}
   .tl-doc{top:150px;z-index:1;}
   .tl-doc .ic{background:color-mix(in srgb,var(--sb-blue) 14%,transparent);color:var(--sb-blue);}
   .tl-sig{top:108px;z-index:2;}
@@ -56,8 +176,62 @@ const {
   .tl-seal{position:absolute;left:50%;top:-14px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;opacity:1;z-index:5;}
   .ci{width:13px;height:13px;}
 
+  /* Tooltip styles */
+  .tl-tooltip {
+    position: absolute;
+    left: 105%;
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+    width: 220px;
+    padding: 10px 12px;
+    background: var(--sb-card);
+    border: 1px solid var(--sb-border-strong);
+    border-left: 3px solid var(--sb-gold);
+    box-shadow: var(--sb-shadow);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: left;
+    color: var(--sb-ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 50;
+  }
+  .tl-tooltip::before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    margin-top: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent var(--sb-border-strong) transparent transparent;
+  }
+  button.tl-layer:hover .tl-tooltip,
+  button.tl-layer:focus-visible .tl-tooltip,
+  button.tl-layer.is-highlighted .tl-tooltip {
+    opacity: 1;
+    transform: translateY(-50%) scale(1) translateX(4px);
+    pointer-events: auto;
+  }
+  .tl-tooltip strong {
+    display: block;
+    color: var(--sb-gold);
+    margin-bottom: 2px;
+  }
+
   .tl-side{display:flex;flex-direction:column;gap:12px;max-width:230px;}
-  .tl-side .row{display:flex;align-items:center;gap:10px;}
+  .tl-side .row{
+    display:flex;align-items:center;gap:10px;
+    border: 1px solid transparent;
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin: 0 -10px;
+    outline: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
   .tl-side .row .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;color:#fff;}
   .tl-side .row.r-qes .ic{background:var(--sb-gold);}
   .tl-side .row.r-xades .ic{background:var(--sb-blue);}
@@ -68,25 +242,195 @@ const {
   .tl-side .row .tx span{font-size:11px;color:var(--sb-muted);}
 
   @media (max-width:680px){
-    .tl{flex-direction:column;gap:24px;}
+    .tl{flex-direction:column;gap:34px;}
     .tl-side{max-width:280px;width:100%;}
+    
+    .tl-tooltip {
+      left: 50%;
+      bottom: 112%;
+      top: auto;
+      transform: translateX(-50%) scale(0.95);
+      width: 200px;
+    }
+    .tl-tooltip::before {
+      right: auto;
+      left: 50%;
+      top: 100%;
+      margin-left: -6px;
+      margin-top: 0;
+      border-color: var(--sb-border-strong) transparent transparent transparent;
+    }
+    button.tl-layer:hover .tl-tooltip,
+    button.tl-layer:focus-visible .tl-tooltip,
+    button.tl-layer.is-highlighted .tl-tooltip {
+      transform: translateX(-50%) scale(1) translateY(-4px);
+    }
   }
 
   @media (prefers-reduced-motion: no-preference){
-    .tl-frame,.tl-seal{opacity:0;}
-    .tl-layer{opacity:0;transform:translateX(-50%) translateY(14px);}
-    .tl-doc{animation:tlLayer 7s ease-in-out infinite;animation-delay:-7s;}
-    .tl-sig{animation:tlLayer 7s ease-in-out infinite;animation-delay:-6.2s;}
-    .tl-time{animation:tlLayer 7s ease-in-out infinite;animation-delay:-5.4s;}
-    .tl-val{animation:tlLayer 7s ease-in-out infinite;animation-delay:-4.6s;}
-    .tl-side .r-qes{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-3.8s;}
-    .tl-side .r-xades{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-3.0s;}
-    .tl-side .r-valid{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-2.2s;}
-    .tl-frame{animation:tlFrame 7s ease-in-out infinite;}
-    .tl-seal{animation:tlSeal 7s ease-in-out infinite;}
+    :global(.in-view):not(.is-paused) .tl-frame,:global(.in-view):not(.is-paused) .tl-seal{opacity:0;}
+    :global(.in-view):not(.is-paused) button.tl-layer{opacity:0;transform:translateX(-50%) translateY(14px);}
+    
+    :global(.in-view):not(.is-paused) .tl-doc{animation:tlLayer 7s ease-in-out infinite;animation-delay:-7s;}
+    :global(.in-view):not(.is-paused) .tl-sig{animation:tlLayer 7s ease-in-out infinite;animation-delay:-6.2s;}
+    :global(.in-view):not(.is-paused) .tl-time{animation:tlLayer 7s ease-in-out infinite;animation-delay:-5.4s;}
+    :global(.in-view):not(.is-paused) .tl-val{animation:tlLayer 7s ease-in-out infinite;animation-delay:-4.6s;}
+    
+    :global(.in-view):not(.is-paused) .tl-side .r-qes{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-3.8s;}
+    :global(.in-view):not(.is-paused) .tl-side .r-xades{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-3.0s;}
+    :global(.in-view):not(.is-paused) .tl-side .r-valid{opacity:0;animation:tlRow 7s ease-in-out infinite;animation-delay:-2.2s;}
+    
+    :global(.in-view):not(.is-paused) .tl-frame{animation:tlFrame 7s ease-in-out infinite;}
+    :global(.in-view):not(.is-paused) .tl-seal{animation:tlSeal 7s ease-in-out infinite;}
   }
   @keyframes tlLayer{0%,3%{opacity:0;transform:translateX(-50%) translateY(14px);}9%,95%{opacity:1;transform:translateX(-50%) translateY(0);}99%,100%{opacity:0;}}
   @keyframes tlRow{0%,4%{opacity:0;transform:translateX(8px);}10%,95%{opacity:1;transform:translateX(0);}99%,100%{opacity:0;}}
   @keyframes tlFrame{0%,66%{opacity:0;box-shadow:0 0 0 0 var(--sb-glow-gold);}72%{opacity:1;}80%{opacity:1;box-shadow:0 0 26px 2px var(--sb-glow-gold);}95%{opacity:1;box-shadow:0 0 0 0 var(--sb-glow-gold);}99%,100%{opacity:0;}}
   @keyframes tlSeal{0%,76%{opacity:0;transform:translateX(-50%) scale(.5);}82%,95%{opacity:1;transform:translateX(-50%) scale(1);}99%,100%{opacity:0;}}
+
+  /* Manual hover/highlight styling applied by JS */
+  .trust-layer.is-paused button.tl-layer,
+  .trust-layer.is-paused .tl-side .row,
+  .trust-layer.is-paused .tl-frame,
+  .trust-layer.is-paused .tl-seal {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  .trust-layer.is-paused button.tl-layer {
+    transform: translateX(-50%);
+  }
+  .trust-layer.is-paused button.tl-layer.is-highlighted {
+    border-color: var(--sb-gold);
+    box-shadow: 0 0 14px var(--sb-glow-gold);
+    transform: translateX(-50%) translateY(-2px);
+    z-index: 10;
+  }
+  .trust-layer.is-paused .tl-side .row.is-highlighted {
+    border-color: var(--sb-gold);
+    background: color-mix(in srgb,var(--sb-gold) 10%,transparent);
+    box-shadow: 0 4px 14px -6px var(--sb-glow-gold);
+  }
+  .trust-layer.is-paused .tl-side .row:hover {
+    border-color: var(--sb-gold);
+    background: color-mix(in srgb,var(--sb-gold) 10%,transparent);
+  }
 </style>
+
+<script>
+  function initTrustLayer() {
+    const container = document.querySelector('.trust-layer');
+    if (!container) return;
+
+    const layers = container.querySelectorAll('button.tl-layer');
+    const rows = container.querySelectorAll('.tl-side .row');
+
+    // 1. Setup IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          container.classList.add('in-view');
+        } else {
+          container.classList.remove('in-view');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(container);
+
+    // 2. Hover sync mapping
+    const layerToRowMap: Record<string, string> = {
+      'tl-doc': 'r-qes',
+      'tl-sig': 'r-qes',
+      'tl-time': 'r-xades',
+      'tl-val': 'r-valid'
+    };
+
+    const rowToLayersMap: Record<string, string[]> = {
+      'r-qes': ['tl-doc', 'tl-sig'],
+      'r-xades': ['tl-time'],
+      'r-valid': ['tl-val']
+    };
+
+    function pauseAndHighlightLayer(layerClass: string) {
+      container?.classList.add('is-paused');
+      
+      // Highlight matching layers
+      layers.forEach(l => {
+        if (l.classList.contains(layerClass)) {
+          l.classList.add('is-highlighted');
+        } else {
+          l.classList.remove('is-highlighted');
+        }
+      });
+
+      // Highlight matching row
+      const rowClass = layerToRowMap[layerClass];
+      rows.forEach(r => {
+        if (r.classList.contains(rowClass)) {
+          r.classList.add('is-highlighted');
+        } else {
+          r.classList.remove('is-highlighted');
+        }
+      });
+    }
+
+    function pauseAndHighlightRow(rowClass: string) {
+      container?.classList.add('is-paused');
+
+      // Highlight row
+      rows.forEach(r => {
+        if (r.classList.contains(rowClass)) {
+          r.classList.add('is-highlighted');
+        } else {
+          r.classList.remove('is-highlighted');
+        }
+      });
+
+      // Highlight matching layers
+      const targetLayers = rowToLayersMap[rowClass] || [];
+      layers.forEach(l => {
+        const hasMatch = targetLayers.some(cls => l.classList.contains(cls));
+        if (hasMatch) {
+          l.classList.add('is-highlighted');
+        } else {
+          l.classList.remove('is-highlighted');
+        }
+      });
+    }
+
+    function clearHighlights() {
+      container?.classList.remove('is-paused');
+      layers.forEach(l => l.classList.remove('is-highlighted'));
+      rows.forEach(r => r.classList.remove('is-highlighted'));
+    }
+
+    // Attach listeners to layers
+    layers.forEach(layer => {
+      const layerClass = Array.from(layer.classList).find(c => c.startsWith('tl-'));
+      if (!layerClass) return;
+
+      layer.addEventListener('mouseenter', () => pauseAndHighlightLayer(layerClass));
+      layer.addEventListener('mouseleave', clearHighlights);
+      layer.addEventListener('focus', () => pauseAndHighlightLayer(layerClass));
+      layer.addEventListener('blur', clearHighlights);
+    });
+
+    // Attach listeners to rows
+    rows.forEach(row => {
+      const rowClass = Array.from(row.classList).find(c => c.startsWith('r-'));
+      if (!rowClass) return;
+
+      row.addEventListener('mouseenter', () => pauseAndHighlightRow(rowClass));
+      row.addEventListener('mouseleave', clearHighlights);
+      row.addEventListener('focus', () => pauseAndHighlightRow(rowClass));
+      row.addEventListener('blur', clearHighlights);
+    });
+  }
+
+  // Run on start
+  initTrustLayer();
+  // Support Astro View Transitions
+  document.addEventListener('astro:after-swap', initTrustLayer);
+</script>
+

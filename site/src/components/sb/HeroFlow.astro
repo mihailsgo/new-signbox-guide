@@ -1,8 +1,9 @@
 ---
 /**
- * HeroFlow.astro - the full SignBox journey in one looping visual.
- * Upload → SignBox workflow → Recipients → e-ID signing → Signed container.
- * Pure SVG + CSS. Theme-aware. Respects prefers-reduced-motion (shows final state).
+ * HeroFlow.astro - the core SignBox journey in one looping, highly interactive visual.
+ * Redesigned to be realistic, creative, and attention-focusing with human avatars.
+ * Shows: Upload → SignBox workflow → Recipients → e-ID signing → Signed container.
+ * Pure SVG + CSS transitions. Theme-aware + accessible.
  */
 import '../../styles/signbox-anim.css';
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
@@ -14,56 +15,266 @@ const {
 ---
 <figure class={`sb-anim hero-flow ${className}`} role="group" aria-label="How a document flows through SignBox">
   <div class="sb-stage">
-    <div class="hf" aria-hidden="true">
-      <div class="hf-node">
-        <div class="sb-card hf-pdf">
+    
+    <!-- Controls Panel -->
+    <div class="hf-controls">
+      <div class="hf-step-display">
+        <span class="hf-step-num">Step <span id="hf-step-idx">1</span> of 5:</span>
+        <span class="hf-step-title" id="hf-step-text">Upload</span>
+      </div>
+      <div class="hf-control-buttons">
+        <button class="ctrl-btn prev-btn" aria-label="Previous Step" title="Previous Step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <button class="ctrl-btn play-pause-btn" aria-label="Pause Autoplay" title="Play/Pause">
+          <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="4" width="4" height="16" rx="1"/>
+            <rect x="14" y="4" width="4" height="16" rx="1"/>
+          </svg>
+          <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </button>
+        <button class="ctrl-btn next-btn" aria-label="Next Step" title="Next Step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+        <button class="ctrl-btn reset-btn" aria-label="Reset Sequence" title="Reset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="hf">
+      <!-- Upload Node -->
+      <div class="hf-node" data-stage="upload" data-step="1">
+        <button class="sb-card hf-pdf hf-interactive-node" aria-label="Upload stage details">
           <div class="corner"></div>
           <div class="lines"><i></i><i></i><i></i></div>
           <div class="tag">PDF</div>
-        </div>
+          <span class="hf-tooltip" role="tooltip">
+            <strong>Upload Document</strong>: Supports PDF, Word, and major formats. Generates the initial container draft.
+          </span>
+        </button>
         <div class="hf-stagelabel">Upload</div>
       </div>
-      <div class="hf-conn c1"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg></div>
-      <div class="hf-node">
-        <div class="hf-box">
-          <div class="glow"></div>
-          <span class="sb-icon bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg></span>
-          <div class="blabel">SignBox</div>
+      
+      <!-- Connection 1 -->
+      <div class="hf-conn c1" data-step="1">
+        <svg viewBox="0 0 46 2" preserveAspectRatio="none">
+          <line class="ln-bg" x1="0" y1="1" x2="46" y2="1"/>
+          <line class="ln-fg" x1="0" y1="1" x2="46" y2="1"/>
+        </svg>
+        <div class="hf-doc-particle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
         </div>
+      </div>
+
+      <!-- Workflow Node -->
+      <div class="hf-node" data-stage="workflow" data-step="2">
+        <button class="hf-box hf-interactive-node" aria-label="Workflow stage details">
+          <div class="glow"></div>
+          <div class="scanner-line"></div>
+          <span class="sb-icon bicon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 3 7v10l9 5 9-5V7z"/>
+              <path d="M3 7l9 5 9-5"/>
+              <path d="M12 12v10"/>
+            </svg>
+          </span>
+          <div class="blabel">SignBox</div>
+          <span class="hf-tooltip" role="tooltip">
+            <strong>SignBox Workflow</strong>: Orchestrates the routing order, applies document profiles, and tracks real-time status.
+          </span>
+        </button>
         <div class="hf-stagelabel">Workflow</div>
       </div>
-      <div class="hf-conn c2"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg><span class="hf-dot"></span></div>
-      <div class="hf-node">
-        <div class="hf-recips">
-          <div class="sb-card hf-rc r1"><span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.4" r="3.7"/><path d="M5 19.6c0-3.7 3.1-6.1 7-6.1s7 2.4 7 6.1a.9.9 0 0 1-.9.9H5.9a.9.9 0 0 1-.9-.9z"/></svg></span>Signer 1</div>
-          <div class="sb-card hf-rc r2"><span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.4" r="3.7"/><path d="M5 19.6c0-3.7 3.1-6.1 7-6.1s7 2.4 7 6.1a.9.9 0 0 1-.9.9H5.9a.9.9 0 0 1-.9-.9z"/></svg></span>Signer 2</div>
-          <div class="sb-card hf-rc r3 approver"><span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.4" r="3.7"/><path d="M5 19.6c0-3.7 3.1-6.1 7-6.1s7 2.4 7 6.1a.9.9 0 0 1-.9.9H5.9a.9.9 0 0 1-.9-.9z"/></svg></span>Approver</div>
-        </div>
+
+      <!-- Connection 2 -->
+      <div class="hf-conn c2" data-step="2">
+        <svg viewBox="0 0 46 2" preserveAspectRatio="none">
+          <line class="ln-bg" x1="0" y1="1" x2="46" y2="1"/>
+          <line class="ln-fg" x1="0" y1="1" x2="46" y2="1"/>
+        </svg>
+        <span class="hf-dot"></span>
+      </div>
+
+      <!-- Recipients Node -->
+      <div class="hf-node" data-stage="recipients" data-step="3">
+        <button class="hf-recips hf-interactive-node" aria-label="Recipients stage details">
+          
+          <!-- Signer 1 -->
+          <div class="sb-card hf-rc r1">
+            <span class="av">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="16" fill="var(--sb-blue)" fill-opacity="0.15"/>
+                <circle cx="16" cy="13" r="5.5" fill="#fbc3a6"/>
+                <path d="M10 13c0-3.5 2.5-6 6-6s6 2.5 6 6c0 .5-.2 1-.5 1.5C21 12 20 11 19 11c-1 0-1.5.8-2 1.5-.5.7-1 .5-2 0s-1.5-1.5-2-1.5c-1 0-2 1-2.5 3-.5-.5-.5-1-.5-1z" fill="#4a3728"/>
+                <path d="M6 27c0-4 4-6 10-6s10 2 10 6" fill="#1e293b"/>
+                <path d="M13 21l3 4 3-4" fill="#38bdf8"/>
+              </svg>
+            </span>
+            <span>Signer 1</span>
+            <span class="signing-pen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </span>
+            <span class="rc-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+          </div>
+          
+          <!-- Signer 2 -->
+          <div class="sb-card hf-rc r2">
+            <span class="av">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="16" fill="var(--sb-blue)" fill-opacity="0.15"/>
+                <circle cx="16" cy="13" r="5.2" fill="#fcd3ab"/>
+                <path d="M12 13h3m2 0h3" stroke="#0f172a" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M10 13c0-4 3-6.5 6-6.5s6 2.5 6 6.5v5c0 1-1.5 1-2.5 0v-3.5c-1 0-1.5-1-1.5-1h-4s-.5 1-1.5 1v3.5c-1 1-2.5 1-2.5 0z" fill="#f59e0b"/>
+                <path d="M6 27c0-4 4-6 10-6s10 2 10 6" fill="#0284c7"/>
+              </svg>
+            </span>
+            <span>Signer 2</span>
+            <span class="signing-pen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </span>
+            <span class="rc-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+          </div>
+          
+          <!-- Approver -->
+          <div class="sb-card hf-rc r3 approver">
+            <span class="av">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="16" fill="var(--sb-gold)" fill-opacity="0.15"/>
+                <circle cx="16" cy="13" r="5.5" fill="#e0a98c"/>
+                <path d="M9.5 13c0-3.5 2.5-6 6.5-6s6.5 2.5 6.5 6c0 1-.5 1.5-1.5 1.5C20 12 19.5 11 18.5 11c-1 0-1 1-2.5 1s-1.5-1-2.5-1c-1 0-1.5 1-2 1.5-.5-.5-1-1-1-1.5z" fill="#475569"/>
+                <path d="M6 27c0-4 4-6 10-6s10 2 10 6" fill="#0f172a"/>
+                <path d="M15 21h2l-1 5z" fill="var(--sb-gold)"/>
+              </svg>
+            </span>
+            <span>Approver</span>
+            <span class="signing-pen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </span>
+            <span class="rc-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+          </div>
+          
+          <span class="hf-tooltip" role="tooltip">
+            <strong>Recipients & Roles</strong>: Enforces permissions for Signers (must sign), Approvers (approves), and Viewers (read-only).
+          </span>
+        </button>
         <div class="hf-stagelabel">Recipients</div>
       </div>
-      <div class="hf-conn c3"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg></div>
-      <div class="hf-node">
-        <div class="sb-card hf-phone">
+
+      <!-- Connection 3 -->
+      <div class="hf-conn c3" data-step="3">
+        <svg viewBox="0 0 46 2" preserveAspectRatio="none">
+          <line class="ln-bg" x1="0" y1="1" x2="46" y2="1"/>
+          <line class="ln-fg" x1="0" y1="1" x2="46" y2="1"/>
+        </svg>
+        <span class="hf-dot"></span>
+      </div>
+
+      <!-- e-ID Signing Node -->
+      <div class="hf-node" data-stage="signing" data-step="4">
+        <button class="sb-card hf-phone hf-interactive-node" aria-label="e-ID signing stage details">
           <div class="ring"></div>
           <div class="scr">
-            <span class="sb-icon pidicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/></svg></span>
-            <div class="plabel">Smart-ID / eID</div>
+            <div class="scr-default">
+              <span class="sb-icon pidicon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="6" y="2.5" width="12" height="19" rx="3"/>
+                  <path d="M10 18.5h4"/>
+                </svg>
+              </span>
+              <div class="plabel">Smart-ID / eID</div>
+            </div>
+            <div class="scr-prompt">
+              <div class="pin-title">PIN2 Code</div>
+              <div class="pin-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="scr-success">
+              <div class="phone-check-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M20 6L9 17L4 12"/>
+                </svg>
+              </div>
+              <div class="plabel success-text">Approved</div>
+            </div>
           </div>
-          <div class="hf-check sb-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
-        </div>
+          <div class="hf-check sb-tick">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <span class="hf-tooltip" role="tooltip">
+            <strong>National e-ID</strong>: Smart-ID, Mobile-ID, eParaksts or ID card authenticate signers securely on the external portal.
+          </span>
+        </button>
         <div class="hf-stagelabel">e-ID signing</div>
       </div>
-      <div class="hf-conn c4"><svg viewBox="0 0 46 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="46" y2="1"/></svg></div>
-      <div class="hf-node">
-        <div class="sb-card hf-final">
-          <span class="sb-icon seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+
+      <!-- Connection 4 -->
+      <div class="hf-conn c4" data-step="4">
+        <svg viewBox="0 0 46 2" preserveAspectRatio="none">
+          <line class="ln-bg" x1="0" y1="1" x2="46" y2="1"/>
+          <line class="ln-fg" x1="0" y1="1" x2="46" y2="1"/>
+        </svg>
+        <span class="hf-dot"></span>
+      </div>
+
+      <!-- Signed Container Node -->
+      <div class="hf-node" data-stage="container" data-step="5">
+        <button class="sb-card hf-final hf-interactive-node" aria-label="Signed container stage details">
+          <span class="sb-icon seal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </span>
           <div class="flabel">ASiC-E / eDoc</div>
           <div class="badges">
             <span class="sb-badge gold b1">QES</span>
             <span class="sb-badge blue b2">XAdES-LT</span>
             <span class="sb-badge green b3">Valid</span>
           </div>
-        </div>
+          <span class="hf-tooltip" role="tooltip">
+            <strong>Signed Container</strong>: A legally binding, certified eIDAS container containing all digital signatures and validation status.
+          </span>
+        </button>
         <div class="hf-stagelabel">Signed container</div>
       </div>
     </div>
@@ -72,91 +283,756 @@ const {
 </figure>
 
 <style>
-  .hero-flow{margin:0;display:flex;flex-direction:column;gap:14px;}
-  .hero-flow :global(.sb-stage){padding:42px 36px;border-radius:26px;}
-  .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
+  .hero-flow { margin: 0; display: flex; flex-direction: column; gap: 14px; position: relative; }
+  .hero-flow :global(.sb-stage) { padding: 30px; border-radius: 26px; }
+  .sb-cap { font-size: 13.5px; line-height: 1.5; color: var(--sb-ink-soft); max-width: 62ch; }
 
-  .hf{display:flex;align-items:stretch;gap:0;min-height:360px;}
-  .hf-node{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;position:relative;padding:6px;}
-  .hf-stagelabel{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sb-muted);}
-  .hf-conn{flex:0 0 52px;align-self:center;position:relative;height:2px;margin-top:-30px;}
-  .hf-conn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
-  .hf-conn .ln{stroke:var(--sb-border-strong);stroke-width:2;stroke-dasharray:5 6;fill:none;}
-  .hf-dot{position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:999px;margin-top:-3.5px;background:var(--sb-gold);box-shadow:0 0 10px var(--sb-glow-gold);opacity:0;}
+  /* Controls Panel */
+  .hf-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--sb-border);
+    position: relative;
+    z-index: 15;
+  }
+  .hf-step-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .hf-step-num {
+    font-weight: 700;
+    color: var(--sb-muted);
+  }
+  .hf-step-title {
+    font-weight: 800;
+    color: var(--sb-blue);
+    background: var(--sb-bg);
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+    min-width: 130px;
+    text-align: center;
+  }
+  .hf-control-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* Generic controller buttons style */
+  .ctrl-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--sb-border-strong);
+    background: var(--sb-card);
+    color: var(--sb-ink-soft);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: all 0.2s ease;
+  }
+  .ctrl-btn svg { width: 14px; height: 14px; }
+  .ctrl-btn:hover {
+    background: var(--sb-card-2);
+    color: var(--sb-ink);
+    border-color: var(--sb-blue);
+  }
+  .ctrl-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Play/Pause state toggles */
+  .play-pause-btn .play-icon { display: none; }
+  .hero-flow.is-paused .play-pause-btn .play-icon { display: block; }
+  .hero-flow.is-paused .play-pause-btn .pause-icon { display: none; }
 
-  .hf-pdf{width:92px;height:114px;border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:11px;position:relative;}
-  .hf-pdf .corner{position:absolute;top:0;right:0;width:24px;height:24px;background:var(--sb-card-2);border-left:1px solid var(--sb-border);border-bottom:1px solid var(--sb-border);border-bottom-left-radius:8px;}
-  .hf-pdf .lines{display:flex;flex-direction:column;gap:5px;margin-bottom:6px;}
-  .hf-pdf .lines i{height:4px;border-radius:3px;background:var(--sb-border-strong);display:block;}
-  .hf-pdf .lines i:nth-child(2){width:70%;}
-  .hf-pdf .tag{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--sb-gold);}
-
-  .hf-box{width:140px;height:140px;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;position:relative;
-    background:linear-gradient(160deg,var(--sb-navy),color-mix(in srgb,var(--sb-blue) 60%,var(--sb-navy)));
-    border:1px solid color-mix(in srgb,var(--sb-blue) 50%,transparent);color:#fff;}
-  .hf-box .bicon{width:38px;height:38px;color:var(--sb-gold-2);}
-  .hf-box .blabel{font-size:13px;font-weight:800;letter-spacing:.02em;}
-  .hf-box .glow{position:absolute;inset:-2px;border-radius:24px;box-shadow:0 0 0 0 var(--sb-glow-blue);pointer-events:none;}
-
-  .hf-recips{display:flex;flex-direction:column;gap:8px;width:100%;max-width:158px;}
-  .hf-rc{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:600;}
-  .hf-rc .av{width:28px;height:28px;border-radius:999px;flex:none;display:grid;place-items:center;color:#fff;background:var(--sb-blue);box-shadow:0 0 0 2px color-mix(in srgb,var(--sb-blue) 30%,transparent);}
-  .hf-rc .av svg{width:18px;height:18px;}
-  .hf-rc.approver .av{background:var(--sb-gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--sb-gold) 32%,transparent);}
-
-  .hf-phone{width:86px;height:140px;border-radius:20px;padding:9px;display:flex;flex-direction:column;gap:6px;align-items:center;position:relative;}
-  .hf-phone .scr{flex:1;width:100%;border-radius:11px;background:var(--sb-card-2);border:1px solid var(--sb-border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;}
-  .hf-phone .pidicon{width:26px;height:26px;color:var(--sb-blue);}
-  .hf-phone .plabel{font-size:9.5px;font-weight:700;text-align:center;color:var(--sb-ink-soft);line-height:1.25;padding:0 4px;}
-  .hf-phone .ring{position:absolute;inset:-3px;border-radius:21px;border:2px solid var(--sb-success);opacity:0;}
-  .hf-check{position:absolute;bottom:-10px;left:50%;margin-left:-13px;opacity:0;}
-
-  .hf-final{width:142px;border-radius:20px;padding:16px 14px 18px;display:flex;flex-direction:column;gap:11px;align-items:center;position:relative;
-    border-color:color-mix(in srgb,var(--sb-gold) 50%,var(--sb-border));
-    box-shadow:0 18px 40px -18px var(--sb-glow-gold), var(--sb-shadow-sm);}
-  .hf-final::before{content:"";position:absolute;inset:0;border-radius:20px;padding:1px;pointer-events:none;
-    background:linear-gradient(160deg,color-mix(in srgb,var(--sb-gold) 60%,transparent),transparent 60%);
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
-  .hf-final .seal{width:40px;height:40px;color:var(--sb-gold);}
-  .hf-final .flabel{font-size:12.5px;font-weight:800;letter-spacing:.02em;text-align:center;}
-  .hf-final .badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
-  .hf-final :global(.sb-badge){padding:5px 9px;font-size:10.5px;}
-
-  html[data-theme="dark"] .hf-box{background:linear-gradient(160deg,#1b2a52,#23408e);color:#eaf0ff;}
-  @media (prefers-color-scheme: dark){ html:not([data-theme="light"]) .hf-box{background:linear-gradient(160deg,#1b2a52,#23408e);color:#eaf0ff;} }
-
-  @media (max-width:900px){
-    .hf{flex-direction:column;align-items:center;}
-    .hf-node{width:100%;max-width:300px;}
-    .hf-conn{flex:0 0 30px;width:2px;height:30px;margin:-4px 0;}
+  /* Horizontal Diagram Flow */
+  .hf { display: flex; align-items: stretch; gap: 0; min-height: 290px; position: relative; }
+  .hf-node { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; position: relative; padding: 6px; z-index: 5; }
+  .hf-stagelabel { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--sb-muted); transition: color 0.3s; }
+  
+  /* Connectors */
+  .hf-conn { flex: 0 0 52px; align-self: center; position: relative; height: 2px; margin-top: -30px; z-index: 2; }
+  .hf-conn svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  
+  .hf-conn .ln-bg { stroke: var(--sb-border-strong); stroke-width: 2; stroke-dasharray: 4 4; fill: none; }
+  
+  /* Connector foreground glowing line */
+  .hf-conn .ln-fg {
+    stroke: var(--sb-blue);
+    stroke-width: 2.5;
+    stroke-dasharray: 46;
+    stroke-dashoffset: 46;
+    fill: none;
+    transition: stroke-dashoffset 0.8s ease-in-out, stroke 0.4s ease-in-out;
+  }
+  .hf-conn.is-done .ln-fg {
+    stroke-dashoffset: 0;
+    stroke: var(--sb-success);
+  }
+  .hf-conn.is-animating .ln-fg {
+    stroke-dashoffset: 0;
+    stroke: var(--sb-blue);
+    animation: drawTrace 1.6s linear infinite;
+  }
+  @keyframes drawTrace {
+    0% { stroke-dashoffset: 46; }
+    100% { stroke-dashoffset: 0; }
   }
 
-  @media (prefers-reduced-motion: no-preference){
-    .hf-conn .ln{animation:sbDash 2.4s linear infinite;}
-    .hf-pdf{animation:hfPdf 12s ease-in-out infinite;}
-    .hf-box{animation:hfBoxIn 12s ease-in-out infinite;}
-    .hf-box .glow{animation:hfGlow 5.1s ease-in-out infinite;}
-    .hf-rc{opacity:0;transform:translateY(8px);}
-    .hf-rc.r1{animation:hfReveal 12s ease-in-out infinite;animation-delay:-11.625s;}
-    .hf-rc.r2{animation:hfReveal 12s ease-in-out infinite;animation-delay:-11.175s;}
-    .hf-rc.r3{animation:hfReveal 12s ease-in-out infinite;animation-delay:-10.725s;}
-    .hf-conn.c2 .hf-dot{animation:hfDot 12s ease-in-out infinite;}
-    .hf-phone{animation:hfPhone 12s ease-in-out infinite;}
-    .hf-phone .ring{animation:hfRing 12s ease-in-out infinite;}
-    .hf-check{animation:hfCheck 12s ease-in-out infinite;}
-    .hf-final{animation:hfFinal 12s ease-in-out infinite;}
-    .hf-final :global(.sb-badge){opacity:0;}
-    .hf-final :global(.b1){animation:hfReveal 12s ease-in-out infinite;animation-delay:-3.6s;}
-    .hf-final :global(.b2){animation:hfReveal 12s ease-in-out infinite;animation-delay:-3.225s;}
-    .hf-final :global(.b3){animation:hfReveal 12s ease-in-out infinite;animation-delay:-2.85s;}
+  /* Connection Dot running */
+  .hf-dot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    margin-top: -4px;
+    background: var(--sb-blue);
+    box-shadow: 0 0 10px var(--sb-blue);
+    opacity: 0;
+    pointer-events: none;
   }
-  @keyframes hfReveal{0%,4%{opacity:0;transform:translateY(8px);}9%,94%{opacity:1;transform:translateY(0);}98%,100%{opacity:0;transform:translateY(8px);}}
-  @keyframes hfPdf{0%,3%{opacity:0;transform:translateX(-26px);}9%{opacity:1;transform:translateX(-26px);}19%{opacity:1;transform:translateX(8px);}24%{opacity:0;transform:translateX(20px) scale(.96);}94%{opacity:0;transform:translateX(20px) scale(.96);}100%{opacity:0;transform:translateX(-26px);}}
-  @keyframes hfBoxIn{0%,2%{opacity:0;transform:scale(.94);}10%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;transform:scale(.94);}}
-  @keyframes hfGlow{0%,100%{box-shadow:0 0 0 0 var(--sb-glow-blue);}50%{box-shadow:0 0 34px 4px var(--sb-glow-blue);}}
-  @keyframes hfDot{0%,33%{opacity:0;transform:translateX(0);}36%{opacity:1;}42%{opacity:1;transform:translateX(40px);}45%,100%{opacity:0;transform:translateX(44px);}}
-  @keyframes hfPhone{0%,40%{opacity:0;transform:translateY(10px);}47%,94%{opacity:1;transform:translateY(0);}99%,100%{opacity:0;transform:translateY(10px);}}
-  @keyframes hfRing{0%,46%{opacity:0;transform:scale(.96);}50%{opacity:.9;transform:scale(1);}60%{opacity:0;transform:scale(1.08);}100%{opacity:0;}}
-  @keyframes hfCheck{0%,50%{opacity:0;transform:scale(.5);}55%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;}}
-  @keyframes hfFinal{0%,58%{opacity:0;transform:translateY(10px) scale(.96);}65%,94%{opacity:1;transform:translateY(0) scale(1);}99%,100%{opacity:0;transform:translateY(10px) scale(.96);}}
+  .hf-conn.is-animating .hf-dot {
+    animation: hfDotRunner 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  @keyframes hfDotRunner {
+    0% { left: 0%; opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+
+  /* Interactive nodes configuration */
+  button.hf-interactive-node {
+    padding: 0;
+    margin: 0;
+    background: var(--sb-card);
+    border: 1px solid var(--sb-border);
+    font-family: inherit;
+    text-align: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+  }
+  button.hf-recips {
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+  button.hf-interactive-node:hover {
+    transform: scale(1.04);
+    z-index: 10;
+  }
+  button.hf-interactive-node:focus-visible {
+    transform: scale(1.05);
+    border-color: var(--sb-blue);
+    box-shadow: 0 0 0 2px var(--sb-glow-blue);
+    z-index: 10;
+  }
+
+  /* Inactive states by default */
+  .hf-node button.hf-interactive-node {
+    filter: grayscale(15%) opacity(0.85);
+  }
+  .hf-node.is-active button.hf-interactive-node {
+    filter: none;
+    border-color: var(--sb-blue);
+    box-shadow: 0 0 16px var(--sb-glow-blue);
+    transform: scale(1.02);
+  }
+  .hf-node.is-done button.hf-interactive-node {
+    filter: none;
+    border-color: var(--sb-success);
+  }
+  .hf-node.is-active .hf-stagelabel {
+    color: var(--sb-blue);
+    font-weight: 800;
+  }
+  .hf-node.is-done .hf-stagelabel {
+    color: var(--sb-success);
+  }
+
+  /* Tooltip styles */
+  .hf-tooltip {
+    position: absolute;
+    bottom: 114%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    width: 230px;
+    padding: 10px 12px;
+    background: var(--sb-card);
+    border: 1px solid var(--sb-border-strong);
+    border-left: 3px solid var(--sb-blue);
+    box-shadow: var(--sb-shadow);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: left;
+    color: var(--sb-ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 50;
+  }
+  .hf-tooltip::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--sb-border-strong) transparent transparent transparent;
+  }
+  button.hf-interactive-node:hover .hf-tooltip,
+  button.hf-interactive-node:focus-visible .hf-tooltip,
+  .hf-node.is-hover-forced .hf-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) scale(1) translateY(-4px);
+    pointer-events: auto;
+  }
+  .hf-tooltip strong {
+    display: block;
+    color: var(--sb-blue);
+    margin-bottom: 2px;
+  }
+
+  /* Stage 1: Upload (PDF) */
+  .hf-pdf { width: 92px; height: 114px; border-radius: 14px; display: flex; flex-direction: column; justify-content: flex-end; padding: 11px; position: relative; }
+  .hf-pdf .corner { position: absolute; top: 0; right: 0; width: 24px; height: 24px; background: var(--sb-card-2); border-left: 1px solid var(--sb-border); border-bottom: 1px solid var(--sb-border); border-bottom-left-radius: 8px; }
+  .hf-pdf .lines { display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px; }
+  .hf-pdf .lines i { height: 4px; border-radius: 3px; background: var(--sb-border-strong); display: block; }
+  .hf-pdf .lines i:nth-child(2) { width: 70%; }
+  .hf-pdf .tag { font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--sb-gold); }
+
+  /* Connector 1 Document Particle shoot */
+  .hf-doc-particle {
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 20px;
+    height: 24px;
+    background: var(--sb-card);
+    border: 1px solid var(--sb-border-strong);
+    border-radius: 4px;
+    padding: 3.5px;
+    display: none;
+    color: var(--sb-blue);
+    box-shadow: var(--sb-shadow-sm);
+    z-index: 10;
+  }
+  .hf-conn.c1.is-animating .hf-doc-particle {
+    display: block;
+    animation: hfDocShoot 1.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  }
+  @keyframes hfDocShoot {
+    0% { left: -10px; opacity: 0; transform: scale(0.6) translateY(-50%); }
+    20% { opacity: 1; transform: scale(1) translateY(-50%); }
+    80% { opacity: 1; transform: scale(1) translateY(-50%); }
+    100% { left: 42px; opacity: 0; transform: scale(0.6) translateY(-50%); }
+  }
+
+  /* Stage 2: Workflow (SignBox Node) */
+  .hf-box { width: 130px; height: 130px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; position: relative;
+    background: linear-gradient(160deg, var(--sb-navy), color-mix(in srgb, var(--sb-blue) 60%, var(--sb-navy)));
+    border: 1px solid color-mix(in srgb, var(--sb-blue) 50%, transparent); color: #fff; }
+  .hf-box .bicon { width: 38px; height: 38px; color: var(--sb-gold-2); transition: transform 0.4s ease; }
+  .hf-box .blabel { font-size: 13px; font-weight: 800; letter-spacing: .02em; }
+  .hf-box .glow { position: absolute; inset: -2px; border-radius: 24px; box-shadow: 0 0 0 0 var(--sb-glow-blue); pointer-events: none; }
+  
+  /* Cogs rotation on active workflow processing */
+  .hf-node.is-active[data-stage="workflow"] .bicon {
+    animation: hfWorkflowSpin 3s linear infinite;
+  }
+  @keyframes hfWorkflowSpin {
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Active scanning effect */
+  .scanner-line {
+    position: absolute;
+    top: 8%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--sb-gold), transparent);
+    box-shadow: 0 0 6px var(--sb-gold);
+    opacity: 0;
+    z-index: 4;
+  }
+  .hf-node.is-active[data-stage="workflow"] .scanner-line {
+    opacity: 1;
+    animation: hfScanLine 1.6s ease-in-out infinite;
+  }
+  @keyframes hfScanLine {
+    0%, 100% { top: 8%; }
+    50% { top: 92%; }
+  }
+
+  /* Stage 3: Recipients */
+  .hf-recips { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 158px; }
+  .hf-rc { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; opacity: 0.65; transition: all 0.3s ease; position: relative; }
+  
+  /* Human Avatar box */
+  .hf-rc .av { width: 28px; height: 28px; border-radius: 999px; flex: none; display: block; overflow: hidden; }
+  .hf-rc .av svg { width: 100%; height: 100%; display: block; }
+  
+  /* Signature writing pen overlay styling */
+  .signing-pen {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    margin-top: -10px;
+    width: 20px;
+    height: 20px;
+    color: var(--sb-blue);
+    opacity: 0;
+    transform: scale(0.6) rotate(15deg);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .approver .signing-pen {
+    color: var(--sb-gold);
+  }
+  
+  @keyframes penScribble {
+    0% { opacity: 0; transform: scale(0.6) translate(0, 0) rotate(15deg); }
+    15% { opacity: 1; transform: scale(1) translate(-2px, -2px) rotate(5deg); }
+    30% { transform: scale(1) translate(2px, 0px) rotate(20deg); }
+    45% { transform: scale(1) translate(-2px, -2px) rotate(5deg); }
+    60% { transform: scale(1) translate(2px, 0px) rotate(20deg); }
+    75% { transform: scale(1) translate(-1px, -1px) rotate(10deg); }
+    90% { opacity: 1; transform: scale(1) translate(2px, 0px) rotate(15deg); }
+    100% { opacity: 0; transform: scale(0.6) translate(4px, -2px) rotate(30deg); }
+  }
+
+  .hf-node.is-active[data-stage="recipients"] .r1 .signing-pen {
+    animation: penScribble 0.8s forwards;
+    animation-delay: 0.1s;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r2 .signing-pen {
+    animation: penScribble 0.8s forwards;
+    animation-delay: 1.3s;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r3 .signing-pen {
+    animation: penScribble 0.8s forwards;
+    animation-delay: 2.5s;
+  }
+
+  /* Green/Gold ticks */
+  .rc-check {
+    width: 16px;
+    height: 16px;
+    border-radius: 99px;
+    background: var(--sb-success);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    transform: scale(0);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-left: auto;
+  }
+  .r3 .rc-check { background: var(--sb-gold); }
+  .rc-check svg { width: 10px; height: 10px; }
+
+  /* Signer sequential animation */
+  .hf-node.is-active[data-stage="recipients"] .r1 {
+    animation: hfRecipientActive 1s forwards;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r1 .rc-check {
+    transform: scale(1);
+    transition-delay: 0.9s;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r2 {
+    animation: hfRecipientActive 1s forwards;
+    animation-delay: 1.2s;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r2 .rc-check {
+    transform: scale(1);
+    transition-delay: 2.1s;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r3 {
+    animation: hfRecipientGoldActive 1s forwards;
+    animation-delay: 2.4s;
+  }
+  .hf-node.is-active[data-stage="recipients"] .r3 .rc-check {
+    transform: scale(1);
+    transition-delay: 3.3s;
+  }
+
+  /* Static done state for Recipients */
+  .hf-node.is-done .hf-rc {
+    opacity: 1;
+    border-color: var(--sb-success);
+  }
+  .hf-node.is-done .rc-check {
+    transform: scale(1);
+  }
+
+  @keyframes hfRecipientActive {
+    to {
+      opacity: 1;
+      border-color: var(--sb-blue);
+      box-shadow: 0 0 10px var(--sb-glow-blue);
+      background: var(--sb-card);
+    }
+  }
+  @keyframes hfRecipientGoldActive {
+    to {
+      opacity: 1;
+      border-color: var(--sb-gold);
+      box-shadow: 0 0 10px var(--sb-glow-gold);
+      background: var(--sb-card);
+    }
+  }
+
+  /* Stage 4: e-ID Signing (Phone) */
+  .hf-phone { width: 86px; height: 136px; border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 6px; align-items: center; position: relative; }
+  .hf-phone .scr { flex: 1; width: 100%; border-radius: 11px; background: var(--sb-card-2); border: 1px solid var(--sb-border); position: relative; overflow: hidden; }
+  .hf-phone .pidicon { width: 26px; height: 26px; color: var(--sb-blue); }
+  .hf-phone .plabel { font-size: 9.5px; font-weight: 700; text-align: center; color: var(--sb-ink-soft); line-height: 1.25; padding: 0 4px; }
+  .hf-phone .ring { position: absolute; inset: -3px; border-radius: 21px; border: 2px solid var(--sb-success); opacity: 0; pointer-events: none; }
+  .hf-check { position: absolute; bottom: -10px; left: 50%; margin-left: -13px; opacity: 0; }
+
+  /* Phone screen content layout */
+  .scr-default, .scr-prompt, .scr-success {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s, transform 0.3s;
+    background: var(--sb-card-2);
+  }
+  .scr-prompt { opacity: 0; transform: translateY(12px); padding: 4px; }
+  .scr-success { opacity: 0; transform: translateY(12px); color: var(--sb-success); }
+  
+  .phone-check-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 99px;
+    background: var(--sb-success-soft);
+    display: grid;
+    place-items: center;
+    margin-bottom: 4px;
+  }
+  .phone-check-circle svg { width: 16px; height: 16px; color: var(--sb-success); }
+  .success-text { color: var(--sb-success) !important; font-weight: 800; }
+
+  .pin-title { font-size: 8px; font-weight: 800; color: var(--sb-muted); text-transform: uppercase; margin-bottom: 6px; text-align: center; }
+  .pin-dots { display: flex; gap: 3.5px; }
+  .pin-dots span { width: 6px; height: 6px; border-radius: 99px; background: var(--sb-border-strong); transition: background 0.15s; }
+
+  /* Screen animation details during active signing */
+  .hf-node.is-active[data-stage="signing"] .scr-default {
+    opacity: 0; transform: translateY(-12px);
+  }
+  .hf-node.is-active[data-stage="signing"] .scr-prompt {
+    opacity: 1; transform: translateY(0);
+    transition-delay: 0.3s;
+  }
+  .hf-node.is-active[data-stage="signing"] .pin-dots span:nth-child(1) { animation: fillDot 0.2s forwards; animation-delay: 0.7s; }
+  .hf-node.is-active[data-stage="signing"] .pin-dots span:nth-child(2) { animation: fillDot 0.2s forwards; animation-delay: 1.0s; }
+  .hf-node.is-active[data-stage="signing"] .pin-dots span:nth-child(3) { animation: fillDot 0.2s forwards; animation-delay: 1.3s; }
+  .hf-node.is-active[data-stage="signing"] .pin-dots span:nth-child(4) { animation: fillDot 0.2s forwards; animation-delay: 1.6s; }
+  
+  .hf-node.is-active[data-stage="signing"] .scr-prompt {
+    animation: promptOut 0.4s forwards;
+    animation-delay: 2.2s;
+  }
+  .hf-node.is-active[data-stage="signing"] .scr-success {
+    opacity: 1; transform: translateY(0);
+    transition-delay: 2.5s;
+  }
+  .hf-node.is-active[data-stage="signing"] .ring {
+    animation: hfPhoneRing 1.5s ease-out forwards;
+    animation-delay: 2.5s;
+  }
+  .hf-node.is-active[data-stage="signing"] .hf-check {
+    opacity: 1; transform: scale(1);
+    transition: opacity 0.3s, transform 0.3s;
+    transition-delay: 2.7s;
+  }
+
+  /* Done (Static) signing step */
+  .hf-node.is-done .scr-default { opacity: 0; }
+  .hf-node.is-done .scr-prompt { opacity: 0; }
+  .hf-node.is-done .scr-success { opacity: 1; transform: none; }
+  .hf-node.is-done .hf-check { opacity: 1; }
+
+  @keyframes fillDot { to { background: var(--sb-ink); } }
+  @keyframes promptOut { to { opacity: 0; transform: translateY(-12px); } }
+  @keyframes hfPhoneRing {
+    0% { opacity: 0.9; transform: scale(0.96); }
+    100% { opacity: 0; transform: scale(1.08); }
+  }
+
+  /* Stage 5: Signed Container */
+  .hf-final { width: 142px; border-radius: 20px; padding: 16px 14px 18px; display: flex; flex-direction: column; gap: 11px; align-items: center; position: relative;
+    border-color: color-mix(in srgb, var(--sb-gold) 50%, var(--sb-border));
+    box-shadow: var(--sb-shadow-sm); }
+  .hf-final::before { content: ""; position: absolute; inset: 0; border-radius: 20px; padding: 1px; pointer-events: none;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--sb-gold) 60%, transparent), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  
+  .hf-final .seal { width: 40px; height: 40px; color: var(--sb-gold); }
+  .hf-final .flabel { font-size: 12.5px; font-weight: 800; letter-spacing: .02em; text-align: center; }
+  .hf-final .badges { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+  .hf-final :global(.sb-badge) { padding: 5px 8px; font-size: 10px; opacity: 0.4; transform: translateY(-6px); transition: all 0.4s ease; }
+  
+  /* Seal rotate and lock */
+  .hf-node.is-active[data-stage="container"] .seal {
+    animation: hfSealLock 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  .hf-node.is-active[data-stage="container"] :global(.sb-badge) {
+    opacity: 1; transform: translateY(0);
+  }
+  .hf-node.is-active[data-stage="container"] :global(.b1) { transition-delay: 0.7s; }
+  .hf-node.is-active[data-stage="container"] :global(.b2) { transition-delay: 1.0s; }
+  .hf-node.is-active[data-stage="container"] :global(.b3) { transition-delay: 1.3s; }
+  
+  .hf-node.is-active[data-stage="container"] button.hf-final {
+    box-shadow: 0 16px 36px -12px var(--sb-glow-gold);
+    border-color: var(--sb-gold);
+  }
+
+  /* Done (Static) Container State */
+  .hf-node.is-done :global(.sb-badge),
+  .hf-node.is-done .seal {
+    opacity: 1;
+    transform: none;
+  }
+  .hf-node.is-done button.hf-final {
+    border-color: var(--sb-success);
+  }
+
+  @keyframes hfSealLock {
+    0% { transform: scale(0.9) rotate(-35deg); opacity: 0.7; }
+    50% { transform: scale(1.08) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; filter: drop-shadow(0 0 8px var(--sb-glow-gold)); }
+  }
+
+  /* Theme adjustments */
+  html[data-theme="dark"] .hf-box { background: linear-gradient(160deg, #1b2a52, #23408e); color: #eaf0ff; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .hf-box { background: linear-gradient(160deg, #1b2a52, #23408e); color: #eaf0ff; }
+  }
+
+  /* Responsive layout changes */
+  @media (max-width: 900px) {
+    .hf { flex-direction: column; align-items: center; min-height: auto; gap: 16px; padding: 10px 0; }
+    .hf-node { width: 100%; max-width: 300px; padding: 12px 6px; }
+    .hf-conn { flex: 0 0 32px; width: 2px; height: 32px; margin: -6px 0; }
+    
+    .hf-conn svg { transform: rotate(90deg); transform-origin: center; width: 32px; height: 2px; top: 50%; left: 50%; margin-top: -1px; margin-left: -16px; }
+    
+    .hf-doc-particle { display: none !important; }
+    .hf-dot { display: none !important; }
+
+    .hf-tooltip {
+      bottom: auto;
+      top: 110%;
+    }
+    .hf-tooltip::before {
+      top: auto;
+      bottom: 100%;
+      border-color: transparent transparent var(--sb-border-strong) transparent;
+    }
+    button.hf-interactive-node:hover .hf-tooltip,
+    button.hf-interactive-node:focus-visible .hf-tooltip,
+    .hf-node.is-hover-forced .hf-tooltip {
+      transform: translateX(-50%) scale(1) translateY(4px);
+    }
+  }
+
+  /* Accessibility and Prefers Reduced Motion Settings */
+  @media (prefers-reduced-motion: reduce) {
+    .hf-controls { display: none !important; }
+    .hf-conn .ln-fg { stroke-dashoffset: 0 !important; stroke: var(--sb-success) !important; animation: none !important; }
+    .hf-node button.hf-interactive-node { filter: none !important; transform: none !important; border-color: var(--sb-success) !important; }
+    .scr-default { opacity: 0 !important; }
+    .scr-prompt { opacity: 0 !important; }
+    .scr-success { opacity: 1 !important; transform: none !important; }
+    .rc-check { transform: scale(1) !important; }
+    .hf-rc { opacity: 1 !important; transform: none !important; background: var(--sb-card) !important; }
+    .seal { transform: none !important; opacity: 1 !important; animation: none !important; }
+    .badges :global(.sb-badge) { opacity: 1 !important; transform: none !important; }
+    .hf-check { opacity: 1 !important; transform: none !important; }
+    .signing-pen { display: none !important; }
+  }
 </style>
+
+<script>
+  function initHeroFlow() {
+    const container = document.querySelector('.hero-flow');
+    if (!container) return;
+
+    const nodes = container.querySelectorAll('.hf-node');
+    const connectors = container.querySelectorAll('.hf-conn');
+    const interactiveButtons = container.querySelectorAll('.hf-interactive-node');
+    
+    // Controls elements
+    const playPauseBtn = container.querySelector('.play-pause-btn');
+    const prevBtn = container.querySelector('.prev-btn');
+    const nextBtn = container.querySelector('.next-btn');
+    const resetBtn = container.querySelector('.reset-btn');
+    const stepIdxDisplay = container.querySelector('#hf-step-idx');
+    const stepTextDisplay = container.querySelector('#hf-step-text');
+
+    const stepNames = [
+      'Upload',
+      'Workflow',
+      'Recipients',
+      'e-ID signing',
+      'Signed container'
+    ];
+    
+    const stepDurations = [3000, 3000, 4800, 4200, 3800]; // Tailored durations for each stage's animations
+    let currentStep = 1;
+    let autoplay = true;
+    let timer = null;
+
+    // Setup viewport intersection checking
+    let isInView = false;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          isInView = true;
+          if (autoplay) {
+            container.classList.add('in-view');
+            showStep(currentStep);
+          }
+        } else {
+          isInView = false;
+          container.classList.remove('in-view');
+          if (timer) clearTimeout(timer);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(container);
+
+    function showStep(index) {
+      if (!isInView) return;
+      currentStep = index;
+
+      // Update state display text
+      if (stepIdxDisplay) stepIdxDisplay.textContent = currentStep.toString();
+      if (stepTextDisplay) stepTextDisplay.textContent = stepNames[currentStep - 1];
+
+      // Update step layout classes
+      nodes.forEach((node) => {
+        const stepNum = parseInt(node.getAttribute('data-step') || '0', 10);
+        node.classList.remove('is-active', 'is-done');
+        
+        if (stepNum === currentStep) {
+          node.classList.add('is-active');
+        } else if (stepNum < currentStep) {
+          node.classList.add('is-done');
+        }
+      });
+
+      // Update connector states
+      connectors.forEach((conn) => {
+        const stepNum = parseInt(conn.getAttribute('data-step') || '0', 10);
+        conn.classList.remove('is-active', 'is-done', 'is-animating');
+        
+        if (stepNum === currentStep) {
+          conn.classList.add('is-animating');
+        } else if (stepNum < currentStep) {
+          conn.classList.add('is-done');
+        }
+      });
+
+      // Schedule next step if autoplaying
+      if (timer) clearTimeout(timer);
+      if (autoplay) {
+        timer = setTimeout(() => {
+          let nextIdx = currentStep + 1;
+          if (nextIdx > 5) nextIdx = 1;
+          showStep(nextIdx);
+        }, stepDurations[currentStep - 1]);
+      }
+    }
+
+    function togglePlayPause() {
+      autoplay = !autoplay;
+      if (autoplay) {
+        container.classList.remove('is-paused');
+        showStep(currentStep);
+      } else {
+        container.classList.add('is-paused');
+        if (timer) clearTimeout(timer);
+      }
+    }
+
+    function resetSequence() {
+      autoplay = true;
+      container.classList.remove('is-paused');
+      showStep(1);
+    }
+
+    function prevStep() {
+      autoplay = false;
+      container.classList.add('is-paused');
+      let prevIdx = currentStep - 1;
+      if (prevIdx < 1) prevIdx = 5;
+      showStep(prevIdx);
+    }
+
+    function nextStep() {
+      autoplay = false;
+      container.classList.add('is-paused');
+      let nextIdx = currentStep + 1;
+      if (nextIdx > 5) nextIdx = 1;
+      showStep(nextIdx);
+    }
+
+    // Add playbar action events
+    playPauseBtn?.addEventListener('click', togglePlayPause);
+    resetBtn?.addEventListener('click', resetSequence);
+    prevBtn?.addEventListener('click', prevStep);
+    nextBtn?.addEventListener('click', nextStep);
+
+    // Direct card node click selects the stage and halts autoplay
+    nodes.forEach((node) => {
+      const btn = node.querySelector('.hf-interactive-node');
+      const stepNum = parseInt(node.getAttribute('data-step') || '0', 10);
+      
+      btn?.addEventListener('click', (e) => {
+        // Prevent default click actions if it is a container button
+        e.preventDefault();
+        autoplay = false;
+        container.classList.add('is-paused');
+        
+        // Remove forced hover from others and apply to clicked node
+        nodes.forEach(n => n.classList.remove('is-hover-forced'));
+        node.classList.add('is-hover-forced');
+        
+        showStep(stepNum);
+      });
+    });
+
+    // Close tooltip when clicking elsewhere in stage
+    container.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.hf-interactive-node')) {
+        nodes.forEach(n => n.classList.remove('is-hover-forced'));
+      }
+    });
+  }
+
+  // Run initializer
+  initHeroFlow();
+  // Support Astro View Transitions
+  document.addEventListener('astro:after-swap', initHeroFlow);
+</script>

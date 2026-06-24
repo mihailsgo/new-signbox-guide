@@ -15,24 +15,77 @@ const {
 ---
 <figure class={`sb-anim status-lifecycle ${className}`} role="group" aria-label="Process status lifecycle: Draft, Started, Completed, Finished">
   <div class="sb-stage">
-    <div class="sl" aria-hidden="true">
+    <!-- Controls Panel -->
+    <div class="sl-controls">
+      <button class="ctrl-btn play-pause-btn" aria-label="Pause Autoplay" title="Play/Pause">
+        <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>
+        <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </button>
+      <button class="ctrl-btn reset-btn" aria-label="Reset Sequence" title="Reset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="sl">
       <div class="sl-track">
         <div class="sl-rail"><div class="fill"></div></div>
-        <div class="sl-step">
-          <div class="sl-node n1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></div>
-          <div class="txt"><div class="nm">Draft</div><div class="ds">Process is prepared but not sent.</div></div>
+        <div class="sl-step" data-step="0">
+          <button class="sl-node n1" aria-label="View Draft step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 3v5h5"/>
+            </svg>
+          </button>
+          <div class="txt">
+            <div class="nm">Draft</div>
+            <div class="ds">Process is prepared but not sent.</div>
+          </div>
         </div>
-        <div class="sl-step">
-          <div class="sl-node n2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l14 8-14 8z"/></svg></div>
-          <div class="txt"><div class="nm">Started</div><div class="ds">Invitations are sent and actions are pending.</div></div>
+        <div class="sl-step" data-step="1">
+          <button class="sl-node n2" aria-label="View Started step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 4 19 12 5 20 5 4"/>
+            </svg>
+          </button>
+          <div class="txt">
+            <div class="nm">Started</div>
+            <div class="ds">Invitations are sent and actions are pending.</div>
+          </div>
         </div>
-        <div class="sl-step">
-          <div class="sl-node n3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-3 2.7-5 6-5M22 20c0-3-2.7-5-6-5"/><path d="M9.5 17.5l1.8 1.8 3.2-3.6"/></svg></div>
-          <div class="txt"><div class="nm">Completed</div><div class="ds">All required recipients have completed their actions.</div></div>
+        <div class="sl-step" data-step="2">
+          <button class="sl-node n3" aria-label="View Completed step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="3"/>
+              <circle cx="16" cy="8" r="3"/>
+              <path d="M2 20c0-3 2.7-5 6-5M22 20c0-3-2.7-5-6-5"/>
+              <path d="M9.5 17.5l1.8 1.8 3.2-3.6"/>
+            </svg>
+          </button>
+          <div class="txt">
+            <div class="nm">Completed</div>
+            <div class="ds">All required recipients have completed their actions.</div>
+          </div>
         </div>
-        <div class="sl-step">
-          <div class="sl-node n4 on"><div class="sl-final-glow"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-          <div class="txt"><div class="nm">Finished</div><div class="ds">Final signed container is generated and ready.</div></div>
+        <div class="sl-step" data-step="3">
+          <button class="sl-node n4" aria-label="View Finished step">
+            <div class="sl-final-glow"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </button>
+          <div class="txt">
+            <div class="nm">Finished</div>
+            <div class="ds">Final signed container is generated and ready.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -41,20 +94,89 @@ const {
 </figure>
 
 <style>
-  .status-lifecycle{margin:0;display:flex;flex-direction:column;gap:14px;}
+  .status-lifecycle{margin:0;display:flex;flex-direction:column;gap:14px;position:relative;}
   .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
 
   .sl{padding:8px 6px;}
   .sl-track{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
   .sl-rail{position:absolute;top:27px;left:12.5%;right:12.5%;height:3px;border-radius:3px;background:var(--sb-border-strong);overflow:hidden;}
-  .sl-rail .fill{position:absolute;inset:0;width:100%;background:linear-gradient(90deg,var(--sb-gold),var(--sb-gold-2));border-radius:3px;}
+  .sl-rail .fill{position:absolute;inset:0 0 0 0;width:100%;background:linear-gradient(90deg,var(--sb-gold),var(--sb-gold-2));border-radius:3px;}
   .sl-step{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;position:relative;padding:0 8px;}
-  .sl-node{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--sb-card);border:1px solid var(--sb-border-strong);color:var(--sb-muted);position:relative;z-index:1;}
-  .sl-node svg{width:24px;height:24px;}
-  .sl-node.on{color:#fff;background:linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));border-color:transparent;box-shadow:0 8px 20px -8px var(--sb-glow-gold);}
-  .sl-step .nm{font-size:13px;font-weight:800;letter-spacing:-.01em;}
+  
+  button.sl-node {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: var(--sb-card);
+    border: 1px solid var(--sb-border-strong);
+    color: var(--sb-muted);
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+  button.sl-node:hover {
+    border-color: var(--sb-gold);
+    color: var(--sb-ink);
+    transform: scale(1.04);
+  }
+  button.sl-node:focus-visible {
+    border-color: var(--sb-gold);
+    box-shadow: 0 0 0 2px var(--sb-glow-gold);
+    transform: scale(1.05);
+  }
+  button.sl-node svg{width:24px;height:24px;}
+  
+  /* Initial state / static fallback style when not playing */
+  .status-lifecycle:not(.in-view) .sl-step.is-active button.sl-node {
+    color:#fff;background:linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));border-color:transparent;box-shadow:0 8px 20px -8px var(--sb-glow-gold);
+  }
+  
+  .sl-step .nm{font-size:13px;font-weight:800;letter-spacing:-.01em;transition: color 0.2s ease, text-shadow 0.2s ease;}
   .sl-step .ds{font-size:11.5px;color:var(--sb-ink-soft);line-height:1.35;max-width:160px;}
   .sl-final-glow{position:absolute;inset:-4px;border-radius:20px;box-shadow:0 0 0 0 var(--sb-glow-gold);pointer-events:none;}
+
+  /* Controls Panel styles */
+  .sl-controls {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .ctrl-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--sb-border-strong);
+    background: var(--sb-card);
+    color: var(--sb-ink-soft);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    transition: all 0.2s ease;
+  }
+  .ctrl-btn:hover {
+    color: var(--sb-ink);
+    border-color: var(--sb-gold);
+    background: var(--sb-card-2);
+  }
+  .ctrl-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .status-lifecycle:not(.is-paused) .play-icon { display: none; }
+  .status-lifecycle.is-paused .pause-icon { display: none; }
 
   @media (max-width:680px){
     .sl-track{grid-template-columns:1fr;gap:14px;}
@@ -63,16 +185,16 @@ const {
     .sl-step{flex-direction:row;text-align:left;gap:14px;}
     .sl-step .nm,.sl-step .ds{max-width:none;}
     .sl-step .txt{display:flex;flex-direction:column;gap:3px;}
+    .sl-controls { top: 6px; right: 6px; }
   }
 
   @media (prefers-reduced-motion: no-preference){
-    .sl-rail .fill{width:0;animation:slFill 6s ease-in-out infinite;}
-    .sl-node.on{color:var(--sb-muted);background:var(--sb-card);border-color:var(--sb-border-strong);box-shadow:none;}
-    .sl-node.n1{animation:slNode 6s ease-in-out infinite;animation-delay:-6s;}
-    .sl-node.n2{animation:slNode 6s ease-in-out infinite;animation-delay:-4.8s;}
-    .sl-node.n3{animation:slNode 6s ease-in-out infinite;animation-delay:-3.6s;}
-    .sl-node.n4{animation:slNode 6s ease-in-out infinite;animation-delay:-2.4s;}
-    .sl-final-glow{animation:slGlow 6s ease-in-out infinite;}
+    :global(.in-view):not(.is-manual) .sl-rail .fill{width:0;animation:slFill 6s ease-in-out infinite;}
+    :global(.in-view):not(.is-manual) button.sl-node.n1{animation:slNode 6s ease-in-out infinite;animation-delay:-6s;}
+    :global(.in-view):not(.is-manual) button.sl-node.n2{animation:slNode 6s ease-in-out infinite;animation-delay:-4.8s;}
+    :global(.in-view):not(.is-manual) button.sl-node.n3{animation:slNode 6s ease-in-out infinite;animation-delay:-3.6s;}
+    :global(.in-view):not(.is-manual) button.sl-node.n4{animation:slNode 6s ease-in-out infinite;animation-delay:-2.4s;}
+    :global(.in-view):not(.is-manual) .sl-final-glow{animation:slGlow 6s ease-in-out infinite;}
   }
   @keyframes slFill{0%,20%{width:0;}40%{width:33.33%;}60%{width:66.66%;}78%,100%{width:100%;}}
   @keyframes slNode{
@@ -80,8 +202,190 @@ const {
     8%,100%{color:#fff;background:linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));border-color:transparent;box-shadow:0 8px 20px -8px var(--sb-glow-gold);}
   }
   @keyframes slGlow{0%,66%{box-shadow:0 0 0 0 var(--sb-glow-gold);}74%{box-shadow:0 0 28px 3px var(--sb-glow-gold);}86%,100%{box-shadow:0 0 0 0 var(--sb-glow-gold);}}
+  
   @media (max-width:680px) and (prefers-reduced-motion: no-preference){
-    .sl-rail .fill{width:100%;height:0;}
+    :global(.in-view):not(.is-manual) .sl-rail .fill{width:100%;height:0;}
     @keyframes slFill{0%,20%{height:0;}40%{height:33.33%;}60%{height:66.66%;}78%,100%{height:100%;}}
   }
+
+  /* Manual Mode override classes applied by JS */
+  .status-lifecycle.is-manual .sl-rail .fill {
+    animation: none !important;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: var(--fill-width, 0%);
+    height: 100%;
+  }
+  @media (max-width:680px) {
+    .status-lifecycle.is-manual .sl-rail .fill {
+      width: 100%;
+      height: var(--fill-height, 0%);
+    }
+  }
+  .status-lifecycle.is-manual button.sl-node {
+    animation: none !important;
+    color: var(--sb-muted);
+    background: var(--sb-card);
+    border-color: var(--sb-border-strong);
+    box-shadow: none;
+  }
+  .status-lifecycle.is-manual .sl-step.is-active button.sl-node {
+    color: #fff;
+    background: linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));
+    border-color: transparent;
+    box-shadow: 0 8px 20px -8px var(--sb-glow-gold);
+  }
+  .status-lifecycle.is-manual .sl-step.is-current .sl-final-glow {
+    animation: slGlow 3s ease-in-out infinite;
+  }
+  .status-lifecycle.is-manual .sl-step.is-current .txt .nm {
+    color: var(--sb-gold);
+    text-shadow: 0 0 6px var(--sb-glow-gold);
+  }
+  .status-lifecycle.is-manual .sl-step.is-current button.sl-node {
+    transform: scale(1.05);
+    border-color: var(--sb-gold);
+  }
 </style>
+
+<script>
+  function initStatusLifecycle() {
+    const containers = document.querySelectorAll('.status-lifecycle');
+
+    containers.forEach((container) => {
+      let isManual = false;
+      let autoplayInterval: any = null;
+      let autoplayStep = 0;
+
+      const fill = container.querySelector('.sl-rail .fill') as HTMLElement;
+      const steps = container.querySelectorAll('.sl-step');
+      const playPauseBtn = container.querySelector('.play-pause-btn');
+      const resetBtn = container.querySelector('.reset-btn');
+
+      // 1. Setup IntersectionObserver to play/pause based on viewport entry
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            container.classList.add('in-view');
+            if (!isManual && !container.classList.contains('is-paused')) {
+              startAutoplay();
+            }
+          } else {
+            container.classList.remove('in-view');
+            stopAutoplay();
+          }
+        });
+      }, { threshold: 0.15 });
+
+      observer.observe(container);
+
+      // 2. Autoplay timer to sync active classes with CSS animation
+      function startAutoplay() {
+        container.classList.remove('is-paused');
+        if (autoplayInterval) clearInterval(autoplayInterval);
+        
+        autoplayStep = 0;
+        updateAutoplayState(0);
+        
+        autoplayInterval = setInterval(() => {
+          autoplayStep = (autoplayStep + 1) % 4;
+          updateAutoplayState(autoplayStep);
+        }, 1500);
+      }
+
+      function stopAutoplay() {
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval);
+          autoplayInterval = null;
+        }
+      }
+
+      function updateAutoplayState(stepIndex: number) {
+        steps.forEach((step, idx) => {
+          if (idx <= stepIndex) {
+            step.classList.add('is-active');
+          } else {
+            step.classList.remove('is-active');
+          }
+          if (idx === stepIndex) {
+            step.classList.add('is-current');
+          } else {
+            step.classList.remove('is-current');
+          }
+        });
+      }
+
+      // 3. Manual state selector
+      function setManualStep(index: number) {
+        isManual = true;
+        stopAutoplay();
+        container.classList.add('is-manual');
+        container.classList.add('is-paused');
+        
+        steps.forEach((step, idx) => {
+          if (idx <= index) {
+            step.classList.add('is-active');
+          } else {
+            step.classList.remove('is-active');
+          }
+
+          if (idx === index) {
+            step.classList.add('is-current');
+          } else {
+            step.classList.remove('is-current');
+          }
+        });
+
+        // Update CSS variables for progress line
+        const pct = (index / 3) * 100;
+        if (fill) {
+          fill.style.setProperty('--fill-width', `${pct}%`);
+          fill.style.setProperty('--fill-height', `${pct}%`);
+        }
+      }
+
+      // Hook up node click handlers
+      steps.forEach((step, idx) => {
+        const node = step.querySelector('.sl-node');
+        node?.addEventListener('click', () => {
+          setManualStep(idx);
+        });
+      });
+
+      // Play/Pause buttons
+      playPauseBtn?.addEventListener('click', () => {
+        if (isManual || container.classList.contains('is-paused')) {
+          isManual = false;
+          container.classList.remove('is-manual');
+          if (fill) {
+            fill.style.removeProperty('--fill-width');
+            fill.style.removeProperty('--fill-height');
+          }
+          startAutoplay();
+        } else {
+          isManual = true;
+          stopAutoplay();
+          container.classList.add('is-paused');
+          container.classList.add('is-manual');
+          setManualStep(autoplayStep);
+        }
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        isManual = false;
+        container.classList.remove('is-manual');
+        container.classList.remove('is-paused');
+        if (fill) {
+          fill.style.removeProperty('--fill-width');
+          fill.style.removeProperty('--fill-height');
+        }
+        startAutoplay();
+      });
+    });
+  }
+
+  // Run on start
+  initStatusLifecycle();
+  // Support Astro View Transitions
+  document.addEventListener('astro:after-swap', initStatusLifecycle);
+</script>
+
