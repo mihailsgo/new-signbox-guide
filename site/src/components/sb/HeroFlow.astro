@@ -2,7 +2,7 @@
 /**
  * HeroFlow.astro - the core SignBox journey in one looping, highly interactive visual.
  * Redesigned to be realistic, creative, and attention-focusing with human avatars.
- * Shows: Upload → SignBox workflow → Recipients → e-ID signing → Signed container.
+ * Shows: Upload → SignBox workflow → Recipients → Signing → Signed document.
  * Pure SVG + CSS transitions. Theme-aware + accessible.
  */
 import '../../styles/signbox-anim.css';
@@ -208,9 +208,9 @@ const {
         <span class="hf-dot"></span>
       </div>
 
-      <!-- e-ID Signing Node -->
+      <!-- Signing Node -->
       <div class="hf-node" data-stage="signing" data-step="4">
-        <button class="sb-card hf-phone hf-interactive-node" aria-label="e-ID signing stage details">
+        <button class="sb-card hf-phone hf-interactive-node" aria-label="Signing stage details">
           <div class="ring"></div>
           <div class="scr">
             <div class="scr-default">
@@ -249,7 +249,7 @@ const {
             <strong>National e-ID</strong>Smart-ID, Mobile-ID, eParaksts or ID card authenticate signers securely on the external portal.
           </span>
         </button>
-        <div class="hf-stagelabel">e-ID signing</div>
+        <div class="hf-stagelabel">Signing</div>
       </div>
 
       <!-- Connection 4 -->
@@ -722,7 +722,7 @@ const {
     }
   }
 
-  /* Stage 4: e-ID Signing (Phone) */
+  /* Stage 4: Signing (Phone) */
   .hf-phone { width: 86px; height: 136px; border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 6px; align-items: center; position: relative; }
   .hf-phone .scr { flex: 1; width: 100%; border-radius: 11px; background: var(--sb-card-2); border: 1px solid var(--sb-border); position: relative; overflow: hidden; }
   .hf-phone .pidicon { width: 26px; height: 26px; color: var(--sb-blue); }
@@ -948,7 +948,7 @@ const {
       'Upload',
       'Workflow',
       'Recipients',
-      'e-ID signing',
+      'Signing',
       'Signed document'
     ];
     

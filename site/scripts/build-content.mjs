@@ -141,7 +141,7 @@ for (const sec of sections) {
 // remains the single source only for the inner guide pages.
 const index = `---
 title: TrustLynx SignBox
-description: SignBox manages full electronic signing workflows - document upload, recipients, e-ID signing and a legally valid signature container - for initiators, signers and administrators.
+description: SignBox manages full electronic signing workflows - document upload, recipients, signing and a legally valid signed document - for initiators, signers and administrators.
 template: splash
 ---
 

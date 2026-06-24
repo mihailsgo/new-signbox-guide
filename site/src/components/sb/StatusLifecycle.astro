@@ -9,7 +9,7 @@ import '../../styles/signbox-anim.css';
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
 const {
   class: className = '',
-  caption = 'Completed means every person is done. Finished means the final signed container has been generated - two distinct milestones, not the same thing.',
+  caption = 'Completed means every person is done. Finished means the final signed document has been generated - two distinct milestones, not the same thing.',
   showCaption = true,
 } = Astro.props;
 ---
@@ -84,7 +84,7 @@ const {
           </button>
           <div class="txt">
             <div class="nm">Finished</div>
-            <div class="ds">Final signed container is generated and ready.</div>
+            <div class="ds">Final signed document is generated and ready.</div>
           </div>
         </div>
       </div>

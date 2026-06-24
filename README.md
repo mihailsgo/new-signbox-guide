@@ -457,7 +457,7 @@ and shows the signer with the signature level:
 1. **Signatures valid** - *"Document signatures are valid"* with **Profile: LT**, the signer's
    name and date, and the **QES** (Qualified Electronic Signature) and **XAdES‑LT** badges.
 
-The signed container can be downloaded from the portal (**Download**) or from the process details
+The signed document can be downloaded from the portal (**Download**) or from the process details
 in the internal portal.
 
 ---
@@ -498,7 +498,7 @@ Open the **Status** filter to see all process states:
 | **Draft** | Saved but **not started** - no invitations sent yet. |
 | **Started** | In progress - waiting for one or more recipients to act. |
 | **Completed** | **All recipients have signed** - every required signature has been collected. |
-| **Finished** | The process has been **closed / finalised** (terminal) - the signed container is final. |
+| **Finished** | The process has been **closed / finalised** (terminal) - the signed document is final. |
 | **Canceled** | The process was cancelled. |
 
 **Completed vs Finished - how the process view differs.** Inside a process these two operate at
@@ -522,7 +522,7 @@ action:
    be undone."*
 
 So in practice: **Completed** = all signatures collected; **Finished** = the process is closed and
-the validated, signed container is final and downloadable.
+the validated, signed document is final and downloadable.
 
 ### 8.3 Drafts
 

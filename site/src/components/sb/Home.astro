@@ -49,7 +49,7 @@ const benefits = [
     icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
   },
   {
-    t: 'Trusted e-ID signing',
+    t: 'Trusted signing',
     d: 'Smart-ID, Mobile-ID, eParaksts, ID card and country-specific methods - backed by national identity providers.',
     href: u('appendix'),
     icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>',
@@ -101,7 +101,7 @@ const steps = [
   { t: 'Upload document', icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/>' },
   { t: 'Define signers & roles', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.3"/><path d="M21 19c0-2.3-1.6-4.3-3.7-4.85"/>' },
   { t: 'Send invitation', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>' },
-  { t: 'Sign with e-ID', icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>' },
+  { t: 'Sign', icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>' },
   { t: 'Download signed document', icon: '<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="m9 14 2 2 4-4"/>' },
 ];
 
@@ -109,7 +109,7 @@ const faqs = [
   { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container - the highest assurance level under eIDAS, with built-in validation.' },
   { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
   { q: 'Do external signers need an account?', a: 'No. A signer opens a secure invitation link, authenticates with their e-ID and signs - no SignBox account required.' },
-  { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed container has been generated and the process is closed - two distinct milestones.' },
+  { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed document has been generated and the process is closed - two distinct milestones.' },
   { q: 'Can I reuse a recurring signing setup?', a: 'Yes - save templates, contacts and document profiles so a recurring process starts pre-filled in seconds.' },
 ];
 ---
