@@ -1,156 +1,169 @@
 ---
-/**
- * PortalSplitAnimation.astro - Internal portal vs External portal.
- * Internal = a desktop window where the initiator builds & tracks the process;
- * a secure invitation hands off to the External portal = a person (the signer)
- * who authenticates with an e-ID and signs; the signed status returns.
- * Theme-aware + reduced-motion safe.
- */
 import '../../styles/signbox-anim.css';
+
 interface Props { class?: string; caption?: string; showCaption?: boolean; }
+
 const {
   class: className = '',
-  caption = 'Initiators build and track processes in the internal portal. A secure invitation hands off to the external portal, where the signer authenticates and signs - and the signed status travels straight back.',
+  caption = 'Internal teams create and track the process. External signers receive a secure invitation, confirm with e-ID, and return a signed status automatically.',
   showCaption = true,
 } = Astro.props;
 
-const person = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.4" r="3.7"/><path d="M5 19.6c0-3.7 3.1-6.1 7-6.1s7 2.4 7 6.1a.9.9 0 0 1-.9.9H5.9a.9.9 0 0 1-.9-.9z"/></svg>';
+const steps = ['Open invitation', 'Authenticate with e-ID', 'Review document', 'Sign'];
 ---
-<figure class={`sb-anim portal-split ${className}`} role="group" aria-label="Internal portal versus external portal">
-  <div class="sb-stage">
-    <div class="ps" aria-hidden="true">
 
-      <!-- INTERNAL: desktop window -->
-      <div class="ps-panel left">
-        <div class="ps-winbar"><span class="wd"></span><span class="wd"></span><span class="wd"></span><span class="ps-url">signbox.trustlynx.com</span></div>
-        <div class="ps-head">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
-          <div><div class="t">Internal portal</div><div class="s">Initiator workspace</div></div>
+<figure class={`sb-anim portal-split ${className}`} role="group" aria-label="Secure handoff between the SignBox internal and external portals">
+  <div class="sb-stage ps-stage">
+    <div class="ps-layout">
+      <section class="ps-browser ps-internal" aria-label="Internal portal dashboard">
+        <div class="ps-browserbar">
+          <span class="ps-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="ps-url"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>signbox.trustlynx.com</span>
         </div>
-        <div class="ps-list left-list">
-          <div class="ps-item i1"><span class="dot"></span>Create process</div>
-          <div class="ps-item i2"><span class="dot"></span>Upload documents</div>
-          <div class="ps-item i3"><span class="dot"></span>Add recipients</div>
-          <div class="ps-item i4"><span class="dot"></span>Track status</div>
+
+        <div class="ps-appbar">
+          <span class="ps-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></span>
+          <div><strong>Internal portal</strong><small>Initiator workspace</small></div>
+          <span class="ps-avatar" aria-hidden="true">IN</span>
         </div>
-        <div class="ps-status ps-final"><span class="sb-chip green"><span class="sb-icon ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Status: Signed</span></div>
+
+        <div class="ps-process-head">
+          <div><small>Signing process</small><strong>Supplier agreement</strong></div>
+          <span class="ps-live"><i></i>Live tracking</span>
+        </div>
+
+        <div class="ps-document">
+          <span class="ps-doc-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></span>
+          <div><strong>Agreement.pdf</strong><small>PDF · 248 KB</small></div>
+          <span class="sb-chip ps-upload">Uploaded</span>
+        </div>
+
+        <div class="ps-table" role="table" aria-label="Process recipients">
+          <div class="ps-tr ps-th" role="row"><span>Recipient</span><span>Role</span><span>Status</span></div>
+          <div class="ps-tr" role="row">
+            <span class="ps-person"><i aria-hidden="true">S1</i><b>Signer 1</b></span><span>Signer</span>
+            <span class="ps-state ps-state-signer"><em>Draft</em><em>Started</em><em>Signed</em></span>
+          </div>
+          <div class="ps-tr" role="row">
+            <span class="ps-person"><i aria-hidden="true">AP</i><b>Approver</b></span><span>Approver</span>
+            <span class="ps-state ps-state-approver"><em>Draft</em><em>Started</em><em>Approved</em></span>
+          </div>
+        </div>
+
+        <div class="ps-progress" aria-label="Process complete">
+          <span><b>Process progress</b><small>2 of 2 actions complete</small></span>
+          <i><b></b></i><strong>100%</strong>
+        </div>
+
+        <div class="ps-actions">
+          <button type="button" class="ps-start" tabindex="-1">Start process</button>
+          <span class="ps-final-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Status: Signed</span>
+        </div>
+      </section>
+
+      <div class="ps-connector" aria-hidden="true">
+        <span class="ps-connector-label">Secure handoff</span>
+        <span class="ps-track"></span>
+        <span class="ps-lock"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+        <span class="ps-packet ps-packet-out"><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <span class="ps-packet ps-packet-back"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
+        <span class="ps-return-label">Signed status</span>
       </div>
 
-      <!-- secure handoff -->
-      <div class="ps-conn">
-        <svg viewBox="0 0 64 2" preserveAspectRatio="none"><line class="ln" x1="0" y1="1" x2="64" y2="1"/></svg>
-        <span class="ps-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
-        <span class="ps-trav fwd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ps-trav back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 5.6V11c0 3.6 2.7 6.2 7 7.4 4.3-1.2 7-3.8 7-7.4V5.6z"/><path d="M9.2 11.2 11 13l3.8-3.8"/></svg></span>
-      </div>
+      <section class="ps-browser ps-external" aria-label="External portal signer experience">
+        <div class="ps-browserbar">
+          <span class="ps-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="ps-url"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>esign.trustlynx.com</span>
+        </div>
 
-      <!-- EXTERNAL: the signer on a phone -->
-      <div class="ps-panel right">
-        <div class="ps-head">
-          <span class="ic person" set:html={person}></span>
-          <div><div class="t">External portal</div><div class="s">The signer</div></div>
+        <div class="ps-appbar">
+          <span class="ps-mark gold" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span>
+          <div><strong>External portal</strong><small>Secure signing</small></div>
+          <span class="sb-chip ps-signed-chip">Signed</span>
         </div>
-        <div class="ps-list">
-          <div class="ps-item">Open invitation</div>
-          <div class="ps-item auth">Authenticate with e-ID</div>
-          <div class="ps-item sign">Review &amp; sign</div>
+
+        <div class="ps-invite">
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span>
+          <div><strong>Invitation received</strong><small>Supplier agreement · Agreement.pdf</small></div>
         </div>
-        <div class="ps-status"><span class="sb-chip gold ps-signed"><span class="sb-icon ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Signed</span></div>
-      </div>
+
+        <ol class="ps-steps">
+          {steps.map((step, index) => (
+            <li class={`ps-step ps-step-${index + 1}`}>
+              <span class="ps-step-num">{index + 1}</span>
+              <span>{step}</span>
+              <span class="ps-check" aria-label="Completed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>
+            </li>
+          ))}
+        </ol>
+
+        <div class="ps-phone">
+          <div class="ps-phone-shell" aria-hidden="true">
+            <i></i><span class="ps-phone-logo">ID</span><b>Agreement.pdf</b><small>Confirm on your device</small><em><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></em>
+          </div>
+          <div><span class="sb-chip gold">Smart-ID</span><strong>e-ID confirmed</strong><small>Identity verified securely</small></div>
+        </div>
+      </section>
     </div>
   </div>
   {showCaption && <figcaption class="sb-cap">{caption}</figcaption>}
 </figure>
 
 <style>
-  .portal-split{margin:0;display:flex;flex-direction:column;gap:14px;}
-  .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
-
-  .ps{display:grid;grid-template-columns:1fr 72px 1fr;align-items:stretch;gap:0;min-height:300px;}
-  .ps-panel{border-radius:18px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px;position:relative;box-shadow:var(--sb-shadow-sm);}
-  .ps-panel.left{background:linear-gradient(165deg,color-mix(in srgb,var(--sb-blue) 13%,var(--sb-card)),var(--sb-card));border:1px solid color-mix(in srgb,var(--sb-blue) 30%,var(--sb-border));}
-  .ps-panel.right{background:linear-gradient(165deg,color-mix(in srgb,var(--sb-gold) 14%,var(--sb-card)),var(--sb-card));border:1px solid color-mix(in srgb,var(--sb-gold) 32%,var(--sb-border));}
-
-  /* desktop window chrome on the internal panel */
-  .ps-winbar{display:flex;align-items:center;gap:6px;margin:-2px -2px 2px;}
-  .ps-winbar .wd{width:9px;height:9px;border-radius:999px;background:var(--sb-border-strong);}
-  .ps-winbar .wd:nth-child(1){background:#e5734e;}
-  .ps-winbar .wd:nth-child(2){background:#e3b341;}
-  .ps-winbar .wd:nth-child(3){background:#3fb27f;}
-  .ps-url{margin-left:8px;font-size:10.5px;font-weight:600;color:var(--sb-muted);letter-spacing:.01em;
-    background:var(--sb-card-2);border:1px solid var(--sb-border);border-radius:6px;padding:2px 8px;}
-
-  .ps-head{display:flex;align-items:center;gap:10px;}
-  .ps-head .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none;}
-  .ps-panel.left .ps-head .ic{background:linear-gradient(160deg,var(--sb-navy),var(--sb-blue));}
-  .ps-panel.right .ps-head .ic{background:linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));color:#241a07;}
-  .ps-head .ic svg{width:20px;height:20px;}
-  .ps-head .ic.person svg{width:24px;height:24px;}
-  .ps-head .t{font-size:14px;font-weight:800;letter-spacing:-.01em;}
-  .ps-head .s{font-size:11px;color:var(--sb-muted);font-weight:600;}
-
-  .ps-list{display:flex;flex-direction:column;gap:8px;}
-  .ps-item{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--sb-ink-soft);padding:8px 11px;border-radius:10px;background:var(--sb-card-2);border:1px solid var(--sb-border);}
-  .ps-item .dot{width:7px;height:7px;border-radius:999px;background:var(--sb-blue);flex:none;}
-  .ps-item.hot{border-color:color-mix(in srgb,var(--sb-gold) 60%,transparent);color:var(--sb-ink);background:color-mix(in srgb,var(--sb-gold) 14%,var(--sb-card-2));}
-  .ps-status{margin-top:auto;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;}
-  .ci{width:13px;height:13px;}
-
-  .ps-conn{position:relative;}
-  .ps-conn svg{position:absolute;top:50%;left:0;width:100%;height:40px;margin-top:-20px;overflow:visible;}
-  .ps-conn .ln{stroke:var(--sb-border-strong);stroke-width:2;stroke-dasharray:5 6;fill:none;}
-  .ps-lock{position:absolute;top:50%;left:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:9px;display:grid;place-items:center;background:var(--sb-card);border:1px solid var(--sb-border-strong);color:var(--sb-ink-soft);box-shadow:var(--sb-shadow-sm);z-index:2;}
-  .ps-lock svg{width:14px;height:14px;}
-  .ps-trav{position:absolute;top:50%;left:6%;width:24px;height:24px;margin-top:-12px;border-radius:8px;display:grid;place-items:center;opacity:0;z-index:1;}
-  .ps-trav svg{width:13px;height:13px;}
-  .ps-trav.fwd{background:var(--sb-gold);color:#241a07;box-shadow:0 0 12px var(--sb-glow-gold);}
-  .ps-trav.back{background:var(--sb-success);color:#fff;box-shadow:0 0 12px rgba(21,163,90,.45);}
-  .ps-signed{opacity:1;}
-
-  @media (max-width:760px){
-    .ps{grid-template-columns:1fr;gap:0;}
-    .ps-conn{height:58px;}
-    .ps-conn svg{top:0;left:50%;width:40px;height:100%;margin:0 0 0 -20px;}
-    .ps-trav{top:6%;left:50%;margin-left:-12px;}
+  .portal-split{margin:0;display:flex;flex-direction:column;gap:14px}.ps-stage{padding:clamp(14px,2.4vw,26px)}
+  .ps-layout{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.08fr) 86px minmax(0,.92fr);align-items:stretch}
+  .ps-browser{min-width:0;overflow:hidden;border:1px solid var(--sb-border-strong);border-radius:18px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm);color:var(--sb-ink)}
+  .ps-internal{background:color-mix(in srgb,var(--sb-card) 93%,var(--sb-blue))}.ps-external{background:color-mix(in srgb,var(--sb-card) 95%,var(--sb-gold))}
+  .ps-browserbar{height:32px;padding:0 10px;display:flex;align-items:center;gap:10px;background:var(--sb-card-2);border-bottom:1px solid var(--sb-border)}
+  .ps-dots{display:flex;gap:4px}.ps-dots i{width:6px;height:6px;border-radius:50%;background:var(--sb-muted)}.ps-dots i:nth-child(1){background:#df6753}.ps-dots i:nth-child(2){background:#dba638}.ps-dots i:nth-child(3){background:#43a873}
+  .ps-url{min-width:0;display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;background:var(--sb-card);color:var(--sb-muted);font-size:9px;font-weight:650;white-space:nowrap}.ps-url svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2}
+  .ps-appbar{height:54px;padding:8px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--sb-border)}.ps-appbar>div{display:flex;flex-direction:column;min-width:0}.ps-appbar strong{font-size:13px;line-height:1.2}.ps-appbar small{font-size:9px;color:var(--sb-muted)}
+  .ps-mark{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--sb-navy);color:#f8fbff}.ps-mark.gold{background:color-mix(in srgb,var(--sb-gold) 18%,var(--sb-card));color:var(--sb-gold);border:1px solid color-mix(in srgb,var(--sb-gold) 34%,var(--sb-border))}.ps-mark svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .ps-avatar{margin-left:auto;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--sb-blue) 16%,var(--sb-card));color:var(--sb-blue);font-size:8px;font-weight:800}.ps-signed-chip{margin-left:auto;color:var(--sb-success);background:var(--sb-success-soft);border-color:color-mix(in srgb,var(--sb-success) 35%,transparent)}
+  .ps-process-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px 8px}.ps-process-head>div{display:flex;flex-direction:column}.ps-process-head small{font-size:8.5px;color:var(--sb-muted);text-transform:uppercase;letter-spacing:.07em}.ps-process-head strong{font-size:14px}.ps-live{display:flex;align-items:center;gap:5px;color:var(--sb-blue);font-size:8.5px;font-weight:700}.ps-live i{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .ps-document{margin:0 12px 9px;padding:9px;display:flex;align-items:center;gap:9px;border:1px solid var(--sb-border);border-radius:10px;background:var(--sb-card)}.ps-document>div{display:flex;flex-direction:column;min-width:0}.ps-document strong{font-size:11px}.ps-document small{font-size:8.5px;color:var(--sb-muted)}.ps-doc-icon{width:29px;height:34px;display:grid;place-items:center;border-radius:7px;background:color-mix(in srgb,var(--sb-blue) 10%,var(--sb-card));color:var(--sb-blue)}.ps-doc-icon svg{width:16px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.ps-upload{margin-left:auto;font-size:8px;padding:4px 6px}
+  .ps-table{margin:0 12px 9px;overflow:hidden;border:1px solid var(--sb-border);border-radius:10px;background:var(--sb-card)}.ps-tr{display:grid;grid-template-columns:minmax(88px,1.35fr) .7fr .7fr;align-items:center;min-height:33px;padding:0 8px;border-top:1px solid var(--sb-border);font-size:8.8px;color:var(--sb-ink-soft)}.ps-tr:first-child{border:0}.ps-th{min-height:25px;background:var(--sb-card-2);color:var(--sb-muted);font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}.ps-person{display:flex;align-items:center;gap:6px;min-width:0}.ps-person i{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--sb-blue) 14%,var(--sb-card));color:var(--sb-blue);font-size:7px;font-style:normal;font-weight:800}.ps-person b{font-size:9px;color:var(--sb-ink)}
+  .ps-state{position:relative;height:18px}.ps-state em{position:absolute;inset:0 auto auto 0;padding:4px 6px;border-radius:6px;background:var(--sb-card-2);color:var(--sb-muted);font-size:7.5px;font-style:normal;font-weight:750;opacity:0}.ps-state em:last-child{opacity:1;background:var(--sb-success-soft);color:var(--sb-success)}
+  .ps-progress{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin:0 12px 10px;padding:0 2px}.ps-progress>span{display:flex;flex-direction:column}.ps-progress b,.ps-progress>strong{font-size:8px}.ps-progress small{font-size:7.5px;color:var(--sb-muted)}.ps-progress>i{height:5px;overflow:hidden;border-radius:999px;background:var(--sb-border)}.ps-progress>i b{display:block;width:100%;height:100%;border-radius:inherit;background:var(--sb-success)}
+  .ps-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 12px 13px}.ps-start{border:0;border-radius:8px;padding:8px 10px;background:var(--sb-gold);color:#241a07;font:800 9px/1 var(--sl-font,system-ui);box-shadow:0 5px 12px -7px var(--sb-glow-gold);pointer-events:none}.ps-final-status{display:flex;align-items:center;gap:4px;color:var(--sb-success);font-size:9px;font-weight:800}.ps-final-status svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .ps-invite{display:flex;align-items:center;gap:9px;margin:11px 12px 8px;padding:9px;border:1px solid color-mix(in srgb,var(--sb-gold) 30%,var(--sb-border));border-radius:10px;background:var(--sb-card);box-shadow:0 7px 18px -14px var(--sb-glow-gold)}.ps-invite>span{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:color-mix(in srgb,var(--sb-gold) 15%,var(--sb-card));color:var(--sb-gold)}.ps-invite svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ps-invite div{display:flex;flex-direction:column}.ps-invite strong{font-size:10px}.ps-invite small{font-size:8px;color:var(--sb-muted)}
+  .ps-steps{list-style:none!important;margin:0 12px!important;padding:0!important;display:flex;flex-direction:column;gap:5px;counter-reset:none!important}.ps-steps>li::before{display:none!important}.ps-step{display:grid;grid-template-columns:20px 1fr 18px;align-items:center;gap:7px;min-height:30px;padding:5px 7px!important;margin:0!important;border:1px solid var(--sb-border);border-radius:8px;background:var(--sb-card);color:var(--sb-ink-soft);font-size:8.8px;font-weight:700}.ps-step-num{width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--sb-blue) 13%,var(--sb-card));color:var(--sb-blue);font-size:7.5px}.ps-check{width:17px;height:17px;display:grid;place-items:center;border-radius:50%;background:var(--sb-success-soft);color:var(--sb-success)}.ps-check svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .ps-phone{display:flex;align-items:center;gap:10px;margin:9px 12px 12px;padding:8px;border-radius:10px;background:color-mix(in srgb,var(--sb-blue) 7%,var(--sb-card));border:1px solid color-mix(in srgb,var(--sb-blue) 20%,var(--sb-border))}.ps-phone-shell{position:relative;width:48px;height:76px;flex:none;display:flex;flex-direction:column;align-items:center;padding:10px 4px 5px;border:2px solid var(--sb-ink-soft);border-radius:10px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm)}.ps-phone-shell>i{position:absolute;top:3px;width:14px;height:2px;border-radius:2px;background:var(--sb-border-strong)}.ps-phone-logo{font-size:8px;font-weight:850;color:var(--sb-blue);margin-top:2px}.ps-phone-shell b{font-size:5px;margin-top:5px}.ps-phone-shell small{font-size:4.5px;color:var(--sb-muted);text-align:center}.ps-phone-shell em{margin-top:auto;width:17px;height:17px;display:grid;place-items:center;border-radius:50%;background:var(--sb-success);color:white}.ps-phone-shell em svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.ps-phone>div:last-child{display:flex;flex-direction:column;align-items:flex-start;gap:3px}.ps-phone>div:last-child strong{font-size:9.5px}.ps-phone>div:last-child small{font-size:7.5px;color:var(--sb-muted)}.ps-phone .sb-chip{font-size:7.5px;padding:3px 6px}
+  .ps-connector{position:relative;min-height:100%;display:flex;align-items:center;justify-content:center}.ps-track{position:absolute;left:6px;right:6px;top:50%;height:1px;background:repeating-linear-gradient(90deg,var(--sb-border-strong) 0 5px,transparent 5px 10px)}.ps-lock{position:relative;z-index:2;width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--sb-border-strong);border-radius:10px;background:var(--sb-card);color:var(--sb-ink-soft);box-shadow:var(--sb-shadow-sm)}.ps-lock svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ps-connector-label,.ps-return-label{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:7.5px;font-weight:800;letter-spacing:.04em}.ps-connector-label{top:calc(50% - 34px);color:var(--sb-gold)}.ps-return-label{top:calc(50% + 27px);color:var(--sb-success)}.ps-packet{position:absolute;z-index:3;top:calc(50% - 10px);left:4px;width:20px;height:20px;display:grid;place-items:center;border-radius:7px;color:#211705;opacity:0}.ps-packet svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.ps-packet-out{background:var(--sb-gold);box-shadow:0 0 12px var(--sb-glow-gold)}.ps-packet-back{left:auto;right:4px;background:var(--sb-success);color:white;box-shadow:0 0 12px color-mix(in srgb,var(--sb-success) 38%,transparent)}
+  @media (prefers-reduced-motion:no-preference){
+    :global(.is-animating).portal-split .ps-start{animation:psStart 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .ps-state em{animation:psStateDraft 10s linear infinite}
+    :global(.is-animating).portal-split .ps-state em:nth-child(2){animation-name:psStateStarted}
+    :global(.is-animating).portal-split .ps-state em:nth-child(3){animation-name:psStateDone}
+    :global(.is-animating).portal-split .ps-progress>i b{animation:psProgress 10s cubic-bezier(.22,1,.36,1) infinite;transform-origin:left}
+    :global(.is-animating).portal-split .ps-packet-out{animation:psPacketOut 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .ps-packet-back{animation:psPacketBack 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .ps-invite{animation:psInvite 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .ps-phone{animation:psPhone 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .ps-step .ps-check{animation:psCheck 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .ps-step-2 .ps-check{animation-delay:.7s}:global(.is-animating).portal-split .ps-step-3 .ps-check{animation-delay:1.4s}:global(.is-animating).portal-split .ps-step-4 .ps-check{animation-delay:2.1s}
+    :global(.is-animating).portal-split .ps-final-status,:global(.is-animating).portal-split .ps-signed-chip{animation:psFinal 10s cubic-bezier(.22,1,.36,1) infinite}
   }
-
-  /* panels + workspace stay solid; only the handoff story animates */
-  .ps-signed{opacity:0;}
-  @media (prefers-reduced-motion: no-preference){
-    :global(.in-view) .ps-conn .ln{animation:sbDash 1.8s linear infinite;}
-    :global(.in-view) .ps-trav.fwd{animation:psFwd 6.5s ease-in-out infinite;}
-    :global(.in-view) .ps-trav.back{animation:psBack 6.5s ease-in-out infinite;}
-    :global(.in-view) .ps-item.auth{animation:psHot 6.5s ease-in-out infinite;}
-    :global(.in-view) .ps-item.sign{animation:psHot 6.5s ease-in-out infinite;animation-delay:-3.2s;}
-    :global(.in-view) .ps-signed{animation:psReveal 6.5s ease-in-out infinite;animation-delay:-2.6s;}
-    :global(.in-view) .ps-final{animation:psReveal 6.5s ease-in-out infinite;animation-delay:-1.3s;}
-  }
-  @media (prefers-reduced-motion: reduce){ .ps-signed{opacity:1;} }
-  @keyframes psReveal{0%,30%{opacity:0;transform:translateY(6px);}38%,92%{opacity:1;transform:translateY(0);}99%,100%{opacity:0;transform:translateY(6px);}}
-  @keyframes psHot{0%,28%{box-shadow:0 0 0 0 transparent;}34%,44%{box-shadow:0 0 0 3px color-mix(in srgb,var(--sb-gold) 28%,transparent);}52%,100%{box-shadow:0 0 0 0 transparent;}}
-  @keyframes psFwd{0%,18%{opacity:0;left:6%;}22%{opacity:1;}32%{opacity:1;left:88%;}35%,100%{opacity:0;left:90%;}}
-  @keyframes psBack{0%,62%{opacity:0;left:88%;}66%{opacity:1;}76%{opacity:1;left:8%;}79%,100%{opacity:0;left:6%;}}
+  @keyframes psStart{0%,10%{box-shadow:0 5px 12px -7px var(--sb-glow-gold);transform:none}12%,17%{box-shadow:0 0 0 4px color-mix(in srgb,var(--sb-gold) 22%,transparent),0 8px 18px -8px var(--sb-glow-gold);transform:translateY(-1px)}20%,100%{transform:none}}
+  @keyframes psStateDraft{0%,16%{opacity:1}18%,100%{opacity:0}}@keyframes psStateStarted{0%,16%{opacity:0}18%,69%{opacity:1}72%,100%{opacity:0}}@keyframes psStateDone{0%,69%{opacity:0}73%,98%{opacity:1}100%{opacity:0}}
+  @keyframes psProgress{0%,18%{transform:scaleX(.12)}72%,100%{transform:scaleX(1)}}
+  @keyframes psPacketOut{0%,21%{opacity:0;transform:translateX(0)}23%{opacity:1}29%{opacity:1;transform:translateX(62px)}31%,100%{opacity:0;transform:translateX(62px)}}
+  @keyframes psPacketBack{0%,63%{opacity:0;transform:translateX(0)}65%{opacity:1}71%{opacity:1;transform:translateX(-62px)}73%,100%{opacity:0;transform:translateX(-62px)}}
+  @keyframes psInvite{0%,27%{opacity:.45;transform:translateY(4px)}31%,100%{opacity:1;transform:none}}@keyframes psPhone{0%,34%{opacity:.38;transform:translateY(5px)}38%,100%{opacity:1;transform:none}}
+  @keyframes psCheck{0%,39%{opacity:0;transform:scale(.55)}44%,100%{opacity:1;transform:scale(1)}}@keyframes psFinal{0%,69%{opacity:0;transform:translateY(4px)}74%,100%{opacity:1;transform:none}}
+  @media (max-width:780px){.ps-layout{grid-template-columns:1fr}.ps-connector{min-height:74px}.ps-track{left:50%;right:auto;top:5px;bottom:5px;width:1px;height:auto;background:repeating-linear-gradient(180deg,var(--sb-border-strong) 0 5px,transparent 5px 10px)}.ps-connector-label{top:8px}.ps-return-label{top:auto;bottom:7px}.ps-packet{top:5px;left:calc(50% - 10px)}.ps-packet-back{top:auto;right:auto;bottom:5px;left:calc(50% - 10px)}@keyframes psPacketOut{0%,21%{opacity:0;transform:translateY(0)}23%{opacity:1}29%{opacity:1;transform:translateY(54px)}31%,100%{opacity:0;transform:translateY(54px)}}@keyframes psPacketBack{0%,63%{opacity:0;transform:translateY(0)}65%{opacity:1}71%{opacity:1;transform:translateY(-54px)}73%,100%{opacity:0;transform:translateY(-54px)}}}
+  @media (max-width:430px){.ps-stage{padding:10px}.ps-tr{grid-template-columns:minmax(82px,1.3fr) .7fr .75fr}.ps-process-head,.ps-document,.ps-table,.ps-progress,.ps-actions{margin-left:9px;margin-right:9px}.ps-process-head{padding-left:2px;padding-right:2px}}
 </style>
 
 <script>
-  function initPortalSplit() {
-    const container = document.querySelector('.portal-split');
-    if (!container) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          container.classList.add('in-view');
-        } else {
-          container.classList.remove('in-view');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    observer.observe(container);
+  function initPortalSplitAnimations() {
+    document.querySelectorAll('.portal-split').forEach((element) => {
+      if (element.hasAttribute('data-observed')) return;
+      element.setAttribute('data-observed', 'true');
+      const observer = new IntersectionObserver(([entry]) => element.classList.toggle('is-animating', entry.isIntersecting), { threshold: 0.12 });
+      observer.observe(element);
+    });
   }
-
-  initPortalSplit();
-  document.addEventListener('astro:after-swap', initPortalSplit);
+  initPortalSplitAnimations();
+  document.addEventListener('astro:after-swap', initPortalSplitAnimations);
 </script>
-

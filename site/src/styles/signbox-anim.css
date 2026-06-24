@@ -83,10 +83,18 @@
 
 /* ---------------------------------------------------------------- primitives */
 .sb-anim *{ box-sizing:border-box; }
+.sb-anim{
+  color:var(--sb-ink);
+  font-family:var(--sl-font,system-ui,-apple-system,"Segoe UI",sans-serif);
+  font-variant-numeric:tabular-nums;
+}
 
 .sb-stage{
   position:relative;border-radius:22px;overflow:hidden;
-  background:radial-gradient(120% 120% at 12% 0%, var(--sb-stage-1), var(--sb-stage-2));
+  background:
+    radial-gradient(70% 90% at 8% 0%,color-mix(in srgb,var(--sb-blue) 7%,transparent),transparent 68%),
+    radial-gradient(70% 90% at 95% 100%,color-mix(in srgb,var(--sb-gold) 7%,transparent),transparent 68%),
+    linear-gradient(145deg,var(--sb-stage-1),var(--sb-stage-2));
   border:1px solid var(--sb-border);
   box-shadow:var(--sb-shadow);
   padding:30px;
@@ -131,6 +139,28 @@
   background:var(--sb-success);color:#fff;
 }
 .sb-tick svg{width:13px;height:13px;}
+
+.sb-cap{
+  max-width:68ch;
+  color:var(--sb-ink-soft);
+  font-size:13px;
+  line-height:1.55;
+}
+
+.sb-anim svg{
+  vector-effect:non-scaling-stroke;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sb-anim *,
+  .sb-anim *::before,
+  .sb-anim *::after{
+    animation-duration:.001ms!important;
+    animation-delay:0ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+  }
+}
 
 /* shared connector dash-flow */
 @keyframes sbDash{ to{ stroke-dashoffset:-22; } }
