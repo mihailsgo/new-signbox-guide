@@ -102,7 +102,7 @@ const steps = [
   { t: 'Define signers & roles', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.3"/><path d="M21 19c0-2.3-1.6-4.3-3.7-4.85"/>' },
   { t: 'Send invitation', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>' },
   { t: 'Sign with e-ID', icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>' },
-  { t: 'Download valid container', icon: '<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="m9 14 2 2 4-4"/>' },
+  { t: 'Download signed document', icon: '<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="m9 14 2 2 4-4"/>' },
 ];
 
 const faqs = [
@@ -142,7 +142,7 @@ const faqs = [
   <section id="how" class="sec story-sec">
     <div class="sec-head">
       <h2>How SignBox works</h2>
-      <p>One document, one workflow - five steps from upload to a sealed, validated container.</p>
+      <p>One document, one workflow - five steps from upload to a sealed, validated signed document.</p>
     </div>
     <ol class="flow5">
       {steps.map((s, i) => (
@@ -345,8 +345,8 @@ const faqs = [
   .band strong{color:var(--hp-ink);}
 
   /* sections */
-  .sec{padding:clamp(62px,8vw,92px) 0;border-top:1px solid var(--hp-border);}
-  .sec-head{margin-bottom:clamp(30px,4vw,44px);max-width:64ch;}
+  .sec{padding:clamp(38px,5vw,60px) 0;border-top:1px solid var(--hp-border);}
+  .sec-head{margin-bottom:clamp(24px,3vw,34px);max-width:64ch;}
   .sec-head h2{font-size:clamp(29px,3.8vw,43px);line-height:1.05;letter-spacing:-.035em;font-weight:800;margin-bottom:12px;text-wrap:balance;}
   .sec-head h3.subhead{font-size:clamp(17px,2.1vw,21px);letter-spacing:-.01em;font-weight:800;margin:0 0 6px;color:var(--hp-ink);}
   .sec-head p{font-size:16px;line-height:1.6;color:var(--hp-ink-soft);}
@@ -371,14 +371,37 @@ const faqs = [
     .flow5-num{grid-column:2;grid-row:auto;}
     .flow5-t{grid-column:3;grid-row:auto;}
   }
+  /* Sequential "traveling highlight": each step lights up gold in turn, so the
+     strip reads as a left-to-right progression. Reduced-motion shows the
+     static blue resting state (no animation). */
+  .flow5-ic{transition:color .3s ease,background-color .3s ease,box-shadow .3s ease,transform .3s ease;}
+  @media (prefers-reduced-motion:no-preference){
+    .flow5-step{--fd:0s;}
+    .flow5-step:nth-child(2){--fd:1.1s;}
+    .flow5-step:nth-child(3){--fd:2.2s;}
+    .flow5-step:nth-child(4){--fd:3.3s;}
+    .flow5-step:nth-child(5){--fd:4.4s;}
+    .flow5-ic{animation:flow5ic 5.6s ease-in-out infinite;animation-delay:var(--fd);}
+    .flow5-num{animation:flow5num 5.6s ease-in-out infinite;animation-delay:var(--fd);}
+  }
+  @keyframes flow5ic{
+    0%,4%{color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 9%,transparent);box-shadow:none;transform:scale(1);}
+    9%,15%{color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 18%,transparent);box-shadow:0 0 0 4px color-mix(in srgb,var(--hp-gold) 13%,transparent);transform:scale(1.1);}
+    22%,100%{color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 9%,transparent);box-shadow:none;transform:scale(1);}
+  }
+  @keyframes flow5num{
+    0%,4%{color:var(--hp-gold);opacity:.65;}
+    9%,15%{color:var(--hp-gold);opacity:1;}
+    22%,100%{color:var(--hp-gold);opacity:.65;}
+  }
 
-  .support-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:44px;}
+  .support-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px;}
   .support-story,.secondary-block{padding:24px;border:1px solid var(--hp-border);border-radius:18px;background:color-mix(in srgb,var(--hp-surface) 64%,transparent);}
   .support-copy{margin-bottom:20px;}
   .support-copy .subhead{font-size:19px;letter-spacing:-.015em;margin-bottom:6px;}
   .support-copy p{font-size:14px;line-height:1.55;color:var(--hp-ink-soft);}
   .support-copy em{font-style:normal;color:var(--hp-gold);font-weight:700;}
-  .secondary-block{margin-top:32px;padding:26px;}
+  .secondary-block{margin-top:22px;padding:24px;}
   .visual-detail{border-top:1px solid var(--hp-border);}
   .visual-detail summary,.secondary-disclosure>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--hp-ink);font-size:13px;font-weight:750;}
   .visual-detail summary{padding:15px 2px 2px;color:var(--hp-gold);}
@@ -419,14 +442,16 @@ const faqs = [
 
   /* benefits */
   .ben-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-block:1px solid var(--hp-border);}
-  .ben-card{display:grid;grid-template-columns:42px 1fr;gap:7px 16px;padding:25px 24px;text-decoration:none;color:inherit;transition:background-color .25s ease;}
+  .ben-card{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;gap:8px 16px;padding:25px 24px;text-decoration:none;color:inherit;transition:background-color .25s ease;}
   .ben-card:nth-child(odd){border-inline-end:1px solid var(--hp-border);}
   .ben-card:nth-child(-n+2){border-bottom:1px solid var(--hp-border);}
   .ben-card:hover{background:color-mix(in srgb,var(--hp-gold) 5%,transparent);}
-  .ben-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 12%,transparent);}
+  /* icon spans both rows and pins to the top so its top edge lines up with
+     the heading's top edge (text beginning), not its baseline. */
+  .ben-ic{grid-column:1;grid-row:1/3;align-self:start;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 12%,transparent);}
   .ben-ic svg{width:21px;height:21px;}
-  .ben-card h3{align-self:end;font-size:16px;letter-spacing:-.01em;}
-  .ben-card p{grid-column:2;font-size:14px;color:var(--hp-ink-soft);line-height:1.55;}
+  .ben-card h3{grid-column:2;grid-row:1;align-self:start;font-size:16px;letter-spacing:-.01em;line-height:1.25;}
+  .ben-card p{grid-column:2;grid-row:2;font-size:14px;color:var(--hp-ink-soft);line-height:1.55;}
 
   /* doc cards */
   .doc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-block:1px solid var(--hp-border);}

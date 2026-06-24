@@ -2,118 +2,106 @@
 import '../../styles/signbox-anim.css';
 interface Props { class?: string; }
 const { class: className = '' } = Astro.props;
+
+// Abstract signing patterns - the IDEA behind each department's workflow,
+// not a literal dashboard. Minimal text: department + pattern + a node glyph.
+const flows = [
+  { dept: 'HR', pattern: 'Single signer', nodes: [
+      { t: 'doc' }, { t: 'person', tone: 'blue' }, { t: 'done' },
+  ]},
+  { dept: 'Procurement', pattern: 'External + internal', nodes: [
+      { t: 'doc' }, { t: 'person', tone: 'gold' }, { t: 'lock' }, { t: 'person', tone: 'blue' }, { t: 'done' },
+  ]},
+  { dept: 'Board', pattern: 'Sequential approval', nodes: [
+      { t: 'doc' }, { t: 'num', n: 1 }, { t: 'num', n: 2 }, { t: 'num', n: 3 }, { t: 'done' },
+  ]},
+];
+
+const icons = {
+  doc: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/>',
+  person: '<circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/>',
+  lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  done: '<path d="m5 13 4 4L19 7"/>',
+};
 ---
 
-<div class={`sb-anim bw ${className}`} aria-label="Business workflow examples">
+<div class={`sb-anim bw ${className}`} aria-label="Abstract signing-pattern examples by department">
   <div class="bw-grid">
-    <article class="bw-card bw-hr">
-      <header class="bw-header">
-        <div><span class="bw-kicker">HR</span><h4>HR contract</h4></div>
-        <span class="bw-department"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V6l8-3 8 3v15M8 9h1M8 13h1M8 17h1M15 9h1M15 13h1M15 17h1"/></svg>Department</span>
-      </header>
-
-      <div class="bw-doc">
-        <span class="bw-docicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></span>
-        <div><small>Document</small><strong>Employment agreement.pdf</strong><em>PDF · Ready to send</em></div>
-      </div>
-
-      <div class="bw-person-row">
-        <span class="bw-avatar blue" aria-hidden="true">EM</span>
-        <div><small>Recipient</small><strong>Employee</strong></div>
-        <span class="sb-chip blue">Smart-ID</span>
-      </div>
-
-      <div class="bw-workflow bw-workflow-horizontal" aria-label="Upload agreement, employee signs, container stored">
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg></i><b>Upload<br/>agreement</b></span>
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h6M14.5 4.5a2.1 2.1 0 0 1 3 3L9 16l-4 1 1-4z"/></svg></i><b>Employee<br/>signs</b></span>
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v13H4zM8 4h8v3M9 12h6M12 9v6"/></svg></i><b>Container<br/>stored</b></span>
-      </div>
-
-      <div class="bw-phone-confirm" aria-label="Smart-ID confirmation complete">
-        <span aria-hidden="true"><i></i><b>ID</b><em><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></em></span>
-        <div><small>Smart-ID confirmation</small><strong>Identity confirmed</strong></div>
-      </div>
-
-      <footer class="bw-result"><span class="bw-container-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v16H5zM8 2h8v3M8 10h8M8 14h5"/></svg></span><div><small>Final signed container</small><strong>Stored</strong></div><span class="bw-result-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span></footer>
-    </article>
-
-    <article class="bw-card bw-supplier">
-      <header class="bw-header">
-        <div><span class="bw-kicker">Procurement</span><h4>Supplier agreement</h4></div>
-        <span class="bw-department"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>Department</span>
-      </header>
-
-      <div class="bw-doc compact">
-        <span class="bw-docicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></span>
-        <div><small>Document</small><strong>Supplier agreement.pdf</strong><em>External signing enabled</em></div>
-      </div>
-
-      <div class="bw-boundary">
-        <div class="bw-actor external"><span class="bw-avatar violet" aria-hidden="true">SU</span><div><small>External signer</small><strong>Supplier</strong></div></div>
-        <div class="bw-secure-route" aria-hidden="true"><span class="bw-packet"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span><i></i><b><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></b></div>
-        <div class="bw-actor internal"><span class="bw-avatar gold" aria-hidden="true">FM</span><div><small>Internal approver</small><strong>Finance / Manager</strong></div></div>
-      </div>
-
-      <div class="bw-workflow bw-workflow-horizontal supplier-flow" aria-label="Add supplier, external signing, internal tracking">
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 2-6 6-6s6 2 6 6M18 8v6M15 11h6"/></svg></i><b>Add<br/>supplier</b></span>
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h6M14.5 4.5a2.1 2.1 0 0 1 3 3L9 16l-4 1 1-4z"/></svg></i><b>External<br/>signing</b></span>
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3"/></svg></i><b>Internal<br/>tracking</b></span>
-      </div>
-
-      <div class="bw-track"><span><b>Process dashboard</b><small>Supplier signed · Approver notified</small></span><i><b></b></i><strong>100%</strong></div>
-      <footer class="bw-result"><span class="bw-container-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3"/></svg></span><div><small>Internal status</small><strong>Tracked</strong></div><span class="bw-result-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span></footer>
-    </article>
-
-    <article class="bw-card bw-board">
-      <header class="bw-header">
-        <div><span class="bw-kicker">Management</span><h4>Board decision</h4></div>
-        <span class="bw-department"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V6l8-3 8 3v15M8 9h1M8 13h1M15 9h1M15 13h1"/></svg>Department</span>
-      </header>
-
-      <div class="bw-doc compact">
-        <span class="bw-docicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></span>
-        <div><small>Document</small><strong>Board decision.pdf</strong><em>Mode · Sequential</em></div>
-      </div>
-
-      <div class="bw-signers" aria-label="Board members sign in sequence">
-        <i class="bw-signers-rail" aria-hidden="true"></i>
-        {[
-          ['B1', 'Board member 1', 'Signed'],
-          ['B2', 'Board member 2', 'Signed'],
-          ['DI', 'Director', 'Approved'],
-        ].map((signer, index) => (
-          <div class={`bw-signer bw-signer-${index + 1}`}>
-            <span class="bw-seq-number">{index + 1}</span><span class="bw-avatar blue" aria-hidden="true">{signer[0]}</span><strong>{signer[1]}</strong><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>{signer[2]}</span>
-          </div>
-        ))}
-      </div>
-
-      <div class="bw-workflow bw-workflow-horizontal board-flow" aria-label="Route document, sequential signing, validated result">
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h15M13 7l5 5-5 5"/></svg></i><b>Route<br/>document</b></span>
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 20c0-4 2-6 5-6s5 2 5 6M12 20c0-4 2-6 5-6s5 2 5 6"/></svg></i><b>Sequential<br/>signing</b></span>
-        <span class="bw-node"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></i><b>Validated<br/>result</b></span>
-      </div>
-
-      <footer class="bw-result"><span class="bw-container-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v16H5zM8 2h8v3M8 10h8M8 14h5"/></svg></span><div><small>Signed container</small><strong>Validated</strong></div><span class="bw-result-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span></footer>
-    </article>
+    {flows.map((f) => (
+      <article class="bw-card">
+        <header class="bw-head">
+          <span class="bw-kicker">{f.dept}</span>
+          <span class="bw-pattern">{f.pattern}</span>
+        </header>
+        <div class="bw-flow" style={`--n:${f.nodes.length}`}>
+          <span class="bw-rail" aria-hidden="true"></span>
+          {f.nodes.map((nd, i) => (
+            <span class={`bw-node t-${nd.t}${nd.tone ? ' tone-' + nd.tone : ''}`} style={`--i:${i}`}>
+              {nd.t === 'num'
+                ? <b>{nd.n}</b>
+                : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" set:html={icons[nd.t]} />}
+            </span>
+          ))}
+        </div>
+      </article>
+    ))}
   </div>
 </div>
 
 <style>
-  .bw{margin:0}.bw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.bw-card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-width:0;min-height:510px;padding:17px;border:1px solid var(--sb-border-strong);border-radius:19px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm);transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .32s cubic-bezier(.22,1,.36,1),border-color .32s ease}.bw-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--sb-gold) 42%,var(--sb-border));box-shadow:0 22px 42px -22px rgba(15,27,46,.42)}
-  .bw-header{display:flex;justify-content:space-between;align-items:flex-start;gap:9px;padding-bottom:12px;border-bottom:1px solid var(--sb-border)}.bw-header>div{display:flex;flex-direction:column}.bw-kicker{color:var(--sb-gold);font-size:7px;font-weight:850;letter-spacing:.11em;text-transform:uppercase}.bw-header h4{margin:2px 0 0;color:var(--sb-ink);font-size:14px;letter-spacing:-.015em}.bw-department{display:flex;align-items:center;gap:4px;padding:5px 6px;border:1px solid var(--sb-border);border-radius:7px;background:var(--sb-card-2);color:var(--sb-ink-soft);font-size:6.5px;font-weight:750}.bw-department svg{width:10px;height:10px;fill:none;stroke:var(--sb-gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .bw-doc{display:flex;align-items:center;gap:9px;margin-top:12px;padding:10px;border:1px solid var(--sb-border);border-radius:10px;background:var(--sb-card-2)}.bw-doc.compact{padding-block:8px}.bw-docicon{width:34px;height:40px;display:grid;place-items:center;flex:none;border-radius:7px;background:var(--sb-card);color:var(--sb-blue);border:1px solid var(--sb-border)}.bw-docicon svg{width:18px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.bw-doc>div{display:flex;flex-direction:column;min-width:0}.bw-doc small{font-size:6.7px;color:var(--sb-muted);text-transform:uppercase;letter-spacing:.06em}.bw-doc strong{overflow:hidden;color:var(--sb-ink);font-size:9.2px;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}.bw-doc em{font-size:6.9px;color:var(--sb-muted);font-style:normal}
-  .bw-person-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 3px}.bw-avatar{width:29px;height:29px;display:grid;place-items:center;flex:none;border-radius:50%;font-size:7.5px;font-weight:850}.bw-avatar.blue{background:color-mix(in srgb,var(--sb-blue) 14%,var(--sb-card));color:var(--sb-blue)}.bw-avatar.gold{background:color-mix(in srgb,var(--sb-gold) 16%,var(--sb-card));color:var(--sb-gold)}.bw-avatar.violet{background:color-mix(in srgb,#7857d9 14%,var(--sb-card));color:#7857d9}.bw-person-row>div{display:flex;flex:1;flex-direction:column}.bw-person-row small,.bw-actor small{font-size:6.7px;color:var(--sb-muted)}.bw-person-row strong,.bw-actor strong{font-size:9px;color:var(--sb-ink)}.bw-person-row .sb-chip{font-size:7px;padding:4px 6px}
-  .bw-workflow-horizontal{position:relative;display:flex;justify-content:space-between;gap:5px;margin-top:12px;padding:10px 1px}.bw-workflow-horizontal::before{content:"";position:absolute;left:14%;right:14%;top:25px;height:2px;background:var(--sb-border-strong)}.bw-node{position:relative;z-index:1;display:flex;flex:1;flex-direction:column;align-items:center;gap:6px;text-align:center}.bw-node i{width:31px;height:31px;display:grid;place-items:center;border:2px solid color-mix(in srgb,var(--sb-blue) 52%,var(--sb-border));border-radius:50%;background:var(--sb-card);color:var(--sb-blue);transition:border-color .3s ease,transform .3s cubic-bezier(.22,1,.36,1)}.bw-node svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.bw-node b{color:var(--sb-ink-soft);font-size:6.8px;line-height:1.25}.bw-card:hover .bw-node i{border-color:var(--sb-gold);transform:translateY(-2px)}
-  .bw-phone-confirm{display:flex;align-items:center;gap:9px;margin-top:3px;padding:8px;border:1px solid color-mix(in srgb,var(--sb-blue) 22%,var(--sb-border));border-radius:10px;background:color-mix(in srgb,var(--sb-blue) 7%,var(--sb-card))}.bw-phone-confirm>span{position:relative;width:30px;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--sb-ink-soft);border-radius:7px;background:var(--sb-card);color:var(--sb-blue)}.bw-phone-confirm>span i{position:absolute;top:3px;width:9px;height:2px;border-radius:2px;background:var(--sb-border)}.bw-phone-confirm>span b{font-size:7px}.bw-phone-confirm>span em{position:absolute;right:-5px;bottom:-4px;width:15px;height:15px;display:grid;place-items:center;border-radius:50%;background:var(--sb-success);color:white}.bw-phone-confirm>span svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.bw-phone-confirm>div{display:flex;flex-direction:column}.bw-phone-confirm small{font-size:6.8px;color:var(--sb-muted)}.bw-phone-confirm strong{font-size:8.5px;color:var(--sb-ink)}
-  .bw-result{display:flex;align-items:center;gap:9px;margin-top:auto;padding:10px;border:1px solid color-mix(in srgb,var(--sb-success) 25%,var(--sb-border));border-radius:11px;background:color-mix(in srgb,var(--sb-success) 7%,var(--sb-card))}.bw-container-icon{width:31px;height:35px;display:grid;place-items:center;color:var(--sb-ink-soft)}.bw-container-icon svg{width:23px;height:28px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.bw-result>div{display:flex;flex:1;flex-direction:column}.bw-result small{font-size:6.7px;color:var(--sb-muted)}.bw-result strong{font-size:11px;color:var(--sb-success)}.bw-result-check{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:var(--sb-success);color:white}.bw-result-check svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-  .bw-boundary{display:grid;grid-template-columns:1fr 50px 1fr;align-items:center;gap:5px;margin-top:12px;padding:10px 0;border-top:1px dashed var(--sb-border-strong);border-bottom:1px dashed var(--sb-border-strong)}.bw-actor{display:flex;align-items:center;gap:6px;min-width:0}.bw-actor>div{display:flex;flex-direction:column;min-width:0}.bw-actor strong{white-space:nowrap}.bw-secure-route{position:relative;height:34px;display:flex;align-items:center;justify-content:center}.bw-secure-route i{position:absolute;left:0;right:0;height:1px;background:repeating-linear-gradient(90deg,var(--sb-blue) 0 4px,transparent 4px 8px)}.bw-secure-route b{position:relative;z-index:2;width:20px;height:20px;display:grid;place-items:center;border:1px solid var(--sb-border);border-radius:6px;background:var(--sb-card);color:var(--sb-ink-soft)}.bw-secure-route b svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.8}.bw-packet{position:absolute;z-index:3;left:0;width:17px;height:17px;display:grid;place-items:center;border-radius:5px;background:var(--sb-gold);color:#211705;opacity:0}.bw-packet svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2}
-  .bw-track{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:7px;margin-top:8px;padding:7px 8px;border-radius:9px;background:var(--sb-card-2)}.bw-track>span{display:flex;flex-direction:column}.bw-track span b,.bw-track>strong{font-size:6.8px}.bw-track small{font-size:5.8px;color:var(--sb-muted)}.bw-track>i{height:5px;overflow:hidden;border-radius:999px;background:var(--sb-border)}.bw-track>i b{display:block;width:100%;height:100%;border-radius:inherit;background:var(--sb-success)}
-  .bw-signers{position:relative;display:flex;flex-direction:column;gap:7px;margin-top:10px;padding-left:4px}.bw-signers-rail{position:absolute;left:15px;top:18px;bottom:18px;width:2px;background:var(--success,var(--sb-success))}.bw-signer{position:relative;z-index:1;display:grid;grid-template-columns:23px 27px minmax(0,1fr) auto;align-items:center;gap:6px;min-height:38px;padding:5px 6px;border:1px solid var(--sb-border);border-radius:9px;background:var(--sb-card-2)}.bw-seq-number{width:21px;height:21px;display:grid;place-items:center;border:2px solid var(--sb-success);border-radius:50%;background:var(--sb-card);color:var(--sb-success);font-size:7px;font-weight:850}.bw-signer .bw-avatar{width:27px;height:27px}.bw-signer>strong{font-size:8px;color:var(--sb-ink)}.bw-signer>span:last-child{display:flex;align-items:center;gap:3px;padding:4px 5px;border-radius:5px;background:var(--sb-success-soft);color:var(--sb-success);font-size:6.5px;font-weight:800}.bw-signer>span:last-child svg{width:8px;height:8px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.board-flow{margin-top:5px;padding-bottom:7px}.board-flow .bw-node i{width:29px;height:29px}.supplier-flow{margin-top:8px}
-  @media (prefers-reduced-motion:no-preference){.bw-card:hover{will-change:transform}.bw-phone-confirm>span em{animation:bwConfirm 9s cubic-bezier(.22,1,.36,1) infinite}.bw-supplier .bw-packet{animation:bwPacket 9s 3s cubic-bezier(.22,1,.36,1) infinite}.bw-board .bw-signer{animation:bwSigner 9s cubic-bezier(.22,1,.36,1) infinite}.bw-board .bw-signer-2{animation-delay:1s}.bw-board .bw-signer-3{animation-delay:2s}.bw-result-check{animation:bwResult 9s 2.4s cubic-bezier(.22,1,.36,1) infinite}}
-  @keyframes bwConfirm{0%,20%{opacity:.35;transform:scale(.75)}26%,94%{opacity:1;transform:scale(1)}100%{opacity:.35;transform:scale(.75)}}@keyframes bwPacket{0%,12%{opacity:0;transform:translateX(0)}16%{opacity:1}28%{opacity:1;transform:translateX(34px)}31%,100%{opacity:0;transform:translateX(34px)}}@keyframes bwSigner{0%,20%{border-color:var(--sb-border);transform:none}25%,34%{border-color:color-mix(in srgb,var(--sb-gold) 60%,var(--sb-border));transform:translateX(2px)}40%,100%{border-color:var(--sb-border);transform:none}}@keyframes bwResult{0%,42%{opacity:.35;transform:scale(.78)}48%,92%{opacity:1;transform:scale(1)}100%{opacity:.35;transform:scale(.78)}}
-  html[data-theme="dark"] .bw-card:hover{box-shadow:0 24px 48px -22px rgba(0,0,0,.72)}
-  @media (max-width:940px){.bw-grid{grid-template-columns:1fr}.bw-card{min-height:0}.bw-doc strong{font-size:10px}.bw-header h4{font-size:15px}.bw-workflow-horizontal{max-width:360px;width:100%;margin-inline:auto}.bw-result{margin-top:12px}.bw-boundary{grid-template-columns:1fr 70px 1fr}.bw-signers{max-width:440px;width:100%;margin-inline:auto}}
-  @media (max-width:420px){.bw-card{padding:14px}.bw-boundary{grid-template-columns:1fr 42px 1fr}.bw-actor{flex-direction:column;align-items:flex-start}.bw-actor strong{font-size:7.5px}.bw-signer{grid-template-columns:22px 25px minmax(0,1fr) auto}.bw-signer>span:last-child{font-size:5.8px}}
-  @media (prefers-reduced-motion:reduce){.bw-card,.bw-node i{transition:none}}
+  .bw{margin:0}
+  .bw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .bw-card{position:relative;display:flex;flex-direction:column;gap:22px;min-width:0;padding:22px 20px;
+    border:1px solid var(--sb-border-strong);border-radius:18px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm);
+    transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .32s cubic-bezier(.22,1,.36,1),border-color .32s ease}
+  .bw-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--sb-gold) 42%,var(--sb-border));box-shadow:0 22px 42px -22px rgba(15,27,46,.42)}
+  .bw-head{display:flex;flex-direction:column;gap:4px}
+  .bw-kicker{color:var(--sb-gold);font-size:9px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+  .bw-pattern{color:var(--sb-ink);font-size:15px;font-weight:800;letter-spacing:-.01em}
+
+  .bw-flow{position:relative;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 2px 2px}
+  .bw-rail{position:absolute;left:8%;right:8%;top:calc(50% - 4px);height:2px;border-radius:2px;background:var(--sb-border-strong);overflow:hidden}
+  .bw-rail::after{content:"";position:absolute;inset:0;border-radius:2px;transform:scaleX(0);transform-origin:left;
+    background:linear-gradient(90deg,var(--sb-blue),var(--sb-gold))}
+  .bw-node{position:relative;z-index:1;width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:50%;
+    border:2px solid color-mix(in srgb,var(--sb-blue) 45%,var(--sb-border));background:var(--sb-card);color:var(--sb-blue)}
+  .bw-node svg{width:17px;height:17px}
+  .bw-node b{font-size:13px;font-weight:850}
+  .bw-node.tone-gold{border-color:color-mix(in srgb,var(--sb-gold) 50%,var(--sb-border));color:var(--sb-gold)}
+  .bw-node.t-lock{border-color:var(--sb-border-strong);color:var(--sb-ink-soft);width:30px;height:30px}
+  .bw-node.t-lock svg{width:14px;height:14px}
+  .bw-node.t-done{border-color:color-mix(in srgb,var(--sb-success) 55%,var(--sb-border));background:var(--sb-success-soft);color:var(--sb-success)}
+  .bw-node.t-done svg{stroke-width:2.6}
+
+  @media (prefers-reduced-motion:no-preference){
+    :global(.is-animating).bw .bw-rail::after{animation:bwFill 4.6s ease-in-out infinite}
+    :global(.is-animating).bw .bw-node{animation:bwTravel 4.6s ease-in-out infinite;animation-delay:calc(var(--i) * .52s)}
+    :global(.is-animating).bw .bw-node.t-done{animation:bwDone 4.6s ease-in-out infinite;animation-delay:calc(var(--i) * .52s)}
+  }
+  @keyframes bwFill{0%{transform:scaleX(0);opacity:1}10%{opacity:1}62%,88%{transform:scaleX(1);opacity:1}97%,100%{transform:scaleX(1);opacity:0}}
+  @keyframes bwTravel{
+    0%,6%{transform:scale(1)}
+    11%,17%{transform:scale(1.18);box-shadow:0 0 0 4px color-mix(in srgb,var(--sb-gold) 16%,transparent);border-color:var(--sb-gold);color:var(--sb-gold)}
+    26%,100%{transform:scale(1);box-shadow:none}
+  }
+  @keyframes bwDone{
+    0%,6%{transform:scale(1)}
+    11%,17%{transform:scale(1.2);box-shadow:0 0 0 5px color-mix(in srgb,var(--sb-success) 16%,transparent)}
+    26%,100%{transform:scale(1);box-shadow:none}
+  }
+
+  @media (max-width:860px){.bw-grid{grid-template-columns:1fr}.bw-flow{max-width:340px}}
 </style>
+
+<script>
+  function initBwAnimations() {
+    document.querySelectorAll('.bw').forEach((el) => {
+      if (el.hasAttribute('data-observed')) return;
+      el.setAttribute('data-observed', 'true');
+      const io = new IntersectionObserver(([e]) => el.classList.toggle('is-animating', e.isIntersecting), { threshold: 0.18 });
+      io.observe(el);
+    });
+  }
+  initBwAnimations();
+  document.addEventListener('astro:after-swap', initBwAnimations);
+</script>

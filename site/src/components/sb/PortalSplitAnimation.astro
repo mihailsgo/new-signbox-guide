@@ -5,154 +5,130 @@ interface Props { class?: string; caption?: string; showCaption?: boolean; }
 
 const {
   class: className = '',
-  caption = 'Internal teams create and track the process. External signers receive a secure invitation, confirm with e-ID, and return a signed status automatically.',
+  caption = 'Initiators work in the internal portal; a document is handed off securely, signed externally, and the signed status returns automatically.',
   showCaption = true,
 } = Astro.props;
-
-const steps = ['Open invitation', 'Authenticate with e-ID', 'Review document', 'Sign'];
 ---
 
-<figure class={`sb-anim portal-split ${className}`} role="group" aria-label="Secure handoff between the SignBox internal and external portals">
-  <div class="sb-stage ps-stage">
-    <div class="ps-layout">
-      <section class="ps-browser ps-internal" aria-label="Internal portal dashboard">
-        <div class="ps-browserbar">
-          <span class="ps-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="ps-url"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>signbox.trustlynx.com</span>
-        </div>
-
-        <div class="ps-appbar">
-          <span class="ps-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></span>
-          <div><strong>Internal portal</strong><small>Initiator workspace</small></div>
-          <span class="ps-avatar" aria-hidden="true">IN</span>
-        </div>
-
-        <div class="ps-process-head">
-          <div><small>Signing process</small><strong>Supplier agreement</strong></div>
-          <span class="ps-live"><i></i>Live tracking</span>
-        </div>
-
-        <div class="ps-document">
-          <span class="ps-doc-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></span>
-          <div><strong>Agreement.pdf</strong><small>PDF · 248 KB</small></div>
-          <span class="sb-chip ps-upload">Uploaded</span>
-        </div>
-
-        <div class="ps-table" role="table" aria-label="Process recipients">
-          <div class="ps-tr ps-th" role="row"><span>Recipient</span><span>Role</span><span>Status</span></div>
-          <div class="ps-tr" role="row">
-            <span class="ps-person"><i aria-hidden="true">S1</i><b>Signer 1</b></span><span>Signer</span>
-            <span class="ps-state ps-state-signer"><em>Draft</em><em>Started</em><em>Signed</em></span>
-          </div>
-          <div class="ps-tr" role="row">
-            <span class="ps-person"><i aria-hidden="true">AP</i><b>Approver</b></span><span>Approver</span>
-            <span class="ps-state ps-state-approver"><em>Draft</em><em>Started</em><em>Approved</em></span>
-          </div>
-        </div>
-
-        <div class="ps-progress" aria-label="Process complete">
-          <span><b>Process progress</b><small>2 of 2 actions complete</small></span>
-          <i><b></b></i><strong>100%</strong>
-        </div>
-
-        <div class="ps-actions">
-          <button type="button" class="ps-start" tabindex="-1">Start process</button>
-          <span class="ps-final-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Status: Signed</span>
-        </div>
-      </section>
-
-      <div class="ps-connector" aria-hidden="true">
-        <span class="ps-connector-label">Secure handoff</span>
-        <span class="ps-track"></span>
-        <span class="ps-lock"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
-        <span class="ps-packet ps-packet-out"><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <span class="ps-packet ps-packet-back"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
-        <span class="ps-return-label">Signed status</span>
+<figure class={`sb-anim portal-split ${className}`} role="group" aria-label="Secure handoff from the internal workspace to the external signer">
+  <div class="sb-stage pa-stage">
+    <div class="pa-flow">
+      <!-- Internal zone -->
+      <div class="pa-node pa-internal">
+        <span class="pa-orb" aria-hidden="true">
+          <span class="pa-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h6M7 12h4"/>
+            </svg>
+          </span>
+        </span>
+        <span class="pa-label">Internal</span>
+        <span class="pa-sub">Initiator workspace</span>
       </div>
 
-      <section class="ps-browser ps-external" aria-label="External portal signer experience">
-        <div class="ps-browserbar">
-          <span class="ps-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="ps-url"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>esign.trustlynx.com</span>
-        </div>
+      <!-- Secure handoff -->
+      <div class="pa-link" aria-hidden="true">
+        <span class="pa-link-label">Secure handoff</span>
+        <span class="pa-line"></span>
+        <span class="pa-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+          </svg>
+        </span>
+        <span class="pa-token pa-token-out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/></svg>
+        </span>
+        <span class="pa-token pa-token-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+        </span>
+        <span class="pa-return">Signed status</span>
+      </div>
 
-        <div class="ps-appbar">
-          <span class="ps-mark gold" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span>
-          <div><strong>External portal</strong><small>Secure signing</small></div>
-          <span class="sb-chip ps-signed-chip">Signed</span>
-        </div>
-
-        <div class="ps-invite">
-          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span>
-          <div><strong>Invitation received</strong><small>Supplier agreement · Agreement.pdf</small></div>
-        </div>
-
-        <ol class="ps-steps">
-          {steps.map((step, index) => (
-            <li class={`ps-step ps-step-${index + 1}`}>
-              <span class="ps-step-num">{index + 1}</span>
-              <span>{step}</span>
-              <span class="ps-check" aria-label="Completed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>
-            </li>
-          ))}
-        </ol>
-
-        <div class="ps-phone">
-          <div class="ps-phone-shell" aria-hidden="true">
-            <i></i><span class="ps-phone-logo">ID</span><b>Agreement.pdf</b><small>Confirm on your device</small><em><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></em>
-          </div>
-          <div><span class="sb-chip gold">Smart-ID</span><strong>e-ID confirmed</strong><small>Identity verified securely</small></div>
-        </div>
-      </section>
+      <!-- External zone -->
+      <div class="pa-node pa-external">
+        <span class="pa-orb" aria-hidden="true">
+          <span class="pa-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+            </svg>
+          </span>
+          <span class="pa-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+          </span>
+        </span>
+        <span class="pa-label">External</span>
+        <span class="pa-sub">Signs with e-ID</span>
+      </div>
     </div>
   </div>
   {showCaption && <figcaption class="sb-cap">{caption}</figcaption>}
 </figure>
 
 <style>
-  .portal-split{margin:0;display:flex;flex-direction:column;gap:14px}.ps-stage{padding:clamp(14px,2.4vw,26px)}
-  .ps-layout{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.08fr) 86px minmax(0,.92fr);align-items:stretch}
-  .ps-browser{min-width:0;overflow:hidden;border:1px solid var(--sb-border-strong);border-radius:18px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm);color:var(--sb-ink)}
-  .ps-internal{background:color-mix(in srgb,var(--sb-card) 93%,var(--sb-blue))}.ps-external{background:color-mix(in srgb,var(--sb-card) 95%,var(--sb-gold))}
-  .ps-browserbar{height:32px;padding:0 10px;display:flex;align-items:center;gap:10px;background:var(--sb-card-2);border-bottom:1px solid var(--sb-border)}
-  .ps-dots{display:flex;gap:4px}.ps-dots i{width:6px;height:6px;border-radius:50%;background:var(--sb-muted)}.ps-dots i:nth-child(1){background:#df6753}.ps-dots i:nth-child(2){background:#dba638}.ps-dots i:nth-child(3){background:#43a873}
-  .ps-url{min-width:0;display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;background:var(--sb-card);color:var(--sb-muted);font-size:9px;font-weight:650;white-space:nowrap}.ps-url svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2}
-  .ps-appbar{height:54px;padding:8px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--sb-border)}.ps-appbar>div{display:flex;flex-direction:column;min-width:0}.ps-appbar strong{font-size:13px;line-height:1.2}.ps-appbar small{font-size:9px;color:var(--sb-muted)}
-  .ps-mark{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--sb-navy);color:#f8fbff}.ps-mark.gold{background:color-mix(in srgb,var(--sb-gold) 18%,var(--sb-card));color:var(--sb-gold);border:1px solid color-mix(in srgb,var(--sb-gold) 34%,var(--sb-border))}.ps-mark svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .ps-avatar{margin-left:auto;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--sb-blue) 16%,var(--sb-card));color:var(--sb-blue);font-size:8px;font-weight:800}.ps-signed-chip{margin-left:auto;color:var(--sb-success);background:var(--sb-success-soft);border-color:color-mix(in srgb,var(--sb-success) 35%,transparent)}
-  .ps-process-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px 8px}.ps-process-head>div{display:flex;flex-direction:column}.ps-process-head small{font-size:8.5px;color:var(--sb-muted);text-transform:uppercase;letter-spacing:.07em}.ps-process-head strong{font-size:14px}.ps-live{display:flex;align-items:center;gap:5px;color:var(--sb-blue);font-size:8.5px;font-weight:700}.ps-live i{width:6px;height:6px;border-radius:50%;background:currentColor}
-  .ps-document{margin:0 12px 9px;padding:9px;display:flex;align-items:center;gap:9px;border:1px solid var(--sb-border);border-radius:10px;background:var(--sb-card)}.ps-document>div{display:flex;flex-direction:column;min-width:0}.ps-document strong{font-size:11px}.ps-document small{font-size:8.5px;color:var(--sb-muted)}.ps-doc-icon{width:29px;height:34px;display:grid;place-items:center;border-radius:7px;background:color-mix(in srgb,var(--sb-blue) 10%,var(--sb-card));color:var(--sb-blue)}.ps-doc-icon svg{width:16px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.ps-upload{margin-left:auto;font-size:8px;padding:4px 6px}
-  .ps-table{margin:0 12px 9px;overflow:hidden;border:1px solid var(--sb-border);border-radius:10px;background:var(--sb-card)}.ps-tr{display:grid;grid-template-columns:minmax(88px,1.35fr) .7fr .7fr;align-items:center;min-height:33px;padding:0 8px;border-top:1px solid var(--sb-border);font-size:8.8px;color:var(--sb-ink-soft)}.ps-tr:first-child{border:0}.ps-th{min-height:25px;background:var(--sb-card-2);color:var(--sb-muted);font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}.ps-person{display:flex;align-items:center;gap:6px;min-width:0}.ps-person i{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--sb-blue) 14%,var(--sb-card));color:var(--sb-blue);font-size:7px;font-style:normal;font-weight:800}.ps-person b{font-size:9px;color:var(--sb-ink)}
-  .ps-state{position:relative;height:18px}.ps-state em{position:absolute;inset:0 auto auto 0;padding:4px 6px;border-radius:6px;background:var(--sb-card-2);color:var(--sb-muted);font-size:7.5px;font-style:normal;font-weight:750;opacity:0}.ps-state em:last-child{opacity:1;background:var(--sb-success-soft);color:var(--sb-success)}
-  .ps-progress{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin:0 12px 10px;padding:0 2px}.ps-progress>span{display:flex;flex-direction:column}.ps-progress b,.ps-progress>strong{font-size:8px}.ps-progress small{font-size:7.5px;color:var(--sb-muted)}.ps-progress>i{height:5px;overflow:hidden;border-radius:999px;background:var(--sb-border)}.ps-progress>i b{display:block;width:100%;height:100%;border-radius:inherit;background:var(--sb-success)}
-  .ps-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 12px 13px}.ps-start{border:0;border-radius:8px;padding:8px 10px;background:var(--sb-gold);color:#241a07;font:800 9px/1 var(--sl-font,system-ui);box-shadow:0 5px 12px -7px var(--sb-glow-gold);pointer-events:none}.ps-final-status{display:flex;align-items:center;gap:4px;color:var(--sb-success);font-size:9px;font-weight:800}.ps-final-status svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-  .ps-invite{display:flex;align-items:center;gap:9px;margin:11px 12px 8px;padding:9px;border:1px solid color-mix(in srgb,var(--sb-gold) 30%,var(--sb-border));border-radius:10px;background:var(--sb-card);box-shadow:0 7px 18px -14px var(--sb-glow-gold)}.ps-invite>span{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:color-mix(in srgb,var(--sb-gold) 15%,var(--sb-card));color:var(--sb-gold)}.ps-invite svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ps-invite div{display:flex;flex-direction:column}.ps-invite strong{font-size:10px}.ps-invite small{font-size:8px;color:var(--sb-muted)}
-  .ps-steps{list-style:none!important;margin:0 12px!important;padding:0!important;display:flex;flex-direction:column;gap:5px;counter-reset:none!important}.ps-steps>li::before{display:none!important}.ps-step{display:grid;grid-template-columns:20px 1fr 18px;align-items:center;gap:7px;min-height:30px;padding:5px 7px!important;margin:0!important;border:1px solid var(--sb-border);border-radius:8px;background:var(--sb-card);color:var(--sb-ink-soft);font-size:8.8px;font-weight:700}.ps-step-num{width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--sb-blue) 13%,var(--sb-card));color:var(--sb-blue);font-size:7.5px}.ps-check{width:17px;height:17px;display:grid;place-items:center;border-radius:50%;background:var(--sb-success-soft);color:var(--sb-success)}.ps-check svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-  .ps-phone{display:flex;align-items:center;gap:10px;margin:9px 12px 12px;padding:8px;border-radius:10px;background:color-mix(in srgb,var(--sb-blue) 7%,var(--sb-card));border:1px solid color-mix(in srgb,var(--sb-blue) 20%,var(--sb-border))}.ps-phone-shell{position:relative;width:48px;height:76px;flex:none;display:flex;flex-direction:column;align-items:center;padding:10px 4px 5px;border:2px solid var(--sb-ink-soft);border-radius:10px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm)}.ps-phone-shell>i{position:absolute;top:3px;width:14px;height:2px;border-radius:2px;background:var(--sb-border-strong)}.ps-phone-logo{font-size:8px;font-weight:850;color:var(--sb-blue);margin-top:2px}.ps-phone-shell b{font-size:5px;margin-top:5px}.ps-phone-shell small{font-size:4.5px;color:var(--sb-muted);text-align:center}.ps-phone-shell em{margin-top:auto;width:17px;height:17px;display:grid;place-items:center;border-radius:50%;background:var(--sb-success);color:white}.ps-phone-shell em svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.ps-phone>div:last-child{display:flex;flex-direction:column;align-items:flex-start;gap:3px}.ps-phone>div:last-child strong{font-size:9.5px}.ps-phone>div:last-child small{font-size:7.5px;color:var(--sb-muted)}.ps-phone .sb-chip{font-size:7.5px;padding:3px 6px}
-  .ps-connector{position:relative;min-height:100%;display:flex;align-items:center;justify-content:center}.ps-track{position:absolute;left:6px;right:6px;top:50%;height:1px;background:repeating-linear-gradient(90deg,var(--sb-border-strong) 0 5px,transparent 5px 10px)}.ps-lock{position:relative;z-index:2;width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--sb-border-strong);border-radius:10px;background:var(--sb-card);color:var(--sb-ink-soft);box-shadow:var(--sb-shadow-sm)}.ps-lock svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ps-connector-label,.ps-return-label{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:7.5px;font-weight:800;letter-spacing:.04em}.ps-connector-label{top:calc(50% - 34px);color:var(--sb-gold)}.ps-return-label{top:calc(50% + 27px);color:var(--sb-success)}.ps-packet{position:absolute;z-index:3;top:calc(50% - 10px);left:4px;width:20px;height:20px;display:grid;place-items:center;border-radius:7px;color:#211705;opacity:0}.ps-packet svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.ps-packet-out{background:var(--sb-gold);box-shadow:0 0 12px var(--sb-glow-gold)}.ps-packet-back{left:auto;right:4px;background:var(--sb-success);color:white;box-shadow:0 0 12px color-mix(in srgb,var(--sb-success) 38%,transparent)}
+  .portal-split{margin:0;display:flex;flex-direction:column;gap:14px}
+  .pa-stage{padding:clamp(26px,4vw,46px) clamp(18px,3vw,34px)}
+  .pa-flow{position:relative;z-index:1;display:grid;grid-template-columns:1fr minmax(120px,1.1fr) 1fr;align-items:center;gap:8px;min-height:200px}
+
+  /* the two zones */
+  .pa-node{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .pa-orb{position:relative;width:clamp(92px,13vw,124px);height:clamp(92px,13vw,124px);display:grid;place-items:center;border-radius:50%;
+    border:1px solid var(--sb-border-strong);background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--sb-blue) 16%,var(--sb-card)),var(--sb-card) 72%);
+    box-shadow:var(--sb-shadow-sm);transition:box-shadow .5s ease,border-color .5s ease,transform .5s ease}
+  .pa-external .pa-orb{background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--sb-gold) 16%,var(--sb-card)),var(--sb-card) 72%)}
+  .pa-ic{width:46%;height:46%;color:var(--sb-blue);display:grid;place-items:center}
+  .pa-external .pa-ic{color:var(--sb-gold)}
+  .pa-ic svg{width:100%;height:100%}
+  .pa-label{font-size:15px;font-weight:850;letter-spacing:-.01em;color:var(--sb-ink)}
+  .pa-sub{font-size:11px;color:var(--sb-muted);margin-top:-6px}
+  /* "signed" badge on the external orb */
+  .pa-badge{position:absolute;right:2px;bottom:2px;width:30%;height:30%;min-width:24px;min-height:24px;display:grid;place-items:center;border-radius:50%;
+    background:var(--sb-success);color:#fff;box-shadow:0 4px 12px -4px color-mix(in srgb,var(--sb-success) 60%,transparent);
+    opacity:0;transform:scale(.5);transition:opacity .4s ease,transform .4s cubic-bezier(.22,1,.36,1)}
+  .pa-badge svg{width:58%;height:58%}
+
+  /* the secure-handoff link */
+  .pa-link{position:relative;height:64px;display:flex;align-items:center;justify-content:center}
+  .pa-line{position:absolute;left:0;right:0;top:50%;height:2px;transform:translateY(-50%);
+    background:repeating-linear-gradient(90deg,var(--sb-border-strong) 0 6px,transparent 6px 12px)}
+  .pa-lock{position:relative;z-index:2;width:36px;height:36px;display:grid;place-items:center;border-radius:11px;
+    border:1px solid var(--sb-border-strong);background:var(--sb-card);color:var(--sb-ink-soft);box-shadow:var(--sb-shadow-sm)}
+  .pa-lock svg{width:17px;height:17px}
+  .pa-link-label{position:absolute;top:-2px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:9.5px;font-weight:800;letter-spacing:.05em;color:var(--sb-gold)}
+  .pa-return{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:9.5px;font-weight:800;letter-spacing:.05em;color:var(--sb-success)}
+  .pa-token{position:absolute;z-index:3;top:50%;left:6%;width:26px;height:26px;margin-top:-13px;display:grid;place-items:center;border-radius:8px;opacity:0}
+  .pa-token svg{width:14px;height:14px}
+  .pa-token-out{color:#241a07;background:var(--sb-gold);box-shadow:0 0 14px var(--sb-glow-gold)}
+  .pa-token-back{color:#fff;background:var(--sb-success);box-shadow:0 0 14px color-mix(in srgb,var(--sb-success) 45%,transparent)}
+
   @media (prefers-reduced-motion:no-preference){
-    :global(.is-animating).portal-split .ps-start{animation:psStart 10s cubic-bezier(.22,1,.36,1) infinite}
-    :global(.is-animating).portal-split .ps-state em{animation:psStateDraft 10s linear infinite}
-    :global(.is-animating).portal-split .ps-state em:nth-child(2){animation-name:psStateStarted}
-    :global(.is-animating).portal-split .ps-state em:nth-child(3){animation-name:psStateDone}
-    :global(.is-animating).portal-split .ps-progress>i b{animation:psProgress 10s cubic-bezier(.22,1,.36,1) infinite;transform-origin:left}
-    :global(.is-animating).portal-split .ps-packet-out{animation:psPacketOut 10s cubic-bezier(.22,1,.36,1) infinite}
-    :global(.is-animating).portal-split .ps-packet-back{animation:psPacketBack 10s cubic-bezier(.22,1,.36,1) infinite}
-    :global(.is-animating).portal-split .ps-invite{animation:psInvite 10s cubic-bezier(.22,1,.36,1) infinite}
-    :global(.is-animating).portal-split .ps-phone{animation:psPhone 10s cubic-bezier(.22,1,.36,1) infinite}
-    :global(.is-animating).portal-split .ps-step .ps-check{animation:psCheck 10s cubic-bezier(.22,1,.36,1) infinite}
-    :global(.is-animating).portal-split .ps-step-2 .ps-check{animation-delay:.7s}:global(.is-animating).portal-split .ps-step-3 .ps-check{animation-delay:1.4s}:global(.is-animating).portal-split .ps-step-4 .ps-check{animation-delay:2.1s}
-    :global(.is-animating).portal-split .ps-final-status,:global(.is-animating).portal-split .ps-signed-chip{animation:psFinal 10s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .pa-internal .pa-orb{animation:paInternal 8s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .pa-external .pa-orb{animation:paExternal 8s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .pa-badge{animation:paBadge 8s cubic-bezier(.22,1,.36,1) infinite}
+    :global(.is-animating).portal-split .pa-token-out{animation:paTokenOut 8s cubic-bezier(.45,0,.55,1) infinite}
+    :global(.is-animating).portal-split .pa-token-back{animation:paTokenBack 8s cubic-bezier(.45,0,.55,1) infinite}
+    :global(.is-animating).portal-split .pa-lock{animation:paLock 8s ease infinite}
   }
-  @keyframes psStart{0%,10%{box-shadow:0 5px 12px -7px var(--sb-glow-gold);transform:none}12%,17%{box-shadow:0 0 0 4px color-mix(in srgb,var(--sb-gold) 22%,transparent),0 8px 18px -8px var(--sb-glow-gold);transform:translateY(-1px)}20%,100%{transform:none}}
-  @keyframes psStateDraft{0%,16%{opacity:1}18%,100%{opacity:0}}@keyframes psStateStarted{0%,16%{opacity:0}18%,69%{opacity:1}72%,100%{opacity:0}}@keyframes psStateDone{0%,69%{opacity:0}73%,98%{opacity:1}100%{opacity:0}}
-  @keyframes psProgress{0%,18%{transform:scaleX(.12)}72%,100%{transform:scaleX(1)}}
-  @keyframes psPacketOut{0%,21%{opacity:0;transform:translateX(0)}23%{opacity:1}29%{opacity:1;transform:translateX(62px)}31%,100%{opacity:0;transform:translateX(62px)}}
-  @keyframes psPacketBack{0%,63%{opacity:0;transform:translateX(0)}65%{opacity:1}71%{opacity:1;transform:translateX(-62px)}73%,100%{opacity:0;transform:translateX(-62px)}}
-  @keyframes psInvite{0%,27%{opacity:.45;transform:translateY(4px)}31%,100%{opacity:1;transform:none}}@keyframes psPhone{0%,34%{opacity:.38;transform:translateY(5px)}38%,100%{opacity:1;transform:none}}
-  @keyframes psCheck{0%,39%{opacity:0;transform:scale(.55)}44%,100%{opacity:1;transform:scale(1)}}@keyframes psFinal{0%,69%{opacity:0;transform:translateY(4px)}74%,100%{opacity:1;transform:none}}
-  @media (max-width:780px){.ps-layout{grid-template-columns:1fr}.ps-connector{min-height:74px}.ps-track{left:50%;right:auto;top:5px;bottom:5px;width:1px;height:auto;background:repeating-linear-gradient(180deg,var(--sb-border-strong) 0 5px,transparent 5px 10px)}.ps-connector-label{top:8px}.ps-return-label{top:auto;bottom:7px}.ps-packet{top:5px;left:calc(50% - 10px)}.ps-packet-back{top:auto;right:auto;bottom:5px;left:calc(50% - 10px)}@keyframes psPacketOut{0%,21%{opacity:0;transform:translateY(0)}23%{opacity:1}29%{opacity:1;transform:translateY(54px)}31%,100%{opacity:0;transform:translateY(54px)}}@keyframes psPacketBack{0%,63%{opacity:0;transform:translateY(0)}65%{opacity:1}71%{opacity:1;transform:translateY(-54px)}73%,100%{opacity:0;transform:translateY(-54px)}}}
-  @media (max-width:430px){.ps-stage{padding:10px}.ps-tr{grid-template-columns:minmax(82px,1.3fr) .7fr .75fr}.ps-process-head,.ps-document,.ps-table,.ps-progress,.ps-actions{margin-left:9px;margin-right:9px}.ps-process-head{padding-left:2px;padding-right:2px}}
+  /* reduced-motion: show the resolved (signed) end state */
+  @media (prefers-reduced-motion:reduce){ .pa-badge{opacity:1;transform:scale(1)} }
+
+  @keyframes paInternal{0%,16%{box-shadow:0 0 0 4px color-mix(in srgb,var(--sb-blue) 20%,transparent),var(--sb-shadow-sm);border-color:var(--sb-blue)}26%,100%{box-shadow:var(--sb-shadow-sm)}}
+  @keyframes paExternal{0%,40%{box-shadow:var(--sb-shadow-sm)}50%,72%{box-shadow:0 0 0 4px color-mix(in srgb,var(--sb-gold) 22%,transparent),var(--sb-shadow-sm);border-color:var(--sb-gold);transform:translateY(-2px)}82%,100%{box-shadow:var(--sb-shadow-sm);transform:none}}
+  @keyframes paBadge{0%,46%{opacity:0;transform:scale(.5)}54%,100%{opacity:1;transform:scale(1)}}
+  @keyframes paLock{0%,18%{color:var(--sb-ink-soft)}24%,58%{color:var(--sb-gold)}66%,100%{color:var(--sb-ink-soft)}}
+  @keyframes paTokenOut{0%,18%{opacity:0;left:6%}22%{opacity:1}40%{opacity:1;left:calc(94% - 26px)}44%,100%{opacity:0;left:calc(94% - 26px)}}
+  @keyframes paTokenBack{0%,58%{opacity:0;left:calc(94% - 26px)}62%{opacity:1}80%{opacity:1;left:6%}84%,100%{opacity:0;left:6%}}
+
+  @media (max-width:680px){
+    .pa-flow{grid-template-columns:1fr;gap:4px;min-height:0}
+    .pa-link{height:90px;width:64px;margin-inline:auto}
+    .pa-line{left:50%;right:auto;top:6px;bottom:6px;height:auto;width:2px;transform:translateX(-50%);
+      background:repeating-linear-gradient(180deg,var(--sb-border-strong) 0 6px,transparent 6px 12px)}
+    .pa-link-label{top:50%;left:auto;right:calc(50% + 26px);transform:translateY(-50%);text-align:right}
+    .pa-return{bottom:auto;top:50%;left:calc(50% + 26px);transform:translateY(-50%)}
+    .pa-token{left:50%;top:6px;margin:0 0 0 -13px}
+    @keyframes paTokenOut{0%,18%{opacity:0;top:6px}22%{opacity:1}40%{opacity:1;top:calc(100% - 32px)}44%,100%{opacity:0;top:calc(100% - 32px)}}
+    @keyframes paTokenBack{0%,58%{opacity:0;top:calc(100% - 32px)}62%{opacity:1}80%{opacity:1;top:6px}84%,100%{opacity:0;top:6px}}
+  }
 </style>
 
 <script>
@@ -160,7 +136,7 @@ const steps = ['Open invitation', 'Authenticate with e-ID', 'Review document', '
     document.querySelectorAll('.portal-split').forEach((element) => {
       if (element.hasAttribute('data-observed')) return;
       element.setAttribute('data-observed', 'true');
-      const observer = new IntersectionObserver(([entry]) => element.classList.toggle('is-animating', entry.isIntersecting), { threshold: 0.12 });
+      const observer = new IntersectionObserver(([entry]) => element.classList.toggle('is-animating', entry.isIntersecting), { threshold: 0.2 });
       observer.observe(element);
     });
   }

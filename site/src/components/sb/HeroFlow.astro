@@ -54,12 +54,17 @@ const {
     <div class="hf">
       <!-- Upload Node -->
       <div class="hf-node" data-stage="upload" data-step="1">
-        <button class="sb-card hf-pdf hf-interactive-node" aria-label="Upload stage details">
-          <div class="corner"></div>
-          <div class="lines"><i></i><i></i><i></i></div>
-          <div class="tag">PDF</div>
+        <button class="sb-card hf-pdf hf-interactive-node" aria-label="Upload document stage details">
+          <span class="corner"></span>
+          <span class="doc-lines">
+            <i class="ln title"></i>
+            <i class="ln"></i>
+            <i class="ln"></i>
+            <i class="ln short"></i>
+          </span>
+          <span class="tag">PDF</span>
           <span class="hf-tooltip" role="tooltip">
-            <strong>Upload Document</strong>: Supports PDF, Word, and major formats. Generates the initial container draft.
+            <strong>Upload document</strong>: Supports PDF, Word and major formats. Starts the signing process.
           </span>
         </button>
         <div class="hf-stagelabel">Upload</div>
@@ -256,26 +261,35 @@ const {
         <span class="hf-dot"></span>
       </div>
 
-      <!-- Signed Container Node -->
+      <!-- Signed Document Node -->
       <div class="hf-node" data-stage="container" data-step="5">
-        <button class="sb-card hf-final hf-interactive-node" aria-label="Signed container stage details">
-          <span class="sb-icon seal">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/>
-              <path d="M9 12l2 2 4-4"/>
+        <button class="sb-card hf-final hf-interactive-node" aria-label="Signed document stage details">
+          <span class="signed-doc">
+            <span class="corner"></span>
+            <span class="doc-lines">
+              <i class="ln title"></i>
+              <i class="ln"></i>
+              <i class="ln short"></i>
+            </span>
+            <svg class="sign-mark" viewBox="0 0 56 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 16c5-1 7-12 10-12s3 14 7 14 6-9 9-9 4 5 7 5 8-3 8-3"/>
             </svg>
+            <span class="seal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m5 13 4 4L19 7"/>
+              </svg>
+            </span>
           </span>
-          <div class="flabel">ASiC-E / eDoc</div>
           <div class="badges">
             <span class="sb-badge gold b1">QES</span>
             <span class="sb-badge blue b2">XAdES-LT</span>
             <span class="sb-badge green b3">Valid</span>
           </div>
           <span class="hf-tooltip" role="tooltip">
-            <strong>Signed Container</strong>: A legally binding, certified eIDAS container containing all digital signatures and validation status.
+            <strong>Signed document</strong>: A legally binding eIDAS document carrying every signature and a verifiable validation status.
           </span>
         </button>
-        <div class="hf-stagelabel">Signed container</div>
+        <div class="hf-stagelabel">Signed document</div>
       </div>
     </div>
   </div>
@@ -519,12 +533,13 @@ const {
   }
 
   /* Stage 1: Upload (PDF) */
-  .hf-pdf { width: 92px; height: 114px; border-radius: 14px; display: flex; flex-direction: column; justify-content: flex-end; padding: 11px; position: relative; }
-  .hf-pdf .corner { position: absolute; top: 0; right: 0; width: 24px; height: 24px; background: var(--sb-card-2); border-left: 1px solid var(--sb-border); border-bottom: 1px solid var(--sb-border); border-bottom-left-radius: 8px; }
-  .hf-pdf .lines { display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px; }
-  .hf-pdf .lines i { height: 4px; border-radius: 3px; background: var(--sb-border-strong); display: block; }
-  .hf-pdf .lines i:nth-child(2) { width: 70%; }
-  .hf-pdf .tag { font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--sb-gold); }
+  .hf-pdf { width: 94px; height: 118px; border-radius: 12px; display: flex; flex-direction: column; justify-content: flex-start; padding: 13px 12px; position: relative; }
+  .hf-pdf .corner { position: absolute; top: 0; right: 0; width: 26px; height: 26px; background: var(--sb-card-2); border-left: 1px solid var(--sb-border); border-bottom: 1px solid var(--sb-border); border-bottom-left-radius: 9px; }
+  .hf-pdf .doc-lines { display: flex; flex-direction: column; gap: 7px; margin-top: 20px; }
+  .hf-pdf .doc-lines .ln { height: 4px; border-radius: 3px; background: var(--sb-border-strong); display: block; width: 100%; }
+  .hf-pdf .doc-lines .title { height: 6px; width: 60%; background: color-mix(in srgb, var(--sb-gold) 60%, var(--sb-border-strong)); margin-bottom: 2px; }
+  .hf-pdf .doc-lines .short { width: 52%; }
+  .hf-pdf .tag { position: absolute; left: 12px; bottom: 10px; font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--sb-gold); }
 
   /* Connector 1 Document Particle shoot */
   .hf-doc-particle {
@@ -789,17 +804,31 @@ const {
     100% { opacity: 0; transform: scale(1.08); }
   }
 
-  /* Stage 5: Signed Container */
-  .hf-final { width:min(100%,190px);min-height:178px;border-radius:24px;padding:22px 18px;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;position:relative;
+  /* Stage 5: Signed Document */
+  .hf-final { width:min(100%,190px);min-height:178px;border-radius:24px;padding:22px 18px;display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;position:relative;
     background:linear-gradient(155deg,color-mix(in srgb,var(--sb-gold) 12%,var(--sb-card)),var(--sb-card) 58%);
     border-color:color-mix(in srgb,var(--sb-gold) 58%,var(--sb-border));
     box-shadow:0 20px 44px -24px var(--sb-glow-gold); }
   .hf-final::before { content: ""; position: absolute; inset: 0; border-radius: 20px; padding: 1px; pointer-events: none;
     background: linear-gradient(160deg, color-mix(in srgb, var(--sb-gold) 60%, transparent), transparent 60%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-  
-  .hf-final .seal { width: 50px; height: 50px; color: var(--sb-gold); }
-  .hf-final .flabel { font-size: 15px; font-weight: 850; letter-spacing: -.01em; text-align: center; }
+
+  /* a document page carrying a signature scribble + a gold validation seal */
+  .hf-final .signed-doc { position:relative; width:86px; height:106px; border-radius:10px; background:var(--sb-card-2);
+    border:1px solid color-mix(in srgb,var(--sb-gold) 32%,var(--sb-border)); padding:14px 12px 0; box-shadow:0 10px 22px -14px rgba(0,0,0,.55); }
+  .hf-final .signed-doc .corner { position:absolute; top:0; right:0; width:22px; height:22px;
+    background:color-mix(in srgb,var(--sb-gold) 12%,var(--sb-card));
+    border-left:1px solid color-mix(in srgb,var(--sb-gold) 32%,var(--sb-border));
+    border-bottom:1px solid color-mix(in srgb,var(--sb-gold) 32%,var(--sb-border)); border-bottom-left-radius:7px; }
+  .hf-final .doc-lines { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+  .hf-final .doc-lines .ln { height:3.5px; border-radius:3px; background:var(--sb-border-strong); }
+  .hf-final .doc-lines .title { height:5px; width:58%; background:color-mix(in srgb,var(--sb-gold) 55%,var(--sb-border-strong)); }
+  .hf-final .doc-lines .short { width:48%; }
+  .hf-final .sign-mark { position:absolute; left:11px; bottom:18px; width:46px; height:18px; color:var(--sb-blue); opacity:.92; }
+  .hf-final .seal { position:absolute; right:-9px; bottom:-9px; width:36px; height:36px; color:var(--sb-gold);
+    background:var(--sb-card); border-radius:50%; display:grid; place-items:center;
+    border:1px solid color-mix(in srgb,var(--sb-gold) 48%,var(--sb-border)); box-shadow:0 6px 16px -6px var(--sb-glow-gold); }
+  .hf-final .seal svg { width:20px; height:20px; }
   .hf-final .badges { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
   .hf-final :global(.sb-badge) { padding:6px 9px;font-size:10.5px;opacity:.35;transform:translateY(-5px);transition:opacity .65s ease,transform .65s cubic-bezier(.22,1,.36,1); }
   
@@ -920,7 +949,7 @@ const {
       'Workflow',
       'Recipients',
       'e-ID signing',
-      'Signed container'
+      'Signed document'
     ];
     
     const stepDurations = [4800, 5200, 6800, 6200, 7000];

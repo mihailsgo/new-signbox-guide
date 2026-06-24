@@ -302,7 +302,7 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
    Branded footer band (echoes developer.trustlynx.com)
    ============================================================ */
 .tl-footer {
-  margin-top: 2.25rem;
+  margin-top: 1.25rem;
   border-radius: 12px;
   background: var(--tl-slate);
   border-top: 2px solid color-mix(in srgb, var(--tl-gold) 75%, transparent);
@@ -328,12 +328,6 @@ body.tl-zoom-open .tl-zoom-hint { display: block; }
   font-weight: 500;
 }
 .tl-footer__links a:hover { color: var(--tl-gold-bright); }
-.tl-footer__bar {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.5rem 1.3rem;
-  font-size: 0.75rem;
-  color: #9aa3b2;
-}
 
 /* ============================================================
    Animations
