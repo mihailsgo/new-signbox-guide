@@ -332,6 +332,10 @@ const {
   
   /* Generic controller buttons style */
   .ctrl-btn {
+    /* margin:0 guards against Starlight's markdown auto-spacing (1rem top
+       margin on non-first flow elements) leaking in and pushing every button
+       after the first down by 16px - gap handles spacing in this flex row. */
+    margin: 0;
     width: 30px;
     height: 30px;
     border-radius: 9px;
