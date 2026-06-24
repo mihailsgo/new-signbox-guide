@@ -8,8 +8,41 @@ import { ClientRouter } from 'astro:transitions';
 <script>
   import mediumZoom from 'medium-zoom';
 
+  const ZOOM_OPTS = { background: 'rgba(6, 10, 22, 0.94)', margin: 28 };
+
   // keep a single zoom instance across view transitions
-  let zoom: ReturnType<typeof mediumZoom> | null = null;
+  let zoom: any = null;
+
+  function buildZoom() {
+    zoom = mediumZoom('.sl-markdown-content img', ZOOM_OPTS);
+    (window as any).__zoom = zoom;
+  }
+
+  // Guaranteed close. medium-zoom's animated close waits for a `transitionend`
+  // on the image; when the image has no transform transition (reduced motion,
+  // or right after a view transition) that event never fires and the overlay
+  // gets stuck open - the close button, image click, overlay click and Esc all
+  // appeared to "do nothing". So we ask medium-zoom to close, then hard-strip
+  // the DOM if it's still open and re-arm a fresh instance for the next click.
+  function hardCloseZoom() {
+    if (zoom) { try { zoom.close(); } catch {} }
+    setTimeout(() => {
+      const stuck =
+        document.querySelector('.medium-zoom-overlay') ||
+        document.querySelector('.medium-zoom-image--opened');
+      if (!stuck) return; // animated close already finished cleanly
+      document.querySelectorAll('.medium-zoom-overlay').forEach((o) => o.remove());
+      document.querySelectorAll('.medium-zoom-image--opened').forEach((i) => {
+        i.classList.remove('medium-zoom-image--opened');
+        (i as HTMLElement).style.transform = '';
+        (i as HTMLElement).style.transition = '';
+        (i as HTMLElement).style.willChange = '';
+      });
+      document.body.classList.remove('tl-zoom-open');
+      if (zoom) { try { zoom.detach(); } catch {} }
+      buildZoom();
+    }, 320);
+  }
 
   function enhance() {
     const content = document.querySelector('.sl-markdown-content');
@@ -18,11 +51,7 @@ import { ClientRouter } from 'astro:transitions';
     if (zoom) {
       try { zoom.detach(); } catch {}
     }
-    zoom = mediumZoom('.sl-markdown-content img', {
-      background: 'rgba(6, 10, 22, 0.94)',
-      margin: 28,
-    });
-    (window as any).__zoom = zoom;
+    buildZoom();
 
     // close button + hint (medium-zoom has none by default)
     if (!document.getElementById('tl-zoom-close')) {
@@ -32,7 +61,7 @@ import { ClientRouter } from 'astro:transitions';
       btn.setAttribute('aria-label', 'Close enlarged image');
       btn.innerHTML =
         '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg><span>Close</span>';
-      btn.addEventListener('click', () => (window as any).__zoom && (window as any).__zoom.close());
+      btn.addEventListener('click', hardCloseZoom);
       document.body.appendChild(btn);
       const hint = document.createElement('div');
       hint.id = 'tl-zoom-hint';
@@ -40,6 +69,26 @@ import { ClientRouter } from 'astro:transitions';
       hint.textContent = 'Click anywhere or press Esc to close';
       document.body.appendChild(hint);
     }
+
+    // Global, instance-independent close triggers (set up once): Esc and a click
+    // on the overlay or the enlarged image always force the lightbox shut.
+    if (!(window as any).__sbZoomClose) {
+      (window as any).__sbZoomClose = true;
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.querySelector('.medium-zoom-overlay')) hardCloseZoom();
+      });
+      document.addEventListener(
+        'click',
+        (e) => {
+          const t = e.target as Element | null;
+          if (t && t.classList && (t.classList.contains('medium-zoom-overlay') || t.classList.contains('medium-zoom-image--opened'))) {
+            hardCloseZoom();
+          }
+        },
+        true
+      );
+    }
+
     // Reflect the open/closed state on <body> from medium-zoom's OWN marker
     // class, set up exactly once. The zoom instance is rebuilt on every view
     // transition; per-instance `.on('opened')` handlers proved unreliable after
@@ -114,5 +163,21 @@ import { ClientRouter } from 'astro:transitions';
     onScroll();
   }
 
+  // Tear medium-zoom down BEFORE Astro's ClientRouter swaps <body>, while the
+  // current images still exist. Detaching AFTER the swap (the old default) left
+  // a stale instance bound to removed nodes; after a client-side navigation it
+  // would still open an image but could no longer close it (close button, image
+  // click, overlay click and Esc all no-opped). Clean teardown here guarantees
+  // exactly one live, fully-closable instance per page.
+  function teardownZoom() {
+    if (zoom) { try { zoom.close(); } catch {} try { zoom.detach(); } catch {} zoom = null; }
+    document.querySelectorAll('.medium-zoom-overlay').forEach((o) => o.remove());
+    document
+      .querySelectorAll('.medium-zoom-image--opened')
+      .forEach((i) => i.classList.remove('medium-zoom-image--opened'));
+    document.body.classList.remove('tl-zoom-open');
+    (window as any).__zoom = null;
+  }
+  document.addEventListener('astro:before-swap', teardownZoom);
   document.addEventListener('astro:page-load', enhance);
 </script>
