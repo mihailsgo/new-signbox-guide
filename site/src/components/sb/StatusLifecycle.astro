@@ -1,409 +1,279 @@
 ---
 /**
- * StatusLifecycle.astro - Draft → Started → Completed → Finished stepper.
- * A gold progress indicator fills through each status. "Completed" (people are
- * done) and "Finished" (container is ready) are intentionally distinct.
- * Theme-aware + reduced-motion safe (shows Finished active).
+ * StatusLifecycle - Draft -> Started -> Completed -> Finished.
+ *
+ * 1:1 port of the design handoff `signbox-lifecycle-reference.html`
+ * (design_handoff_lifecycle_animation). One CSS variable (--cycle) drives the
+ * whole loop; every keyframe is authored as a percentage of that cycle so all
+ * elements stay in lockstep. Each of the four states occupies one quarter of
+ * the loop: a single document visibly evolves (badge crossfades, DRAFT
+ * watermark fades, signature draws itself, "All 3 parties signed" row appears,
+ * VALID/QES seal stamps + container chips), with a synced process-timeline log.
+ *
+ * Defaults are hard-coded from the handoff: zoom "Standard" (ref 1360), look
+ * "Midnight glass", pace "Standard" (13s) - all inline on .sbl-frame. The
+ * demo's play/pause + zoom/look/pace <select> controls are intentionally
+ * dropped; only fit-to-width scaling and reduced-motion are wired in JS.
+ *
+ * Fonts (Manrope / Space Grotesk / Space Mono) are already loaded globally in
+ * Head.astro.
+ *
+ * Ambient keyframes are prefixed `lc*` (lcFloat/lcPulse/...) on purpose:
+ * SignBoxHero.astro declares same-named global keyframes (sbFloat, sbPulse, ...)
+ * and both render on the homepage, so unprefixed names would clobber each other.
+ * This animation uses no avatar photos - nothing to swap.
  */
-import '../../styles/signbox-anim.css';
-interface Props { class?: string; caption?: string; showCaption?: boolean; }
-const {
-  class: className = '',
-  caption = 'Completed means every person is done. Finished means the final signed document has been generated - two distinct milestones, not the same thing.',
-  showCaption = true,
-} = Astro.props;
+interface Props { class?: string; }
+const { class: className = '' } = Astro.props;
 ---
-<figure class={`sb-anim status-lifecycle ${className}`} role="group" aria-label="Process status lifecycle: Draft, Started, Completed, Finished">
-  <div class="sb-stage">
-    <!-- Controls Panel -->
-    <div class="sl-controls">
-      <button class="ctrl-btn play-pause-btn" aria-label="Pause Autoplay" title="Play/Pause">
-        <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="6" y="4" width="4" height="16" rx="1"/>
-          <rect x="14" y="4" width="4" height="16" rx="1"/>
-        </svg>
-        <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3"/>
-        </svg>
-      </button>
-      <button class="ctrl-btn reset-btn" aria-label="Reset Sequence" title="Reset">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
-        </svg>
-      </button>
+
+<figure class={`sb-anim signbox-lifecycle ${className}`} role="group" aria-label="Process status lifecycle: Draft, Started, Completed, Finished">
+<!-- WRAPPER (fluid) -> FRAME (fixed design, scaled to fit width) -->
+<div class="sbl-wrap" style="width:100%; max-width:1280px; margin:0 auto; position:relative; overflow:hidden;">
+<div class="sbl-frame" style="--cycle:13s; --pstate:running; --acc1:#3D7BFF; --acc2:#6AA1FF; --glow:61,123,255; --panel-bg:linear-gradient(165deg,#0c1326 0%,#0a0f1f 55%,#0b1024 100%); --panel-border:rgba(120,150,220,.14); --panel-bloom:radial-gradient(620px 320px at 25% -10%, rgba(61,123,255,.2), transparent 60%), radial-gradient(520px 320px at 100% 110%, rgba(45,210,126,.15), transparent 60%); --grid-op:.5; --grid-col:rgba(140,165,225,.05); width:1360px; height:940px; transform-origin:top left; background:radial-gradient(1200px 600px at 50% -10%, #eef2f9, #e1e7f1 60%, #d8dfeb); font-family:'Manrope',system-ui,sans-serif; color:#1B2436; padding:40px; display:flex; flex-direction:column; overflow:hidden;">
+
+  <!-- HEADER -->
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:22px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="width:9px; height:9px; border-radius:3px; background:linear-gradient(135deg,#3D7BFF,#6AA1FF);"></div>
+        <span style="font-size:12.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:#6B7689;">TrustLynx SignBox · process lifecycle</span>
+      </div>
+      <h1 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; letter-spacing:-.5px; color:#141B2B;">From draft to a finished, valid document</h1>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; font-weight:600; color:#5b6b85;">
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#8DA0C8;"></span>Draft</span>
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#3D7BFF;"></span>Started</span>
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#8B6BFF;"></span>Completed</span>
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#2DD27E;"></span>Finished</span>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div style="position:relative; flex:1; min-height:0; border-radius:22px; padding:30px 34px; display:flex; flex-direction:column; overflow:hidden; background:var(--panel-bg); border:1px solid var(--panel-border); box-shadow:0 30px 70px -30px rgba(10,16,36,.8), inset 0 1px 0 rgba(255,255,255,.05);">
+    <div style="position:absolute; inset:0; pointer-events:none; background:var(--panel-bloom);"></div>
+    <div style="position:absolute; inset:0; pointer-events:none; opacity:var(--grid-op); background-image:linear-gradient(var(--grid-col) 1px, transparent 1px), linear-gradient(90deg, var(--grid-col) 1px, transparent 1px); background-size:34px 34px;"></div>
+    <div style="position:absolute; top:0; left:0; width:120px; height:100%; pointer-events:none; background:linear-gradient(90deg, transparent, rgba(255,255,255,.05), transparent); animation:lcSweep 8s ease-in-out infinite; animation-play-state:var(--pstate);"></div>
+    <div class="ambient" style="position:absolute; inset:0; pointer-events:none;">
+      <span style="position:absolute; left:14%; top:60%; width:4px; height:4px; border-radius:50%; background:#6AA1FF; animation:lcTwinkle 4s ease-in-out infinite; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:88%; top:30%; width:3px; height:3px; border-radius:50%; background:#9bd9b8; animation:lcTwinkle 5.5s ease-in-out infinite .6s; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:70%; top:78%; width:5px; height:5px; border-radius:50%; background:#6AA1FF; animation:lcDrift 9s linear infinite alternate; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:40%; top:86%; width:3px; height:3px; border-radius:50%; background:#cbd9ff; animation:lcTwinkle 6s ease-in-out infinite 1.2s; animation-play-state:var(--pstate);"></span>
     </div>
 
-    <div class="sl">
-      <div class="sl-track">
-        <div class="sl-rail"><div class="fill"></div></div>
-        <div class="sl-step" data-step="0">
-          <button class="sl-node n1" aria-label="View Draft step">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-              <path d="M14 3v5h5"/>
-            </svg>
-          </button>
-          <div class="txt">
-            <div class="nm">Draft</div>
-            <div class="ds">Process is prepared but not sent.</div>
+    <!-- LIFECYCLE RAIL -->
+    <div style="position:relative; height:126px; flex:none;">
+      <div style="position:relative; margin:0 70px; height:126px;">
+        <div style="position:absolute; top:46px; left:0; right:0; height:4px; transform:translateY(-50%); background:rgba(255,255,255,.08); border-radius:99px;"></div>
+        <div style="position:absolute; top:46px; left:0; height:4px; transform:translateY(-50%); border-radius:99px; background:linear-gradient(90deg,#8DA0C8,var(--acc1),#8B6BFF,#2DD27E); box-shadow:0 0 14px rgba(var(--glow),.5); width:4%; animation:lcFill var(--cycle) linear infinite; animation-play-state:var(--pstate);"></div>
+        <div style="position:absolute; top:8px; left:0%; transform:translateX(-50%); z-index:4; animation:lcTravel var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="width:30px; height:38px; border-radius:6px; background:linear-gradient(160deg,#ffffff,#dbe6ff); box-shadow:0 10px 22px rgba(var(--glow),.5), 0 0 0 1px rgba(255,255,255,.5); animation:lcFloat 3s ease-in-out infinite; animation-play-state:var(--pstate); position:relative;">
+            <span style="position:absolute; top:7px; left:5px; right:5px; height:2px; background:#9bb4e8; border-radius:2px;"></span>
+            <span style="position:absolute; top:13px; left:5px; right:9px; height:2px; background:#bcccf0; border-radius:2px;"></span>
+            <span style="position:absolute; top:19px; left:5px; right:7px; height:2px; background:#bcccf0; border-radius:2px;"></span>
           </div>
         </div>
-        <div class="sl-step" data-step="1">
-          <button class="sl-node n2" aria-label="View Started step">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="5 4 19 12 5 20 5 4"/>
-            </svg>
-          </button>
-          <div class="txt">
-            <div class="nm">Started</div>
-            <div class="ds">Invitations are sent and actions are pending.</div>
+        <!-- node 1: Draft -->
+        <div style="position:absolute; top:46px; left:0%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act1 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(141,160,200,.6); animation:lcPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,#8DA0C8,#6f82a8); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(141,160,200,.4); animation:reach1 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:0%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Draft</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">Prepared</div></div>
+        <!-- node 2: Started -->
+        <div style="position:absolute; top:46px; left:33.33%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act2 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(var(--glow),.7); animation:lcPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,var(--acc1),var(--acc2)); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(var(--glow),.45); animation:reach2 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:33.33%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Started</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">Collecting signatures</div></div>
+        <!-- node 3: Completed -->
+        <div style="position:absolute; top:46px; left:66.66%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act3 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(139,107,255,.7); animation:lcPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L13 8"/><path d="M11 16l3 3 7-9"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,#8B6BFF,#b49bff); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(139,107,255,.45); animation:reach3 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L13 8"/><path d="M11 16l3 3 7-9"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:66.66%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Completed</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">All parties signed</div></div>
+        <!-- node 4: Finished -->
+        <div style="position:absolute; top:46px; left:100%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act4 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(45,210,126,.7); animation:lcPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(45,210,126,.45); animation:reach4 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:100%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Finished</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">Sealed &amp; archived</div></div>
+      </div>
+    </div>
+
+    <!-- BODY: document + event log -->
+    <div style="position:relative; flex:1; min-height:0; display:flex; gap:38px; align-items:center; padding:8px 20px 0;">
+      <!-- DOCUMENT -->
+      <div style="flex:none; display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div style="position:relative; width:280px; height:354px; border-radius:16px; background:linear-gradient(160deg,#ffffff,#eaf1fb); box-shadow:0 36px 70px -26px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.4); padding:50px 24px 24px; animation:lcFloat 5s ease-in-out infinite; animation-play-state:var(--pstate); overflow:hidden;">
+          <span style="position:absolute; top:0; right:0; border-width:0 26px 26px 0; border-style:solid; border-color:transparent #cdd9ee transparent transparent;"></span>
+          <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; animation:bD var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="font-family:'Space Grotesk',sans-serif; font-size:54px; font-weight:700; color:rgba(141,160,200,.16); transform:rotate(-22deg); letter-spacing:3px;">DRAFT</span></div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:#1b2436;">Agreement.pdf</span>
+            <span style="margin-left:auto; font-size:8px; font-weight:800; color:#fff; background:#3D7BFF; border-radius:3px; padding:3px 6px; letter-spacing:.3px;">PDF</span>
+          </div>
+          <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:100%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:94%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#e6ecf6; width:78%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:88%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#e6ecf6; width:54%;"></span>
+          <div style="position:absolute; left:24px; right:24px; bottom:58px;">
+            <div style="font-size:8px; font-weight:800; letter-spacing:.5px; color:#9aa9c4; text-transform:uppercase;">Signed by · Legal · Finance · Director</div>
+            <svg width="100%" height="40" viewBox="0 0 230 40" preserveAspectRatio="none" style="display:block; margin-top:2px; overflow:visible;"><path d="M4 30 C 12 9 20 8 23 27 C 25 37 33 33 38 22 C 44 9 52 9 56 27 C 59 39 68 33 76 22 C 86 8 96 35 108 24 C 120 13 130 31 144 18 C 156 9 166 28 180 16 C 192 9 204 24 214 14 C 220 10 224 18 226 13" stroke="#2f6bff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="200" style="stroke-dashoffset:200; animation:docSig var(--cycle) linear infinite; animation-play-state:var(--pstate);"/></svg>
+            <div style="border-top:1px solid #d6deec; margin-top:1px; padding-top:5px; display:flex; justify-content:space-between; font-size:8px; color:#9aa9c4; font-family:'Space Mono',monospace;"><span>Smart-ID · PIN2</span><span>2026-06-27</span></div>
+          </div>
+          <div style="position:absolute; left:24px; right:24px; bottom:20px; display:flex; align-items:center; gap:7px; padding:7px 11px; border-radius:9px; background:rgba(139,107,255,.1); border:1px solid rgba(139,107,255,.3); animation:compRow var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <span style="color:#8B6BFF; display:flex;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+            <span style="font-size:10px; font-weight:700; color:#5b4a9e;">All 3 parties signed</span>
+          </div>
+          <div style="position:absolute; top:16px; left:24px;">
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#5b6b85; background:#eef1f6; border:1px solid #dfe5ee; animation:bD var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#8DA0C8;"></span>DRAFT</span>
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#fff; background:linear-gradient(150deg,#3D7BFF,#6AA1FF); animation:bS var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span>IN PROGRESS</span>
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#fff; background:linear-gradient(150deg,#8B6BFF,#b49bff); animation:bC var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span>COMPLETED</span>
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#fff; background:linear-gradient(150deg,#2DD27E,#1ea862); animation:bF var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span>FINISHED</span>
+          </div>
+          <div style="position:absolute; top:46px; right:-6px; animation:sealStamp var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="width:92px; height:92px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; box-shadow:0 0 0 5px rgba(45,210,126,.2), 0 18px 36px rgba(45,210,126,.5), inset 0 2px 6px rgba(255,255,255,.35); border:2px solid rgba(255,255,255,.5);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+              <span style="color:#fff; font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px;">VALID</span>
+              <span style="color:#d6ffe7; font-size:7.5px; font-weight:700; letter-spacing:.4px;">QES · eIDAS</span>
+            </div>
           </div>
         </div>
-        <div class="sl-step" data-step="2">
-          <button class="sl-node n3" aria-label="View Completed step">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="8" cy="8" r="3"/>
-              <circle cx="16" cy="8" r="3"/>
-              <path d="M2 20c0-3 2.7-5 6-5M22 20c0-3-2.7-5-6-5"/>
-              <path d="M9.5 17.5l1.8 1.8 3.2-3.6"/>
-            </svg>
-          </button>
-          <div class="txt">
-            <div class="nm">Completed</div>
-            <div class="ds">All required recipients have completed their actions.</div>
-          </div>
+        <div style="display:flex; gap:8px; animation:chipsIn var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">ASiC-E</span>
+          <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">XAdES-LT</span>
+          <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#8ff0bd; background:rgba(45,210,126,.14); border:1px solid rgba(45,210,126,.32); padding:4px 9px; border-radius:6px;">QES</span>
         </div>
-        <div class="sl-step" data-step="3">
-          <button class="sl-node n4" aria-label="View Finished step">
-            <div class="sl-final-glow"></div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2 3 6v6c0 5 3.8 8.4 9 10 5.2-1.6 9-5 9-10V6z"/>
-              <path d="M9 12l2 2 4-4"/>
-            </svg>
-          </button>
-          <div class="txt">
-            <div class="nm">Finished</div>
-            <div class="ds">Final signed document is generated and ready.</div>
+      </div>
+      <!-- EVENT LOG -->
+      <div style="flex:1; min-width:0; max-width:480px; padding:22px 24px; border-radius:18px; background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); border:1px solid rgba(140,165,225,.14);">
+        <div style="font-size:11px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:#8da0c8; margin-bottom:18px;">Process timeline</div>
+        <div style="position:relative; display:flex; flex-direction:column; gap:16px;">
+          <div style="position:absolute; left:13px; top:6px; bottom:6px; width:2px; background:rgba(140,165,225,.16);"></div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log1 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,#8DA0C8,#6f82a8); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(141,160,200,.12); z-index:1; color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">Draft created</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">10:02</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Document prepared and recipients added.</div></div>
+          </div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log2 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,var(--acc1),var(--acc2)); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(var(--glow),.14); z-index:1; color:#fff;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">Process started</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">10:05</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Sent to signers · invitations delivered.</div></div>
+          </div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log3 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,#8B6BFF,#b49bff); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(139,107,255,.14); z-index:1; color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">All signatures collected</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">11:48</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Every required party has signed.</div></div>
+          </div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log4 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(45,210,126,.14); z-index:1; color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">Finished &amp; sealed</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">11:49</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Timestamped, validated ASiC-E container archived.</div></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  {showCaption && <figcaption class="sb-cap">{caption}</figcaption>}
+
+</div>
+</div>
 </figure>
 
-<style>
-  .status-lifecycle{margin:0;display:flex;flex-direction:column;gap:14px;position:relative;container-type:inline-size;}
-  .sb-cap{font-size:13.5px;line-height:1.5;color:var(--sb-ink-soft);max-width:62ch;}
+<style is:global>
+  /* Keyframes must be global so the inline `animation:` references on the
+     markup resolve (Astro would otherwise scope/rename names declared in a
+     scoped <style>). Ambient names are prefixed `lc*` to avoid colliding with
+     SignBoxHero's same-purpose global keyframes on the homepage. */
+  @keyframes lcFloat { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-7px) } }
+  @keyframes lcPulse { 0%,100%{ box-shadow: 0 0 0 0 rgba(255,255,255,.4) } 70%,100%{ box-shadow: 0 0 0 13px rgba(255,255,255,0) } }
+  @keyframes lcSweep { 0%{ transform: translateX(-130%) skewX(-18deg) } 100%{ transform: translateX(360%) skewX(-18deg) } }
+  @keyframes lcTwinkle { 0%,100%{ opacity:.15; transform: scale(.6) } 50%{ opacity:.9; transform: scale(1.15) } }
+  @keyframes lcDrift { 0%{ transform: translate(0,0) } 100%{ transform: translate(24px,-26px) } }
+  @keyframes lcSpin { to { transform: rotate(360deg) } }
+  /* rail - percent of --cycle */
+  @keyframes lcFill { 0%,22%{width:4%} 27%{width:37%} 47%{width:37%} 52%{width:70%} 72%{width:70%} 77%{width:100%} 96%{width:100%} 98%{width:0} 100%{width:0} }
+  @keyframes lcTravel { 0%,22%{left:0%} 27%{left:33.33%} 47%{left:33.33%} 52%{left:66.66%} 72%{left:66.66%} 77%{left:100%} 96%{left:100%} 98%{left:0%} 100%{left:0%} }
+  @keyframes reach1 { 0%,1%{opacity:0} 3%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes reach2 { 0%,24%{opacity:0} 27%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes reach3 { 0%,49%{opacity:0} 52%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes reach4 { 0%,74%{opacity:0} 77%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes act1 { 0%{opacity:1} 22%{opacity:1} 24%{opacity:0} 99%{opacity:0} 100%{opacity:1} }
+  @keyframes act2 { 0%,24%{opacity:0} 27%{opacity:1} 47%{opacity:1} 49%{opacity:0} 100%{opacity:0} }
+  @keyframes act3 { 0%,49%{opacity:0} 52%{opacity:1} 72%{opacity:1} 74%{opacity:0} 100%{opacity:0} }
+  @keyframes act4 { 0%,74%{opacity:0} 77%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  /* document state crossfades */
+  @keyframes bD { 0%,21%{opacity:1} 25%{opacity:0} 99%{opacity:0} 100%{opacity:1} }
+  @keyframes bS { 0%,24%{opacity:0} 27%{opacity:1} 46%{opacity:1} 50%{opacity:0} 100%{opacity:0} }
+  @keyframes bC { 0%,49%{opacity:0} 52%{opacity:1} 71%{opacity:1} 75%{opacity:0} 100%{opacity:0} }
+  @keyframes bF { 0%,74%{opacity:0} 77%{opacity:1} 96%{opacity:1} 99%{opacity:0} 100%{opacity:0} }
+  @keyframes docSig { 0%,26%{stroke-dashoffset:200} 44%{stroke-dashoffset:0} 96%{stroke-dashoffset:0} 98%{stroke-dashoffset:200} 100%{stroke-dashoffset:200} }
+  @keyframes compRow { 0%,49%{opacity:0;transform:translateY(6px)} 53%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes sealStamp { 0%,74%{opacity:0;transform:scale(1.7) rotate(-12deg)} 78%{opacity:1;transform:scale(1) rotate(-12deg)} 96%{opacity:1;transform:scale(1) rotate(-12deg)} 98%{opacity:0;transform:scale(1) rotate(-12deg)} 100%{opacity:0} }
+  @keyframes chipsIn { 0%,76%{opacity:0;transform:translateY(6px)} 80%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  /* event log */
+  @keyframes log1 { 0%,1%{opacity:0;transform:translateY(8px)} 4%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes log2 { 0%,25%{opacity:0;transform:translateY(8px)} 28%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes log3 { 0%,50%{opacity:0;transform:translateY(8px)} 53%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes log4 { 0%,75%{opacity:0;transform:translateY(8px)} 78%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
 
-  .sl{padding:8px 6px;}
-  .sl-track{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
-  .sl-rail{position:absolute;top:27px;left:12.5%;right:12.5%;height:3px;border-radius:3px;background:var(--sb-border-strong);overflow:hidden;}
-  .sl-rail .fill{position:absolute;inset:0 0 0 0;width:100%;background:linear-gradient(90deg,var(--sb-gold),var(--sb-gold-2));border-radius:3px;}
-  .sl-step{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;position:relative;padding:0 8px;}
-  
-  button.sl-node {
-    width: 54px;
-    height: 54px;
-    border-radius: 16px;
-    display: grid;
-    place-items: center;
-    background: var(--sb-card);
-    border: 1px solid var(--sb-border-strong);
-    color: var(--sb-muted);
-    position: relative;
-    z-index: 1;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
-  }
-  button.sl-node:hover {
-    border-color: var(--sb-gold);
-    color: var(--sb-ink);
-    transform: scale(1.04);
-  }
-  button.sl-node:focus-visible {
-    border-color: var(--sb-gold);
-    box-shadow: 0 0 0 2px var(--sb-glow-gold);
-    transform: scale(1.05);
-  }
-  button.sl-node svg{width:24px;height:24px;}
-  
-  /* Initial state / static fallback style when not playing */
-  .status-lifecycle:not(.in-view) .sl-step.is-active button.sl-node {
-    color:#fff;background:linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));border-color:transparent;box-shadow:0 8px 20px -8px var(--sb-glow-gold);
-  }
-  
-  .sl-step .nm{font-size:13px;font-weight:800;letter-spacing:-.01em;transition: color 0.2s ease, text-shadow 0.2s ease;}
-  .sl-step .ds{font-size:11.5px;color:var(--sb-ink-soft);line-height:1.35;max-width:160px;}
-  .sl-final-glow{position:absolute;inset:-4px;border-radius:20px;box-shadow:0 0 0 0 var(--sb-glow-gold);pointer-events:none;}
-
-  /* Controls Panel styles */
-  .sl-controls {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-  }
-  .ctrl-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    border: 1px solid var(--sb-border-strong);
-    background: var(--sb-card);
-    color: var(--sb-ink-soft);
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    transition: all 0.2s ease;
-  }
-  .ctrl-btn:hover {
-    color: var(--sb-ink);
-    border-color: var(--sb-gold);
-    background: var(--sb-card-2);
-  }
-  .ctrl-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-  
-  .status-lifecycle:not(.is-paused) .play-icon { display: none; }
-  .status-lifecycle.is-paused .pause-icon { display: none; }
-
-  @media (max-width:680px){
-    .sl-track{grid-template-columns:1fr;gap:14px;}
-    .sl-rail{top:0;bottom:0;left:27px;right:auto;width:3px;height:auto;}
-    .sl-rail .fill{width:100%;height:100%;background:linear-gradient(180deg,var(--sb-gold),var(--sb-gold-2));}
-    .sl-step{flex-direction:row;text-align:left;gap:14px;}
-    .sl-step .nm,.sl-step .ds{max-width:none;}
-    .sl-step .txt{display:flex;flex-direction:column;gap:3px;}
-    .sl-controls { top: 6px; right: 6px; }
-  }
-  /* Stack vertically when the CONTAINER is narrow (e.g. inside the half-width
-     "View the lifecycle" disclosure) - viewport media queries don't fire when
-     the viewport is wide but the container is not, leaving 4 columns crushed. */
-  @container (max-width:560px){
-    .sl-track{grid-template-columns:1fr;gap:14px;}
-    .sl-rail{top:0;bottom:0;left:27px;right:auto;width:3px;height:auto;}
-    .sl-rail .fill{width:100%;height:100%;background:linear-gradient(180deg,var(--sb-gold),var(--sb-gold-2));}
-    .sl-step{flex-direction:row;text-align:left;gap:14px;}
-    .sl-step .nm,.sl-step .ds{max-width:none;}
-    .sl-step .txt{display:flex;flex-direction:column;gap:3px;}
-    .sl-controls { top: 6px; right: 6px; }
-  }
-  @container (max-width:560px) and (prefers-reduced-motion: no-preference){
-    :global(.in-view):not(.is-manual) .sl-rail .fill{width:100%;height:0;}
-  }
-  @container (max-width:560px){
-    .status-lifecycle.is-manual .sl-rail .fill{width:100%;}
-  }
-
-  @media (prefers-reduced-motion: no-preference){
-    :global(.in-view):not(.is-manual) .sl-rail .fill{width:0;animation:slFill 6s ease-in-out infinite;}
-    :global(.in-view):not(.is-manual) button.sl-node.n1{animation:slNode 6s ease-in-out infinite;animation-delay:-6s;}
-    :global(.in-view):not(.is-manual) button.sl-node.n2{animation:slNode 6s ease-in-out infinite;animation-delay:-4.8s;}
-    :global(.in-view):not(.is-manual) button.sl-node.n3{animation:slNode 6s ease-in-out infinite;animation-delay:-3.6s;}
-    :global(.in-view):not(.is-manual) button.sl-node.n4{animation:slNode 6s ease-in-out infinite;animation-delay:-2.4s;}
-    :global(.in-view):not(.is-manual) .sl-final-glow{animation:slGlow 6s ease-in-out infinite;}
-  }
-  @keyframes slFill{0%,20%{width:0;}40%{width:33.33%;}60%{width:66.66%;}78%,100%{width:100%;}}
-  @keyframes slNode{
-    0%,3%{color:var(--sb-muted);background:var(--sb-card);border-color:var(--sb-border-strong);box-shadow:none;}
-    8%,100%{color:#fff;background:linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));border-color:transparent;box-shadow:0 8px 20px -8px var(--sb-glow-gold);}
-  }
-  @keyframes slGlow{0%,66%{box-shadow:0 0 0 0 var(--sb-glow-gold);}74%{box-shadow:0 0 28px 3px var(--sb-glow-gold);}86%,100%{box-shadow:0 0 0 0 var(--sb-glow-gold);}}
-  
-  @media (max-width:680px) and (prefers-reduced-motion: no-preference){
-    :global(.in-view):not(.is-manual) .sl-rail .fill{width:100%;height:0;}
-    @keyframes slFill{0%,20%{height:0;}40%{height:33.33%;}60%{height:66.66%;}78%,100%{height:100%;}}
-  }
-
-  /* Manual Mode override classes applied by JS */
-  .status-lifecycle.is-manual .sl-rail .fill {
-    animation: none !important;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    width: var(--fill-width, 0%);
-    height: 100%;
-  }
-  @media (max-width:680px) {
-    .status-lifecycle.is-manual .sl-rail .fill {
-      width: 100%;
-      height: var(--fill-height, 0%);
-    }
-  }
-  .status-lifecycle.is-manual button.sl-node {
-    animation: none !important;
-    color: var(--sb-muted);
-    background: var(--sb-card);
-    border-color: var(--sb-border-strong);
-    box-shadow: none;
-  }
-  .status-lifecycle.is-manual .sl-step.is-active button.sl-node {
-    color: #fff;
-    background: linear-gradient(160deg,var(--sb-gold),var(--sb-gold-2));
-    border-color: transparent;
-    box-shadow: 0 8px 20px -8px var(--sb-glow-gold);
-  }
-  .status-lifecycle.is-manual .sl-step.is-current .sl-final-glow {
-    animation: slGlow 3s ease-in-out infinite;
-  }
-  .status-lifecycle.is-manual .sl-step.is-current .txt .nm {
-    color: var(--sb-gold);
-    text-shadow: 0 0 6px var(--sb-glow-gold);
-  }
-  .status-lifecycle.is-manual .sl-step.is-current button.sl-node {
-    transform: scale(1.05);
-    border-color: var(--sb-gold);
+  @media (prefers-reduced-motion: reduce) {
+    .signbox-lifecycle .sbl-frame *, .signbox-lifecycle .sbl-frame { animation: none !important; }
   }
 </style>
 
+<style>
+  /* Self-contained fixed-look illustration; strip the figure's default margins
+     so the wrapper controls its own height. */
+  .signbox-lifecycle { margin: 0; }
+  /* The reference build relies on a global `* { box-sizing: border-box }`; the
+     fixed 1360x940 frame and all its inline-padded children assume it. Scope
+     that reset to the frame so the port matches 1:1 regardless of page resets. */
+  .signbox-lifecycle :global(.sbl-wrap),
+  .signbox-lifecycle :global(.sbl-frame),
+  .signbox-lifecycle :global(.sbl-frame *) { box-sizing: border-box; }
+</style>
+
 <script>
-  function initStatusLifecycle() {
-    const containers = document.querySelectorAll('.status-lifecycle');
+  /* Driver - CSS does all the animating. This only fits the fixed-width design
+     frame to its container width (transform: scale) and respects reduced motion.
+     zoom/look/pace are hard-coded inline on .sbl-frame (Standard / Midnight
+     glass / Standard 13s), so there is nothing else to wire. */
+  const SBL_REF = 1360; // "Standard" reference width from the handoff.
+  const SBL_FRAME_H = 940;
 
-    containers.forEach((container) => {
-      let isManual = false;
-      let autoplayInterval: any = null;
-      let autoplayStep = 0;
+  function initSignboxLifecycle() {
+    document.querySelectorAll<HTMLElement>('.signbox-lifecycle').forEach((fig) => {
+      const wrap = fig.querySelector<HTMLElement>('.sbl-wrap');
+      const frame = fig.querySelector<HTMLElement>('.sbl-frame');
+      if (!wrap || !frame) return;
 
-      const fill = container.querySelector('.sl-rail .fill') as HTMLElement;
-      const steps = container.querySelectorAll('.sl-step');
-      const playPauseBtn = container.querySelector('.play-pause-btn');
-      const resetBtn = container.querySelector('.reset-btn');
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) frame.style.setProperty('--pstate', 'paused');
 
-      // 1. Setup IntersectionObserver to play/pause based on viewport entry
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            container.classList.add('in-view');
-            if (!isManual && !container.classList.contains('is-paused')) {
-              startAutoplay();
-            }
-          } else {
-            container.classList.remove('in-view');
-            stopAutoplay();
-          }
-        });
-      }, { threshold: 0.15 });
+      const fitScale = () => {
+        frame.style.width = SBL_REF + 'px';
+        const scale = (wrap.clientWidth || SBL_REF) / SBL_REF;
+        frame.style.transform = 'scale(' + scale + ')';
+        wrap.style.height = (SBL_FRAME_H * scale) + 'px';
+      };
 
-      observer.observe(container);
+      // Re-init across view transitions without stacking observers.
+      const prev = (fig as any).__sblRO as ResizeObserver | undefined;
+      if (prev) prev.disconnect();
+      const ro = new ResizeObserver(fitScale);
+      ro.observe(wrap);
+      (fig as any).__sblRO = ro;
 
-      // 2. Autoplay timer to sync active classes with CSS animation
-      function startAutoplay() {
-        container.classList.remove('is-paused');
-        if (autoplayInterval) clearInterval(autoplayInterval);
-        
-        autoplayStep = 0;
-        updateAutoplayState(0);
-        
-        autoplayInterval = setInterval(() => {
-          autoplayStep = (autoplayStep + 1) % 4;
-          updateAutoplayState(autoplayStep);
-        }, 1500);
-      }
-
-      function stopAutoplay() {
-        if (autoplayInterval) {
-          clearInterval(autoplayInterval);
-          autoplayInterval = null;
-        }
-      }
-
-      function updateAutoplayState(stepIndex: number) {
-        steps.forEach((step, idx) => {
-          if (idx <= stepIndex) {
-            step.classList.add('is-active');
-          } else {
-            step.classList.remove('is-active');
-          }
-          if (idx === stepIndex) {
-            step.classList.add('is-current');
-          } else {
-            step.classList.remove('is-current');
-          }
-        });
-      }
-
-      // 3. Manual state selector
-      function setManualStep(index: number) {
-        isManual = true;
-        stopAutoplay();
-        container.classList.add('is-manual');
-        container.classList.add('is-paused');
-        
-        steps.forEach((step, idx) => {
-          if (idx <= index) {
-            step.classList.add('is-active');
-          } else {
-            step.classList.remove('is-active');
-          }
-
-          if (idx === index) {
-            step.classList.add('is-current');
-          } else {
-            step.classList.remove('is-current');
-          }
-        });
-
-        // Update CSS variables for progress line
-        const pct = (index / 3) * 100;
-        if (fill) {
-          fill.style.setProperty('--fill-width', `${pct}%`);
-          fill.style.setProperty('--fill-height', `${pct}%`);
-        }
-      }
-
-      // Hook up node click handlers
-      steps.forEach((step, idx) => {
-        const node = step.querySelector('.sl-node');
-        node?.addEventListener('click', () => {
-          setManualStep(idx);
-        });
-      });
-
-      // Play/Pause buttons
-      playPauseBtn?.addEventListener('click', () => {
-        if (isManual || container.classList.contains('is-paused')) {
-          isManual = false;
-          container.classList.remove('is-manual');
-          if (fill) {
-            fill.style.removeProperty('--fill-width');
-            fill.style.removeProperty('--fill-height');
-          }
-          startAutoplay();
-        } else {
-          isManual = true;
-          stopAutoplay();
-          container.classList.add('is-paused');
-          container.classList.add('is-manual');
-          setManualStep(autoplayStep);
-        }
-      });
-
-      resetBtn?.addEventListener('click', () => {
-        isManual = false;
-        container.classList.remove('is-manual');
-        container.classList.remove('is-paused');
-        if (fill) {
-          fill.style.removeProperty('--fill-width');
-          fill.style.removeProperty('--fill-height');
-        }
-        startAutoplay();
-      });
+      fitScale();
     });
   }
 
-  // Run on start
-  initStatusLifecycle();
-  // Support Astro View Transitions
-  document.addEventListener('astro:after-swap', initStatusLifecycle);
+  initSignboxLifecycle();
+  document.addEventListener('astro:page-load', initSignboxLifecycle);
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll<HTMLElement>('.signbox-lifecycle').forEach((fig) => {
+      const ro = (fig as any).__sblRO as ResizeObserver | undefined;
+      if (ro) { ro.disconnect(); (fig as any).__sblRO = undefined; }
+    });
+  });
 </script>
-
