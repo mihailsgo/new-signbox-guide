@@ -1,0 +1,262 @@
+---
+/**
+ * ValidContainerAnimation - "What makes a signature legally valid".
+ *
+ * 1:1 port of the design handoff `SignBox Valid Container.dc.html`
+ * (design_handoff_signbox_valid_container). One CSS variable (--cycle) drives
+ * the whole loop; every keyframe is authored as a percentage of that cycle so
+ * all elements stay in lockstep over ~13s:
+ *   - four layers (Document -> Signature -> Timestamp -> Validation) drop into
+ *     an ASiC-E container bottom-up, each earning a green check that pops;
+ *   - the matching explanation row on the right brightens (.28 -> 1 opacity);
+ *   - at the end a circular VALID seal stamps on with a green scan-beam, glow,
+ *     container chips and a "Long-term legally valid" conclusion bar.
+ *
+ * Replaces the older, weaker TrustLayerAnimation in the "A legally trustworthy
+ * result" section. Defaults are hard-coded from the handoff: zoom "Standard"
+ * (ref 1360), look "Midnight glass", pace "Standard" (13s) - all inline on
+ * .svc-frame. The demo's play/pause + zoom/look/pace controls are intentionally
+ * dropped; only fit-to-width scaling and reduced-motion are wired in JS.
+ *
+ * Fonts (Manrope / Space Grotesk / Space Mono) are already loaded globally in
+ * Head.astro.
+ *
+ * Every keyframe is prefixed `vc*`. The homepage also renders SignBoxHero
+ * (owns sbFloat/sbSweep/sbTwinkle/sbDrift) and StatusLifecycle (owns global
+ * chipsIn/sealStamp); unprefixed names would clobber each other. This animation
+ * uses no raster assets - all icons are inline SVG.
+ */
+interface Props { class?: string; }
+const { class: className = '' } = Astro.props;
+---
+
+<figure class={`sb-anim valid-container ${className}`} role="group" aria-label="What makes a signature legally valid: four layers sealed into an ASiC-E container">
+<!-- WRAPPER (fluid) -> FRAME (fixed design, scaled to fit width) -->
+<div class="svc-wrap" style="width:100%; max-width:1280px; margin:0 auto; position:relative; overflow:hidden;">
+<div class="svc-frame" style="--cycle:13s; --pstate:running; --acc1:#3D7BFF; --acc2:#6AA1FF; --glow:61,123,255; --panel-bg:linear-gradient(165deg,#0c1326 0%,#0a0f1f 55%,#0b1024 100%); --panel-border:rgba(120,150,220,.14); --panel-bloom:radial-gradient(620px 320px at 25% -10%, rgba(61,123,255,.2), transparent 60%), radial-gradient(520px 320px at 100% 110%, rgba(45,210,126,.15), transparent 60%); --grid-op:.5; --grid-col:rgba(140,165,225,.05); width:1360px; height:900px; transform-origin:top left; background:radial-gradient(1200px 600px at 50% -10%, #eef2f9, #e1e7f1 60%, #d8dfeb); font-family:'Manrope',system-ui,sans-serif; color:#1B2436; padding:40px; display:flex; flex-direction:column; overflow:hidden;">
+
+  <!-- HEADER -->
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:22px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="width:9px; height:9px; border-radius:3px; background:linear-gradient(135deg,#3D7BFF,#6AA1FF);"></div>
+        <span style="font-size:12.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:#6B7689;">TrustLynx SignBox · legally-valid container</span>
+      </div>
+      <h1 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; letter-spacing:-.5px; color:#141B2B;">What makes a signature legally valid</h1>
+    </div>
+    <div style="text-align:right; max-width:330px;">
+      <div style="font-size:13px; color:#5b6b85; font-weight:600; line-height:1.5;">Four layers stack into one sealed <strong style="color:#141B2B;">ASiC-E</strong> container — valid long-term under <strong style="color:#141B2B;">eIDAS</strong>.</div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div style="position:relative; flex:1; min-height:0; border-radius:22px; padding:34px 40px; display:flex; gap:48px; align-items:center; overflow:hidden; background:var(--panel-bg); border:1px solid var(--panel-border); box-shadow:0 30px 70px -30px rgba(10,16,36,.8), inset 0 1px 0 rgba(255,255,255,.05);">
+    <div style="position:absolute; inset:0; pointer-events:none; background:var(--panel-bloom);"></div>
+    <div style="position:absolute; inset:0; pointer-events:none; opacity:var(--grid-op); background-image:linear-gradient(var(--grid-col) 1px, transparent 1px), linear-gradient(90deg, var(--grid-col) 1px, transparent 1px); background-size:34px 34px;"></div>
+    <div style="position:absolute; top:0; left:0; width:120px; height:100%; pointer-events:none; background:linear-gradient(90deg, transparent, rgba(255,255,255,.05), transparent); animation:vcSweep 8s ease-in-out infinite; animation-play-state:var(--pstate);"></div>
+    <div class="ambient" style="position:absolute; inset:0; pointer-events:none;">
+      <span style="position:absolute; left:20%; top:20%; width:4px; height:4px; border-radius:50%; background:#6AA1FF; animation:vcTwinkle 4s ease-in-out infinite; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:46%; top:84%; width:3px; height:3px; border-radius:50%; background:#9bd9b8; animation:vcTwinkle 5.5s ease-in-out infinite .6s; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:90%; top:24%; width:5px; height:5px; border-radius:50%; background:#6AA1FF; animation:vcDrift 9s linear infinite alternate; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:8%; top:70%; width:3px; height:3px; border-radius:50%; background:#cbd9ff; animation:vcTwinkle 6s ease-in-out infinite 1.2s; animation-play-state:var(--pstate);"></span>
+    </div>
+
+    <!-- LEFT: container with stacking layers -->
+    <div style="position:relative; flex:none; width:430px; display:flex; flex-direction:column; align-items:center; gap:18px;">
+      <div style="position:relative; width:400px; border-radius:20px; padding:22px 22px 24px; background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); border:1px solid rgba(140,165,225,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.06); animation:vcFloat 6s ease-in-out infinite; animation-play-state:var(--pstate); overflow:hidden;">
+        <!-- sealed glow border -->
+        <div style="position:absolute; inset:0; border-radius:20px; border:1.5px solid rgba(45,210,126,.65); box-shadow:0 0 26px rgba(45,210,126,.4), inset 0 0 22px rgba(45,210,126,.12); pointer-events:none; opacity:0; animation:vcSealGlow var(--cycle) linear infinite; animation-play-state:var(--pstate);"></div>
+        <!-- scan beam at seal -->
+        <div style="position:absolute; left:0; right:0; top:0; height:46%; pointer-events:none; background:linear-gradient(180deg, rgba(45,210,126,.22), transparent); opacity:0; animation:vcBeam var(--cycle) linear infinite; animation-play-state:var(--pstate);"></div>
+
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8da0c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6l2 2h7a1 1 0 0 1 1 1z"/></svg>
+          <span style="font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; color:#dfe7fb;">ASiC-E container</span>
+          <span style="margin-left:auto; font-family:'Space Mono',monospace; font-size:10px; color:#8da0c8;">Agreement.asice</span>
+        </div>
+
+        <!-- stack: top = validation, bottom = document -->
+        <div style="display:flex; flex-direction:column; gap:11px;">
+          <!-- Validation -->
+          <div style="position:relative; display:flex; align-items:center; gap:13px; padding:13px 15px; border-radius:13px; background:linear-gradient(160deg,rgba(45,210,126,.12),rgba(45,210,126,.03)); border:1px solid rgba(45,210,126,.3); border-left:4px solid #2DD27E; animation:vcLayV var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:38px; height:38px; border-radius:10px; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(45,210,126,.4);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 7.5-9 9-5.5-1.5-9-4-9-9V6l9-3 9 3z"/></svg></div>
+            <div style="flex:1; min-width:0;"><div style="color:#eaf0ff; font-size:13.5px; font-weight:700;">Validation data</div><div style="color:#9fb0cf; font-size:11px;">CRL / OCSP revocation proof</div></div>
+            <span style="flex:none; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; color:#8ff0bd; background:rgba(45,210,126,.14); border:1px solid rgba(45,210,126,.3); padding:3px 7px; border-radius:5px;">LT</span>
+            <div style="position:absolute; top:-7px; right:-7px; width:22px; height:22px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 5px 12px rgba(45,210,126,.5); animation:vcCkV var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+          </div>
+          <!-- Timestamp -->
+          <div style="position:relative; display:flex; align-items:center; gap:13px; padding:13px 15px; border-radius:13px; background:linear-gradient(160deg,rgba(245,196,81,.12),rgba(245,196,81,.03)); border:1px solid rgba(245,196,81,.3); border-left:4px solid #F5C451; animation:vcLayT var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:38px; height:38px; border-radius:10px; background:linear-gradient(150deg,#F5C451,#e0a92f); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(245,196,81,.4);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3a2e0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <div style="flex:1; min-width:0;"><div style="color:#eaf0ff; font-size:13.5px; font-weight:700;">Trusted timestamp</div><div style="color:#9fb0cf; font-size:11px;">Qualified TSA · proves when</div></div>
+            <span style="flex:none; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; color:#f6d488; background:rgba(245,196,81,.14); border:1px solid rgba(245,196,81,.3); padding:3px 7px; border-radius:5px;">T</span>
+            <div style="position:absolute; top:-7px; right:-7px; width:22px; height:22px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 5px 12px rgba(45,210,126,.5); animation:vcCkT var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+          </div>
+          <!-- Signature -->
+          <div style="position:relative; display:flex; align-items:center; gap:13px; padding:13px 15px; border-radius:13px; background:linear-gradient(160deg,rgba(139,107,255,.12),rgba(139,107,255,.03)); border:1px solid rgba(139,107,255,.3); border-left:4px solid #8B6BFF; animation:vcLayS var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:38px; height:38px; border-radius:10px; background:linear-gradient(150deg,#8B6BFF,#b49bff); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(139,107,255,.4);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19c3-1 4-6 6-6s2 3 4 3 3-8 5-8"/><path d="M14 19h7"/></svg></div>
+            <div style="flex:1; min-width:0;"><div style="color:#eaf0ff; font-size:13.5px; font-weight:700;">Digital signature</div><div style="color:#9fb0cf; font-size:11px;">XAdES · identifies the signer</div></div>
+            <span style="flex:none; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; color:#d6ccff; background:rgba(139,107,255,.14); border:1px solid rgba(139,107,255,.3); padding:3px 7px; border-radius:5px;">B</span>
+            <div style="position:absolute; top:-7px; right:-7px; width:22px; height:22px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 5px 12px rgba(45,210,126,.5); animation:vcCkS var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+          </div>
+          <!-- Document -->
+          <div style="position:relative; display:flex; align-items:center; gap:13px; padding:13px 15px; border-radius:13px; background:linear-gradient(160deg,rgba(61,123,255,.12),rgba(61,123,255,.03)); border:1px solid rgba(61,123,255,.3); border-left:4px solid #3D7BFF; animation:vcLayD var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:38px; height:38px; border-radius:10px; background:linear-gradient(150deg,#3D7BFF,#6AA1FF); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(61,123,255,.4);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+            <div style="flex:1; min-width:0;"><div style="color:#eaf0ff; font-size:13.5px; font-weight:700;">Original document</div><div style="color:#9fb0cf; font-size:11px;">Agreement.pdf · the content</div></div>
+            <span style="flex:none; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.3); padding:3px 7px; border-radius:5px;">PDF</span>
+            <div style="position:absolute; top:-7px; right:-7px; width:22px; height:22px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 5px 12px rgba(45,210,126,.5); animation:vcCkD var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+          </div>
+        </div>
+
+        <!-- VALID seal -->
+        <div style="position:absolute; top:8px; right:8px; animation:vcSealStamp var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="width:88px; height:88px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; box-shadow:0 0 0 5px rgba(45,210,126,.2), 0 18px 36px rgba(45,210,126,.5), inset 0 2px 6px rgba(255,255,255,.35); border:2px solid rgba(255,255,255,.5);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+            <span style="color:#fff; font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px;">VALID</span>
+            <span style="color:#d6ffe7; font-size:7.5px; font-weight:700; letter-spacing:.4px;">QES · eIDAS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- container chips -->
+      <div style="display:flex; gap:8px; animation:vcChipsIn var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+        <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">ASiC-E</span>
+        <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">XAdES-LT</span>
+        <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#8ff0bd; background:rgba(45,210,126,.14); border:1px solid rgba(45,210,126,.32); padding:4px 9px; border-radius:6px;">QES</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: what each layer proves -->
+    <div style="position:relative; flex:1; min-width:0; max-width:520px;">
+      <div style="font-size:11px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:#8da0c8; margin-bottom:20px;">Each layer adds legal weight</div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <!-- D -->
+        <div style="display:flex; gap:15px; align-items:flex-start; animation:vcRowD var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(61,123,255,.16); border:1px solid rgba(61,123,255,.34); display:flex; align-items:center; justify-content:center; color:#6AA1FF;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+          <div style="flex:1;"><div style="color:#eaf0ff; font-size:15px; font-weight:700;">Original document <span style="color:#6AA1FF;">— the content</span></div><div style="color:#9fb0cf; font-size:12.5px; margin-top:2px;">The exact file everyone agrees to. Everything else binds to this.</div></div>
+        </div>
+        <!-- S -->
+        <div style="display:flex; gap:15px; align-items:flex-start; animation:vcRowS var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(139,107,255,.16); border:1px solid rgba(139,107,255,.34); display:flex; align-items:center; justify-content:center; color:#b49bff;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19c3-1 4-6 6-6s2 3 4 3 3-8 5-8"/><path d="M14 19h7"/></svg></div>
+          <div style="flex:1;"><div style="color:#eaf0ff; font-size:15px; font-weight:700;">Digital signature <span style="color:#b49bff;">— who</span></div><div style="color:#9fb0cf; font-size:12.5px; margin-top:2px;">A qualified XAdES signature ties a verified identity (Smart-ID, eID) to the file.</div></div>
+        </div>
+        <!-- T -->
+        <div style="display:flex; gap:15px; align-items:flex-start; animation:vcRowT var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(245,196,81,.16); border:1px solid rgba(245,196,81,.34); display:flex; align-items:center; justify-content:center; color:#f6d488;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <div style="flex:1;"><div style="color:#eaf0ff; font-size:15px; font-weight:700;">Trusted timestamp <span style="color:#f6d488;">— when</span></div><div style="color:#9fb0cf; font-size:12.5px; margin-top:2px;">A qualified TSA proves the signature existed at a specific moment in time.</div></div>
+        </div>
+        <!-- V -->
+        <div style="display:flex; gap:15px; align-items:flex-start; animation:vcRowV var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(45,210,126,.16); border:1px solid rgba(45,210,126,.34); display:flex; align-items:center; justify-content:center; color:#7fe0ad;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 7.5-9 9-5.5-1.5-9-4-9-9V6l9-3 9 3z"/></svg></div>
+          <div style="flex:1;"><div style="color:#eaf0ff; font-size:15px; font-weight:700;">Validation data <span style="color:#7fe0ad;">— still valid</span></div><div style="color:#9fb0cf; font-size:12.5px; margin-top:2px;">Embedded CRL/OCSP proof keeps it verifiable for years (LT — long-term).</div></div>
+        </div>
+      </div>
+
+      <!-- final conclusion -->
+      <div style="margin-top:22px; display:flex; align-items:center; gap:14px; padding:16px 18px; border-radius:14px; background:linear-gradient(160deg,rgba(45,210,126,.14),rgba(45,210,126,.04)); border:1px solid rgba(45,210,126,.4); animation:vcFinalRow var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+        <div style="flex:none; width:40px; height:40px; border-radius:11px; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 22px rgba(45,210,126,.45);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div style="flex:1;"><div style="color:#bff3d6; font-size:15px; font-weight:800; font-family:'Space Grotesk',sans-serif;">Long-term legally valid</div><div style="color:#9fcfb4; font-size:12.5px; margin-top:1px;">A qualified electronic signature (QES) — equivalent to a handwritten one under eIDAS.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</figure>
+
+<style is:global>
+  /* Keyframes must be global so the inline `animation:` references on the
+     markup resolve (Astro would otherwise scope/rename names declared in a
+     scoped <style>). Every name is prefixed `vc*`: SignBoxHero owns
+     sbFloat/sbSweep/sbTwinkle/sbDrift and StatusLifecycle owns chipsIn/sealStamp
+     globally, and all three render on the homepage, so unprefixed names would
+     clobber each other. Percentages map to fractions of --cycle (linear). */
+  @keyframes vcFloat { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-7px) } }
+  @keyframes vcSweep { 0%{ transform: translateX(-130%) skewX(-18deg) } 100%{ transform: translateX(360%) skewX(-18deg) } }
+  @keyframes vcTwinkle { 0%,100%{ opacity:.15; transform: scale(.6) } 50%{ opacity:.9; transform: scale(1.15) } }
+  @keyframes vcDrift { 0%{ transform: translate(0,0) } 100%{ transform: translate(24px,-26px) } }
+  /* layers drop into the container - percent of --cycle */
+  @keyframes vcLayD { 0%,3%{opacity:0;transform:translateX(34px) scale(.96)} 9%{opacity:1;transform:translateX(0) scale(1)} 96%{opacity:1;transform:translateX(0) scale(1)} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcLayS { 0%,25%{opacity:0;transform:translateX(34px) scale(.96)} 31%{opacity:1;transform:translateX(0) scale(1)} 96%{opacity:1;transform:translateX(0) scale(1)} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcLayT { 0%,47%{opacity:0;transform:translateX(34px) scale(.96)} 53%{opacity:1;transform:translateX(0) scale(1)} 96%{opacity:1;transform:translateX(0) scale(1)} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcLayV { 0%,69%{opacity:0;transform:translateX(34px) scale(.96)} 75%{opacity:1;transform:translateX(0) scale(1)} 96%{opacity:1;transform:translateX(0) scale(1)} 98%{opacity:0} 100%{opacity:0} }
+  /* per-layer check */
+  @keyframes vcCkD { 0%,7%{opacity:0;transform:scale(0)} 10%{opacity:1;transform:scale(1.25)} 13%{transform:scale(1)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcCkS { 0%,29%{opacity:0;transform:scale(0)} 32%{opacity:1;transform:scale(1.25)} 35%{transform:scale(1)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcCkT { 0%,51%{opacity:0;transform:scale(0)} 54%{opacity:1;transform:scale(1.25)} 57%{transform:scale(1)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcCkV { 0%,73%{opacity:0;transform:scale(0)} 76%{opacity:1;transform:scale(1.25)} 79%{transform:scale(1)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  /* right-side explanation rows brighten */
+  @keyframes vcRowD { 0%,4%{opacity:.28} 9%{opacity:1} 96%{opacity:1} 98%{opacity:.28} 100%{opacity:.28} }
+  @keyframes vcRowS { 0%,26%{opacity:.28} 31%{opacity:1} 96%{opacity:1} 98%{opacity:.28} 100%{opacity:.28} }
+  @keyframes vcRowT { 0%,48%{opacity:.28} 53%{opacity:1} 96%{opacity:1} 98%{opacity:.28} 100%{opacity:.28} }
+  @keyframes vcRowV { 0%,70%{opacity:.28} 75%{opacity:1} 96%{opacity:1} 98%{opacity:.28} 100%{opacity:.28} }
+  /* seal moment */
+  @keyframes vcSealGlow { 0%,84%{opacity:0} 89%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcSealStamp { 0%,85%{opacity:0;transform:scale(1.7) rotate(-12deg)} 90%{opacity:1;transform:scale(1) rotate(-12deg)} 96%{opacity:1;transform:scale(1) rotate(-12deg)} 98%{opacity:0;transform:scale(1) rotate(-12deg)} 100%{opacity:0} }
+  @keyframes vcChipsIn { 0%,87%{opacity:0;transform:translateY(7px)} 91%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcFinalRow { 0%,86%{opacity:0;transform:translateY(7px)} 90%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes vcBeam { 0%,85%{opacity:0; transform:translateY(-100%)} 88%{opacity:.8} 93%{opacity:0; transform:translateY(220%)} 100%{opacity:0} }
+
+  @media (prefers-reduced-motion: reduce) {
+    .valid-container .svc-frame *, .valid-container .svc-frame { animation: none !important; }
+  }
+</style>
+
+<style>
+  /* Self-contained fixed-look illustration; strip the figure's default margins
+     so the wrapper controls its own height. */
+  .valid-container { margin: 0; }
+  /* The reference build assumes a browser clean slate (border-box, default
+     line-height, no element margins). Starlight's global typography leaks in
+     otherwise - inflating line-height and adding margins - which makes the
+     content overflow the fixed 1360x900 canvas. Re-establish the reference's
+     slate, scoped to the frame, so the port matches 1:1. Inline margins in the
+     markup still win (higher cascade origin), so only leaked margins are zeroed. */
+  .valid-container :global(.svc-wrap),
+  .valid-container :global(.svc-frame),
+  .valid-container :global(.svc-frame *) { box-sizing: border-box; line-height: normal; margin: 0; }
+</style>
+
+<script>
+  /* Driver - CSS does all the animating. This only fits the fixed-width design
+     frame to its container width (transform: scale) and respects reduced motion.
+     zoom/look/pace are hard-coded inline on .svc-frame (Standard / Midnight
+     glass / Standard 13s), so there is nothing else to wire. */
+  const SVC_REF = 1360; // "Standard" reference width from the handoff.
+  const SVC_FRAME_H = 900;
+
+  function initValidContainer() {
+    document.querySelectorAll<HTMLElement>('.valid-container').forEach((fig) => {
+      const wrap = fig.querySelector<HTMLElement>('.svc-wrap');
+      const frame = fig.querySelector<HTMLElement>('.svc-frame');
+      if (!wrap || !frame) return;
+
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) frame.style.setProperty('--pstate', 'paused');
+
+      const fitScale = () => {
+        frame.style.width = SVC_REF + 'px';
+        const scale = (wrap.clientWidth || SVC_REF) / SVC_REF;
+        frame.style.transform = 'scale(' + scale + ')';
+        wrap.style.height = (SVC_FRAME_H * scale) + 'px';
+      };
+
+      // Re-init across view transitions without stacking observers.
+      const prev = (fig as any).__svcRO as ResizeObserver | undefined;
+      if (prev) prev.disconnect();
+      const ro = new ResizeObserver(fitScale);
+      ro.observe(wrap);
+      (fig as any).__svcRO = ro;
+
+      fitScale();
+    });
+  }
+
+  initValidContainer();
+  document.addEventListener('astro:page-load', initValidContainer);
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll<HTMLElement>('.valid-container').forEach((fig) => {
+      const ro = (fig as any).__svcRO as ResizeObserver | undefined;
+      if (ro) { ro.disconnect(); (fig as any).__svcRO = undefined; }
+    });
+  });
+</script>

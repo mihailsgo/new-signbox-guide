@@ -11,7 +11,7 @@ import SignBoxHero from './SignBoxHero.astro';
 import PortalSplitAnimation from './PortalSplitAnimation.astro';
 import SigningModesAnimation from './SigningModesAnimation.astro';
 import StatusLifecycle from './StatusLifecycle.astro';
-import TrustLayerAnimation from './TrustLayerAnimation.astro';
+import ValidContainerAnimation from './ValidContainerAnimation.astro';
 import BusinessWorkflowExamples from './BusinessWorkflowExamples.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -176,14 +176,11 @@ const faqs = [
 
   <!-- ============ TRUST / LEGAL RESULT ============ -->
   <section class="sec trust-sec">
-    <div class="trust-intro">
-      <div class="sec-head">
-        <h2>A legally trustworthy result</h2>
-        <p>Not just a visual signature: a certified, independently verifiable container.</p>
-      </div>
-      <p class="outcome-line"><strong>ASiC-E / eDoc</strong><span>+</span><strong>QES</strong><span>+</span><strong>XAdES-LT</strong><span>+</span><strong class="valid">Valid</strong></p>
+    <div class="sec-head">
+      <h2>A legally trustworthy result</h2>
+      <p>Not just a visual signature: a certified, independently verifiable container.</p>
     </div>
-    <TrustLayerAnimation />
+    <ValidContainerAnimation class="how-visual" />
     <div class="method-strip">
       {methods.map((m) => (
         <span class={`method-chip ${m.k}`}>
@@ -392,11 +389,6 @@ const faqs = [
   .doc-card:hover .doc-arrow{transform:translateX(4px);}
 
   .trust-sec{position:relative;}
-  .trust-intro{display:flex;align-items:end;justify-content:space-between;gap:28px;}
-  .trust-intro .sec-head{margin-bottom:30px;}
-  .outcome-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:34px!important;font-size:13px;color:var(--hp-ink-soft);}
-  .outcome-line strong{padding:7px 10px;border-radius:8px;border:1px solid color-mix(in srgb,var(--hp-gold) 35%,var(--hp-border));color:var(--hp-ink);background:color-mix(in srgb,var(--hp-gold) 7%,transparent);}
-  .outcome-line strong.valid{color:#087944;border-color:color-mix(in srgb,#15a35a 42%,var(--hp-border));background:color-mix(in srgb,#15a35a 10%,transparent);}
 
   /* methods strip (sits under the trust-layer animation) */
   .method-strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
@@ -442,8 +434,6 @@ const faqs = [
     .ben-card:nth-child(odd),.doc-card:nth-child(odd),.role-card:not(:last-child){border-inline-end:0;}
     .ben-card,.doc-card,.role-card{border-bottom:1px solid var(--hp-border);}
     .ben-card:last-child,.doc-card:last-child,.role-card:last-child{border-bottom:0;}
-    .trust-intro{display:block;}
-    .outcome-line{justify-content:flex-start;margin-top:-16px!important;}
     .cta{padding:30px 24px;}
   }
   @media (max-width:560px){
