@@ -96,15 +96,6 @@ const methods = [
   { t: 'ASiC-E', k: 'container', icon: sealIcon },
 ];
 
-// "How SignBox works" - 5 named steps (distinct from the hero's flow animation)
-const steps = [
-  { t: 'Upload document', icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/>' },
-  { t: 'Define signers & roles', icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.3"/><path d="M21 19c0-2.3-1.6-4.3-3.7-4.85"/>' },
-  { t: 'Send invitation', icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>' },
-  { t: 'Sign', icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>' },
-  { t: 'Download signed document', icon: '<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="m9 14 2 2 4-4"/>' },
-];
-
 const faqs = [
   { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container - the highest assurance level under eIDAS, with built-in validation.' },
   { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
@@ -142,39 +133,18 @@ const faqs = [
   <section id="how" class="sec story-sec">
     <div class="sec-head">
       <h2>How SignBox works</h2>
-      <p>One document, one workflow - five steps from upload to a sealed, validated signed document.</p>
+      <p>One document, one workflow - follow it from draft to a sealed, validated signed document.</p>
     </div>
-    <ol class="flow5">
-      {steps.map((s, i) => (
-        <li class="flow5-step">
-          <span class="flow5-num">{i + 1}</span>
-          <span class="flow5-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={s.icon} /></span>
-          <span class="flow5-t">{s.t}</span>
-        </li>
-      ))}
-    </ol>
-    <div class="support-pair">
-      <article class="support-story">
-        <div class="support-copy">
-          <h3 class="subhead">Parallel or sequential signing</h3>
-          <p>Send to everyone at once, or enforce a strict signing order group by group.</p>
-        </div>
-        <details class="visual-detail" open>
-          <summary>Compare signing modes <span aria-hidden="true">+</span></summary>
-          <SigningModesAnimation />
-        </details>
-      </article>
-      <article class="support-story">
-        <div class="support-copy">
-          <h3 class="subhead">A clear process lifecycle</h3>
-          <p>Four well-defined statuses, with a clear distinction between <em>Completed</em> and <em>Finished</em>.</p>
-        </div>
-        <details class="visual-detail" open>
-          <summary>View the lifecycle <span aria-hidden="true">+</span></summary>
-          <StatusLifecycle />
-        </details>
-      </article>
+    <StatusLifecycle class="how-visual" />
+  </section>
+
+  <!-- ============ PARALLEL OR SEQUENTIAL SIGNING ============ -->
+  <section class="sec story-sec">
+    <div class="sec-head">
+      <h2>Parallel or sequential signing</h2>
+      <p>Send to everyone at once, or enforce a strict signing order group by group.</p>
     </div>
+    <SigningModesAnimation class="how-visual" />
   </section>
 
   <!-- ============ WHY ORGANIZATIONS USE IT ============ -->
@@ -352,64 +322,20 @@ const faqs = [
   .sec-head p{font-size:16px;line-height:1.6;color:var(--hp-ink-soft);}
   .sec-head em{font-style:normal;color:var(--hp-gold);font-weight:700;}
 
-  /* how-it-works 5-step strip */
-  .flow5{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:none;border-block:1px solid var(--hp-border);}
-  /* cancel brand.css's global ordered-list "gold stepper" (ol>li::before) */
-  .flow5 > .flow5-step::before{content:none !important;}
-  .flow5-step{position:relative;display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto auto;align-items:center;text-align:left;gap:5px 12px;padding:24px 18px;}
-  .flow5-step:not(:last-child){border-inline-end:1px solid var(--hp-border);}
-  .flow5-ic{grid-column:1;grid-row:1/3;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 9%,transparent);}
-  .flow5-ic svg{width:20px;height:20px;}
-  .flow5-num{grid-column:2;grid-row:1;font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--hp-gold);}
-  .flow5-num::before{content:"0";}
-  .flow5-t{grid-column:2;grid-row:2;font-size:13px;font-weight:750;line-height:1.3;color:var(--hp-ink);}
-  @media (max-width:720px){
-    .flow5{grid-template-columns:1fr;}
-    .flow5-step{grid-template-columns:38px 34px 1fr;grid-template-rows:auto;padding:13px 4px;gap:12px;}
-    .flow5-step:not(:last-child){border-inline-end:0;border-bottom:1px solid var(--hp-border);}
-    .flow5-ic{grid-column:1;grid-row:auto;}
-    .flow5-num{grid-column:2;grid-row:auto;}
-    .flow5-t{grid-column:3;grid-row:auto;}
-  }
-  /* Sequential "traveling highlight": each step lights up gold in turn, so the
-     strip reads as a left-to-right progression. Reduced-motion shows the
-     static blue resting state (no animation). */
-  .flow5-ic{transition:color .3s ease,background-color .3s ease,box-shadow .3s ease,transform .3s ease;}
-  @media (prefers-reduced-motion:no-preference){
-    .flow5-step{--fd:0s;}
-    .flow5-step:nth-child(2){--fd:1.1s;}
-    .flow5-step:nth-child(3){--fd:2.2s;}
-    .flow5-step:nth-child(4){--fd:3.3s;}
-    .flow5-step:nth-child(5){--fd:4.4s;}
-    .flow5-ic{animation:flow5ic 5.6s ease-in-out infinite;animation-delay:var(--fd);}
-    .flow5-num{animation:flow5num 5.6s ease-in-out infinite;animation-delay:var(--fd);}
-  }
-  @keyframes flow5ic{
-    0%,4%{color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 9%,transparent);box-shadow:none;transform:scale(1);}
-    9%,15%{color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 18%,transparent);box-shadow:0 0 0 4px color-mix(in srgb,var(--hp-gold) 13%,transparent);transform:scale(1.1);}
-    22%,100%{color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 9%,transparent);box-shadow:none;transform:scale(1);}
-  }
-  @keyframes flow5num{
-    0%,4%{color:var(--hp-gold);opacity:.65;}
-    9%,15%{color:var(--hp-gold);opacity:1;}
-    22%,100%{color:var(--hp-gold);opacity:.65;}
-  }
+  /* how-it-works lead visual (process-lifecycle animation) */
+  :global(.how-visual){margin-top:8px;}
 
-  .support-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px;}
-  .support-story,.secondary-block{padding:24px;border:1px solid var(--hp-border);border-radius:18px;background:color-mix(in srgb,var(--hp-surface) 64%,transparent);}
+  .secondary-block{padding:24px;border:1px solid var(--hp-border);border-radius:18px;background:color-mix(in srgb,var(--hp-surface) 64%,transparent);}
   .support-copy{margin-bottom:20px;}
   .support-copy .subhead{font-size:19px;letter-spacing:-.015em;margin-bottom:6px;}
   .support-copy p{font-size:14px;line-height:1.55;color:var(--hp-ink-soft);}
   .support-copy em{font-style:normal;color:var(--hp-gold);font-weight:700;}
   .secondary-block{margin-top:22px;padding:24px;}
-  .visual-detail{border-top:1px solid var(--hp-border);}
-  .visual-detail summary,.secondary-disclosure>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--hp-ink);font-size:13px;font-weight:750;}
-  .visual-detail summary{padding:15px 2px 2px;color:var(--hp-gold);}
-  .visual-detail summary::-webkit-details-marker,.secondary-disclosure>summary::-webkit-details-marker{display:none;}
-  .visual-detail summary::before,.secondary-disclosure>summary::before{display:none!important;}
-  .visual-detail summary span,.disclosure-action>span{font-size:19px;font-weight:400;transition:transform .3s cubic-bezier(.22,1,.36,1);}
-  .visual-detail[open] summary span,.secondary-disclosure[open] .disclosure-action>span{transform:rotate(45deg);}
-  .visual-detail :global(.sb-anim){margin-top:18px;}
+  .secondary-disclosure>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--hp-ink);font-size:13px;font-weight:750;}
+  .secondary-disclosure>summary::-webkit-details-marker{display:none;}
+  .secondary-disclosure>summary::before{display:none!important;}
+  .disclosure-action>span{font-size:19px;font-weight:400;transition:transform .3s cubic-bezier(.22,1,.36,1);}
+  .secondary-disclosure[open] .disclosure-action>span{transform:rotate(45deg);}
   .secondary-disclosure>summary{padding:0;}
   .secondary-disclosure .support-copy{display:grid;gap:5px;margin:0;text-align:left;}
   .secondary-disclosure .support-copy .subhead{font-size:19px;color:var(--hp-ink);}
