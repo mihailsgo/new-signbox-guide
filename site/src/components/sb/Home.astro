@@ -7,7 +7,7 @@
  * Styles are scoped + namespaced under `.sb-home`; theming follows
  * Starlight's html[data-theme]; all motion respects prefers-reduced-motion.
  */
-import HeroFlow from './HeroFlow.astro';
+import SignBoxHero from './SignBoxHero.astro';
 import PortalSplitAnimation from './PortalSplitAnimation.astro';
 import SigningModesAnimation from './SigningModesAnimation.astro';
 import StatusLifecycle from './StatusLifecycle.astro';
@@ -130,7 +130,7 @@ const faqs = [
       <p class="hero-segments">Built for HR, legal, procurement, finance, public sector, and enterprise document workflows.</p>
     </div>
     <div class="hero-art">
-      <HeroFlow showCaption={false} />
+      <SignBoxHero />
     </div>
     <div class="band">
       <span class="band-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
