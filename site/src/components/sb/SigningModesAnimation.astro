@@ -304,12 +304,16 @@ const { class: className = '' } = Astro.props;
   /* Component frame is a self-contained fixed-look illustration; strip the
      figure's default margins so the wrapper controls its own height. */
   .signbox-routing { margin: 0; }
-  /* The reference build relies on a global `* { box-sizing: border-box }`; the
-     fixed 1060x1000 frame and all its inline-padded children assume it. Scope
-     that reset to the frame so the port matches 1:1 regardless of page resets. */
+  /* The reference build assumes a browser clean slate (border-box, default
+     line-height, no element margins). Starlight's global typography leaks in
+     otherwise - inflating line-height to 1.75 and adding margins - which makes
+     the content overflow the fixed 1060x1000 canvas and clips the bottom of the
+     parallel row. Re-establish the reference's slate, scoped to the frame, so
+     the port matches 1:1. Inline margins in the markup still win (higher cascade
+     origin), so only leaked margins are zeroed. */
   .signbox-routing :global(.sbr-wrap),
   .signbox-routing :global(.sbr-frame),
-  .signbox-routing :global(.sbr-frame *) { box-sizing: border-box; }
+  .signbox-routing :global(.sbr-frame *) { box-sizing: border-box; line-height: normal; margin: 0; }
 </style>
 
 <script>
