@@ -94,9 +94,29 @@
 }
 .sl-markdown-content p:has(> em:only-child) em { font-style: normal; }
 
-/* medium-zoom lightbox: deep-navy tint, above all app chrome (header/sidebar) */
-.medium-zoom-overlay { background: rgba(9, 14, 26, 0.95) !important; z-index: 9998 !important; }
-.medium-zoom-image--opened { z-index: 9999 !important; }
+/* medium-zoom lightbox: deep-navy tint, above all app chrome (header/sidebar).
+   The enlarged image is a CLONE appended to <body> (outside .sl-markdown-content),
+   so it inherits none of the screenshot framing - style the opened-state classes
+   directly here. */
+.medium-zoom-overlay {
+  background: rgba(9, 14, 26, 0.92) !important; /* deep-navy tint */
+  backdrop-filter: blur(6px); /* frosted depth behind the image */
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9998 !important;
+  transition: opacity 0.3s ease !important;
+}
+/* Force the dim on from OUR own reliable open-state class. medium-zoom drives
+   the overlay opacity off `medium-zoom--opened` on <body>, but Astro's
+   ClientRouter replaces <body> on navigation, so that class is unreliable and
+   the backdrop could stay at opacity:0 (invisible). tl-zoom-open is maintained
+   by the MutationObserver in Head.astro and survives body swaps. */
+body.tl-zoom-open .medium-zoom-overlay { opacity: 1 !important; }
+.medium-zoom-image--opened {
+  z-index: 9999 !important;
+  border-radius: 14px; /* clips the img bitmap; matches the thumbnail once scaled */
+  box-shadow: 0 40px 120px -28px rgba(0, 0, 0, 0.85);
+  outline: 1px solid rgba(255, 255, 255, 0.1); /* subtle light edge = "card" feel */
+}
 
 /* "click to enlarge" affordance - magnifier badge on screenshot hover */
 .sl-markdown-content p:has(> img) { position: relative; }
