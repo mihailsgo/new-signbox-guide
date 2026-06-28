@@ -9,3 +9,6 @@ site/src/assets/screens/
 # misc
 .DS_Store
 *.log
+# local QA / browser-tooling artifacts
+.playwright-mcp/
+qa-*.png

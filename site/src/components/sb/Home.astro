@@ -17,28 +17,47 @@ import BusinessWorkflowExamples from './BusinessWorkflowExamples.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const u = (slug) => `${base}/${slug}/`;
 
-const audiences = [
+// Intent-based entry router: the four ways people arrive at SignBox.
+// First card is the "just looking" path -> the product overview / before-you-start.
+const paths = [
   {
-    t: 'For initiators',
-    d: 'Create and manage signing processes - upload documents, add recipients, set roles and due dates, then start and track.',
+    t: 'I want to understand SignBox',
+    d: 'See what SignBox is, the two-portal model and what you need before you start.',
+    href: u('before-you-start'),
+    cta: 'View product overview',
+    icon: '<circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  },
+  {
+    t: 'I need to create a signing process',
+    d: 'Upload a document, add recipients and roles, choose a signing mode, then start and track.',
     href: u('initiating'),
-    cta: 'Start a process',
+    cta: 'Open initiator guide',
     icon: '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8"/>',
   },
   {
-    t: 'For signers',
-    d: 'Open a secure invitation, authenticate with Smart-ID / e-ID and sign - no account required.',
+    t: 'I received a signing invitation',
+    d: 'Open the secure link, authenticate with Smart-ID / e-ID and sign - no account required.',
     href: u('signing'),
-    cta: 'Sign a document',
+    cta: 'Open signer guide',
     icon: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>',
   },
   {
-    t: 'For administrators',
-    d: 'Manage document profiles, attributes, contacts, templates and e-seal settings for the whole organization.',
+    t: 'I manage templates, profiles & settings',
+    d: 'Configure document profiles, attributes, contacts and templates for the whole organization.',
     href: u('management'),
-    cta: 'Manage settings',
+    cta: 'Open admin guide',
     icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   },
+];
+
+// Plain-language walkthrough of a single, recognizable scenario. Roles only -
+// no invented people or companies (per the product's anti-reference rules).
+const hrSteps = [
+  'HR uploads the employment agreement.',
+  'The new hire gets a secure signing link by email - no account needed.',
+  'They confirm their identity and sign on their phone with Smart-ID.',
+  'HR sees the status update automatically.',
+  'The final signed file is stored and independently verifiable.',
 ];
 
 const benefits = [
@@ -81,6 +100,17 @@ const docs = [
   { t: 'Tracking & status', d: 'Follow a process from draft to finished container.', href: u('tracking') },
 ];
 
+// in-page section navigation (sticky, sits under Starlight's header)
+const navLinks = [
+  { id: 'how', t: 'How it works' },
+  { id: 'portals', t: 'Portals' },
+  { id: 'modes', t: 'Signing modes' },
+  { id: 'why', t: 'Why SignBox' },
+  { id: 'result', t: 'Result' },
+  { id: 'docs', t: 'Docs' },
+  { id: 'faq', t: 'FAQ' },
+];
+
 // e-ID + signature-standard icon chips
 const phoneIcon = '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/>';
 const cardIcon = '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8" cy="11" r="2"/><path d="M13 9h6M13 13h6M5 16h8"/>';
@@ -98,6 +128,9 @@ const methods = [
 
 const faqs = [
   { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container - the highest assurance level under eIDAS, with built-in validation.' },
+  { q: 'What does signing look like for the person I invite?', a: 'They open the secure link, choose an e-ID method, confirm their identity and sign - usually in under a minute. No account, and nothing to install.' },
+  { q: 'What do I get at the end?', a: 'A single signed file: an ASiC-E container holding the original document, every signature, trusted timestamps and validation data. You can download it and verify it independently.' },
+  { q: 'Can the signed file be verified later, outside SignBox?', a: 'Yes. The container is a standard eIDAS format any compliant validator can check, with embedded long-term validation data that keeps it verifiable for years.' },
   { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
   { q: 'Do external signers need an account?', a: 'No. A signer opens a secure invitation link, authenticates with their e-ID and signs - no SignBox account required.' },
   { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed document has been generated and the process is closed - two distinct milestones.' },
@@ -111,13 +144,14 @@ const faqs = [
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-copy">
       <span class="eyebrow">TrustLynx SignBox · e-signing platform</span>
-      <h1>Secure electronic signing, from document upload to a legally valid signed&nbsp;container.</h1>
-      <p>Create signing workflows, invite recipients, sign with trusted e-ID methods, and track every process from draft to finished container.</p>
+      <h1>Legally valid e-signing for business documents</h1>
+      <p>Upload a document, invite signers, collect trusted e-ID signatures, and receive a verifiable signed file ready for audit.</p>
       <div class="hero-cta">
         <a class="btn primary" href="mailto:sales@trustlynx.io?subject=SignBox%20demo%20request">Request a demo</a>
         <a class="btn secondary" href="mailto:sales@trustlynx.io?subject=SignBox%20enquiry">Contact TrustLynx</a>
         <a class="btn text" href="#how">See how it works <span aria-hidden="true">↓</span></a>
       </div>
+      <p class="hero-tech"><strong>For technical &amp; legal teams:</strong> SignBox produces ASiC-E / eDoc containers with QES, XAdES-LT and embedded validation data.</p>
       <p class="hero-segments">Built for HR, legal, procurement, finance, public sector, and enterprise document workflows.</p>
     </div>
     <div class="hero-art">
@@ -129,17 +163,65 @@ const faqs = [
     </div>
   </header>
 
+  <!-- ============ CHOOSE YOUR PATH (intent router) ============ -->
+  <section class="sec path-sec" aria-labelledby="path-h">
+    <div class="sec-head">
+      <h2 id="path-h">Where do you want to start?</h2>
+      <p>Pick the path that matches what you need to do.</p>
+    </div>
+    <div class="path-grid">
+      {paths.map((p) => (
+        <a class="path-card" href={p.href}>
+          <span class="path-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={p.icon} /></span>
+          <h3>{p.t}</h3>
+          <p>{p.d}</p>
+          <span class="path-cta">{p.cta}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ STICKY SECTION NAV ============ -->
+  <nav class="sb-subnav" aria-label="Page sections">
+    {navLinks.map((l) => <a href={`#${l.id}`}>{l.t}</a>)}
+  </nav>
+
   <!-- ============ HOW SIGNBOX WORKS ============ -->
   <section id="how" class="sec story-sec">
     <div class="sec-head">
       <h2>How SignBox works</h2>
       <p>One document, one workflow - follow it from draft to a sealed, validated signed document.</p>
     </div>
+    <div class="hr-walk">
+      <span class="hr-walk-kicker">Example · hiring a new employee</span>
+      <ol class="hr-walk-steps">
+        {hrSteps.map((s, i) => (
+          <li><span class="hr-step-n">{i + 1}</span><span>{s}</span></li>
+        ))}
+      </ol>
+    </div>
     <StatusLifecycle class="how-visual" />
   </section>
 
+  <!-- ============ INTERNAL & EXTERNAL PORTALS ============ -->
+  <section id="portals" class="sec story-sec">
+    <div class="sec-head">
+      <h2>Internal &amp; external portals</h2>
+      <p>Initiators build and track processes in the internal portal; signers act externally through a secure handoff - no account required.</p>
+    </div>
+    <PortalSplitAnimation />
+    <div class="role-grid">
+      {roles.map((r) => (
+        <div class={`role-card ${r.cls}`}>
+          <span class="role-dot"></span>
+          <div><h3>{r.t}</h3><p>{r.d}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <!-- ============ PARALLEL OR SEQUENTIAL SIGNING ============ -->
-  <section class="sec story-sec">
+  <section id="modes" class="sec story-sec">
     <div class="sec-head">
       <h2>Parallel or sequential signing</h2>
       <p>Send to everyone at once, or enforce a strict signing order group by group.</p>
@@ -148,7 +230,7 @@ const faqs = [
   </section>
 
   <!-- ============ WHY ORGANIZATIONS USE IT ============ -->
-  <section class="sec story-sec">
+  <section id="why" class="sec story-sec">
     <div class="sec-head">
       <h2>Why organizations use it</h2>
       <p>The reasons teams standardize on SignBox for organization-wide signing.</p>
@@ -162,23 +244,20 @@ const faqs = [
         </a>
       ))}
     </div>
-    <details class="secondary-block secondary-disclosure">
-      <summary>
-        <span class="support-copy">
-          <strong class="subhead">Real business workflows</strong>
-          <span>How teams put SignBox to work day to day.</span>
-        </span>
-        <span class="disclosure-action">Explore workflows <span aria-hidden="true">+</span></span>
-      </summary>
-      <div class="detail-body"><BusinessWorkflowExamples /></div>
-    </details>
+    <div class="secondary-block bw-block">
+      <div class="support-copy">
+        <h3 class="subhead">Real business workflows</h3>
+        <p>How teams put SignBox to work day to day - from a single-signer contract to multi-party approval.</p>
+      </div>
+      <BusinessWorkflowExamples />
+    </div>
   </section>
 
   <!-- ============ TRUST / LEGAL RESULT ============ -->
-  <section class="sec trust-sec">
+  <section id="result" class="sec trust-sec">
     <div class="sec-head">
-      <h2>A legally trustworthy result</h2>
-      <p>Not just a visual signature: a certified, independently verifiable container.</p>
+      <h2>A signed file you can trust - and prove</h2>
+      <p>Every signature is independently verifiable and tamper-evident, and the file stays valid for years - no special software needed to check it. Here is what is inside.</p>
     </div>
     <ValidContainerAnimation class="how-visual" />
     <div class="method-strip">
@@ -191,40 +270,8 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ============ USER ROLES / PORTALS ============ -->
-  <section class="sec story-sec">
-    <div class="sec-head">
-      <h2>User roles &amp; portals</h2>
-      <p>Initiators build and track processes internally; signers act externally through a secure handoff.</p>
-    </div>
-    <PortalSplitAnimation />
-    <div class="role-grid">
-      {roles.map((r) => (
-        <div class={`role-card ${r.cls}`}>
-          <span class="role-dot"></span>
-          <div><h3>{r.t}</h3><p>{r.d}</p></div>
-        </div>
-      ))}
-    </div>
-    <div class="secondary-block audience-block">
-      <div class="support-copy">
-        <h3 class="subhead">Who is this for?</h3>
-        <p>Start processes, sign them, or administer the platform through a clear role-based path.</p>
-      </div>
-      <div class="aud-grid">
-        {audiences.map((a) => (
-          <a class="aud-card" href={a.href}>
-            <span class="aud-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={a.icon} /></span>
-            <div class="aud-copy"><h3>{a.t}</h3><p>{a.d}</p></div>
-            <span class="aud-link">{a.cta}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- ============ DOCUMENTATION ENTRY ============ -->
-  <section class="sec docs-sec">
+  <section id="docs" class="sec docs-sec">
     <div class="sec-head">
       <h2>Read the documentation</h2>
       <p>Jump straight to the pages that matter most.</p>
@@ -237,10 +284,10 @@ const faqs = [
         </a>
       ))}
     </div>
-    <div class="secondary-block faq-block">
+    <div id="faq" class="secondary-block faq-block">
       <div class="support-copy">
         <h3 class="subhead">Frequently asked questions</h3>
-        <p>The essentials for evaluating SignBox.</p>
+        <p>The essentials for evaluating SignBox - including what signing feels like and what you get at the end.</p>
       </div>
       <div class="faq">
         {faqs.map((f) => (
@@ -292,7 +339,9 @@ const faqs = [
   .hero-copy h1{font-size:clamp(38px,5.2vw,61px);line-height:.99;letter-spacing:-.045em;font-weight:800;text-wrap:balance;margin-bottom:18px;}
   .hero-copy p{font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:var(--hp-ink-soft);max-width:58ch;margin:0 auto 22px;}
   .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;}
-  .hero-segments{margin:14px auto 0!important;font-size:13px!important;font-weight:650;letter-spacing:.015em;color:var(--hp-ink-soft);opacity:.88;max-width:66ch!important;}
+  .hero-copy .hero-tech{margin:16px auto 0;font-size:13px;line-height:1.5;max-width:72ch;color:var(--hp-ink-soft);opacity:.92;}
+  .hero-copy .hero-tech strong{color:var(--hp-ink);font-weight:750;}
+  .hero-segments{margin:10px auto 0!important;font-size:13px!important;font-weight:650;letter-spacing:.015em;color:var(--hp-ink-soft);opacity:.88;max-width:66ch!important;}
 
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;font-size:15px;font-weight:750;text-decoration:none;padding:12px 23px;border-radius:10px;transition:transform .24s cubic-bezier(.22,1,.36,1),border-color .24s ease,box-shadow .24s ease,background-color .24s ease;border:1px solid transparent;cursor:pointer;}
   .btn.primary{background:linear-gradient(160deg,var(--hp-gold-2),var(--hp-gold));color:#241a07;box-shadow:0 10px 26px -12px rgba(181,134,53,.7);}
@@ -313,6 +362,8 @@ const faqs = [
 
   /* sections */
   .sec{padding:clamp(38px,5vw,60px) 0;border-top:1px solid var(--hp-border);}
+  .sec[id]{scroll-margin-top:calc(var(--sl-nav-height,4rem) + 58px);}
+  #faq{scroll-margin-top:calc(var(--sl-nav-height,4rem) + 58px);}
   .sec-head{margin-bottom:clamp(24px,3vw,34px);max-width:64ch;}
   .sec-head h2{font-size:clamp(29px,3.8vw,43px);line-height:1.05;letter-spacing:-.035em;font-weight:800;margin-bottom:12px;text-wrap:balance;}
   .sec-head h3.subhead{font-size:clamp(17px,2.1vw,21px);letter-spacing:-.01em;font-weight:800;margin:0 0 6px;color:var(--hp-ink);}
@@ -322,35 +373,45 @@ const faqs = [
   /* how-it-works lead visual (process-lifecycle animation) */
   :global(.how-visual){margin-top:8px;}
 
-  .secondary-block{padding:24px;border:1px solid var(--hp-border);border-radius:18px;background:color-mix(in srgb,var(--hp-surface) 64%,transparent);}
+  /* sticky in-page section nav (pins under Starlight's header) */
+  .sb-subnav{position:sticky;top:var(--sl-nav-height,4rem);z-index:20;display:flex;gap:2px;justify-content:center;flex-wrap:nowrap;overflow-x:auto;padding:8px 4px;
+    background:color-mix(in srgb,var(--sl-color-bg,#fff) 90%,transparent);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--hp-border);scrollbar-width:none;}
+  .sb-subnav::-webkit-scrollbar{display:none;}
+  .sb-subnav a{flex:none;padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700;color:var(--hp-ink-soft);text-decoration:none;white-space:nowrap;transition:color .2s ease,background-color .2s ease;}
+  .sb-subnav a:hover{color:var(--hp-ink);background:color-mix(in srgb,var(--hp-gold) 9%,transparent);}
+  .sb-subnav a[aria-current="true"]{color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 13%,transparent);}
+
+  /* choose-your-path intent router */
+  .path-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .path-card{display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;padding:22px 22px 20px;border:1px solid var(--hp-border);border-radius:16px;
+    background:color-mix(in srgb,var(--hp-surface) 64%,transparent);text-decoration:none;color:inherit;
+    transition:transform .25s cubic-bezier(.22,1,.36,1),border-color .25s ease,box-shadow .25s ease;}
+  .path-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--hp-gold) 42%,var(--hp-border));box-shadow:0 18px 36px -24px rgba(15,27,46,.5);}
+  .path-ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 10%,transparent);}
+  .path-ic svg{width:22px;height:22px;}
+  .path-card h3{font-size:17px;letter-spacing:-.01em;line-height:1.22;}
+  .path-card>p{font-size:13.5px;color:var(--hp-ink-soft);line-height:1.5;}
+  .path-cta{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:750;color:var(--hp-gold);}
+  .path-cta svg{width:15px;height:15px;transition:transform .25s ease;}
+  .path-card:hover .path-cta svg{transform:translateX(4px);}
+
+  /* plain-language scenario walkthrough (leads "How SignBox works") */
+  .hr-walk{margin-bottom:clamp(20px,3vw,30px);padding:20px 22px;border:1px solid var(--hp-border);border-radius:16px;background:color-mix(in srgb,var(--hp-surface) 58%,transparent);}
+  .hr-walk-kicker{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--hp-eyebrow);margin-bottom:16px;}
+  .hr-walk-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+  /* Override brand.css's global "ol > li" gold-stepper. Astro scopes styles with
+     :where() (zero specificity), so we lead with the .hr-walk ancestor class to
+     out-specify brand's .sl-markdown-content ol>li rules. This list draws its own
+     .hr-step-n badge, so suppress the injected counter circle and its indent. */
+  .hr-walk .hr-walk-steps li{display:flex;flex-direction:column;gap:9px;margin:0;padding:0;font-size:13.5px;line-height:1.45;color:var(--hp-ink-soft);}
+  .hr-walk .hr-walk-steps li::before{content:none;display:none;}
+  .hr-step-n{width:27px;height:27px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 13%,transparent);}
+
+  .secondary-block{margin-top:22px;padding:24px;border:1px solid var(--hp-border);border-radius:18px;background:color-mix(in srgb,var(--hp-surface) 64%,transparent);}
   .support-copy{margin-bottom:20px;}
   .support-copy .subhead{font-size:19px;letter-spacing:-.015em;margin-bottom:6px;}
   .support-copy p{font-size:14px;line-height:1.55;color:var(--hp-ink-soft);}
   .support-copy em{font-style:normal;color:var(--hp-gold);font-weight:700;}
-  .secondary-block{margin-top:22px;padding:24px;}
-  .secondary-disclosure>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--hp-ink);font-size:13px;font-weight:750;}
-  .secondary-disclosure>summary::-webkit-details-marker{display:none;}
-  .secondary-disclosure>summary::before{display:none!important;}
-  .disclosure-action>span{font-size:19px;font-weight:400;transition:transform .3s cubic-bezier(.22,1,.36,1);}
-  .secondary-disclosure[open] .disclosure-action>span{transform:rotate(45deg);}
-  .secondary-disclosure>summary{padding:0;}
-  .secondary-disclosure .support-copy{display:grid;gap:5px;margin:0;text-align:left;}
-  .secondary-disclosure .support-copy .subhead{font-size:19px;color:var(--hp-ink);}
-  .secondary-disclosure .support-copy>span{font-size:14px;font-weight:400;color:var(--hp-ink-soft);}
-  .disclosure-action{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;color:var(--hp-gold);}
-  .detail-body{margin-top:24px;padding-top:24px;border-top:1px solid var(--hp-border);}
-
-  /* audience cards */
-  .aud-grid{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--hp-border);}
-  .aud-card{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:16px;padding:18px 4px;border-bottom:1px solid var(--hp-border);text-decoration:none;color:inherit;transition:transform .25s ease,color .25s ease;}
-  .aud-card:hover{transform:translateX(4px);color:var(--hp-gold);}
-  .aud-ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;color:var(--hp-blue);background:color-mix(in srgb,var(--hp-blue) 10%,transparent);}
-  .aud-ic svg{width:22px;height:22px;}
-  .aud-card h3{font-size:17px;letter-spacing:-.01em;}
-  .aud-card p{font-size:13.5px;color:var(--hp-ink-soft);line-height:1.5;}
-  .aud-link{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--hp-gold);}
-  .aud-link svg{width:15px;height:15px;transition:transform .25s ease;}
-  .aud-card:hover .aud-link svg{transform:translateX(4px);}
 
   /* roles (sit under the portals animation) */
   .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:18px;border-block:1px solid var(--hp-border);}
@@ -401,7 +462,7 @@ const faqs = [
 
   /* faq */
   .faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-  .faq-item{background:color-mix(in srgb,var(--hp-surface) 72%,transparent);border:1px solid var(--hp-border);border-radius:12px;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease;}
+  .faq-item{margin:0;background:color-mix(in srgb,var(--hp-surface) 72%,transparent);border:1px solid var(--hp-border);border-radius:12px;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease;}
   .faq-item:hover{border-color:color-mix(in srgb,var(--hp-gold) 38%,var(--hp-border));}
   .faq-item summary{display:flex;align-items:center;gap:16px;cursor:pointer;list-style:none;padding:15px 16px;font-size:14px;font-weight:700;color:var(--hp-ink);}
   .faq-item summary::-webkit-details-marker{display:none;}
@@ -429,12 +490,19 @@ const faqs = [
   .cta .btn.link:hover{color:#fff;transform:none;}
 
   @media (max-width:880px){
-    .support-pair,.faq{grid-template-columns:1fr;}
+    .faq{grid-template-columns:1fr;}
     .ben-grid,.doc-grid,.role-grid{grid-template-columns:1fr;}
     .ben-card:nth-child(odd),.doc-card:nth-child(odd),.role-card:not(:last-child){border-inline-end:0;}
     .ben-card,.doc-card,.role-card{border-bottom:1px solid var(--hp-border);}
     .ben-card:last-child,.doc-card:last-child,.role-card:last-child{border-bottom:0;}
     .cta{padding:30px 24px;}
+  }
+  @media (max-width:900px){
+    .hr-walk-steps{grid-template-columns:1fr;gap:12px;}
+    .hr-walk .hr-walk-steps li{flex-direction:row;align-items:flex-start;gap:11px;}
+  }
+  @media (max-width:760px){
+    .path-grid{grid-template-columns:1fr;}
   }
   @media (max-width:560px){
     .sb-hero{padding-top:34px;gap:28px;}
@@ -445,16 +513,15 @@ const faqs = [
     .hero-cta .btn{padding-inline:10px;font-size:14px;}
     .hero-cta .btn.text{grid-column:1/-1;min-height:36px;}
     .band{border-radius:16px;align-items:flex-start;}
-    .support-story,.secondary-block{padding:18px;}
-    .aud-card{grid-template-columns:42px 1fr;}
-    .aud-link{grid-column:2;}
+    .secondary-block{padding:18px;}
+    .sb-subnav{justify-content:flex-start;}
     .ben-card{padding-inline:8px;}
     .doc-card{padding-inline:8px;}
     .method-strip{justify-content:flex-start;}
     .cta-actions{display:grid;}
   }
   @media (prefers-reduced-motion: reduce){
-    .btn,.aud-card,.ben-card,.doc-card,.aud-link svg,.doc-arrow,.faq-mark{transition:none;}
+    .btn,.path-card,.ben-card,.doc-card,.path-cta svg,.doc-arrow,.faq-mark,.sb-subnav a{transition:none;}
   }
 </style>
 
@@ -466,3 +533,44 @@ const faqs = [
   /* let the homepage use a touch more width than the default splash gutter */
   .sl-markdown-content:has(.sb-home){ width:100%; }
 </style>
+
+<script>
+  // Sticky sub-nav: smooth-scroll on click (respecting reduced-motion) and a
+  // scroll-spy that marks the section currently in view.
+  function initSubnav() {
+    const nav = document.querySelector('.sb-subnav');
+    if (!nav || nav.dataset.ready) return;
+    nav.dataset.ready = '1';
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const byId = new Map();
+
+    links.forEach((a) => {
+      const id = a.getAttribute('href').slice(1);
+      byId.set(id, a);
+      a.addEventListener('click', (e) => {
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + id);
+      });
+    });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        links.forEach((l) => l.removeAttribute('aria-current'));
+        const a = byId.get(en.target.id);
+        if (a) a.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-35% 0px -60% 0px', threshold: 0 });
+
+    byId.forEach((_a, id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+  initSubnav();
+  document.addEventListener('astro:after-swap', initSubnav);
+</script>

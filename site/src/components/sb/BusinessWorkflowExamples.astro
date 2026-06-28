@@ -3,16 +3,20 @@ import '../../styles/signbox-anim.css';
 interface Props { class?: string; }
 const { class: className = '' } = Astro.props;
 
-// Abstract signing patterns - the IDEA behind each department's workflow,
-// not a literal dashboard. Minimal text: department + pattern + a node glyph.
+// Real signing scenarios, grounded in a recognizable document per department.
+// Roles + document types only - no invented people or companies. The node
+// glyphs show the signing pattern; the copy makes it concrete.
 const flows = [
-  { dept: 'HR', pattern: 'Single signer', nodes: [
+  { dept: 'HR', doc: 'Employment contract', pattern: 'Single signer',
+    desc: 'HR sends the agreement; the new hire signs with Smart-ID.', nodes: [
       { t: 'doc' }, { t: 'person', tone: 'blue' }, { t: 'done' },
   ]},
-  { dept: 'Procurement', pattern: 'External + internal', nodes: [
+  { dept: 'Procurement', doc: 'Purchase order', pattern: 'External + internal',
+    desc: 'A vendor signs externally, then Finance counter-signs.', nodes: [
       { t: 'doc' }, { t: 'person', tone: 'gold' }, { t: 'lock' }, { t: 'person', tone: 'blue' }, { t: 'done' },
   ]},
-  { dept: 'Board', pattern: 'Sequential approval', nodes: [
+  { dept: 'Board', doc: 'Board resolution', pattern: 'Sequential approval',
+    desc: 'Officers sign one after another in a fixed order.', nodes: [
       { t: 'doc' }, { t: 'num', n: 1 }, { t: 'num', n: 2 }, { t: 'num', n: 3 }, { t: 'done' },
   ]},
 ];
@@ -30,8 +34,9 @@ const icons = {
     {flows.map((f) => (
       <article class="bw-card">
         <header class="bw-head">
-          <span class="bw-kicker">{f.dept}</span>
-          <span class="bw-pattern">{f.pattern}</span>
+          <span class="bw-kicker">{f.dept} · {f.pattern}</span>
+          <span class="bw-doc">{f.doc}</span>
+          <span class="bw-desc">{f.desc}</span>
         </header>
         <div class="bw-flow" style={`--n:${f.nodes.length}`}>
           <span class="bw-rail" aria-hidden="true"></span>
@@ -55,9 +60,10 @@ const icons = {
     border:1px solid var(--sb-border-strong);border-radius:18px;background:var(--sb-card);box-shadow:var(--sb-shadow-sm);
     transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .32s cubic-bezier(.22,1,.36,1),border-color .32s ease}
   .bw-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--sb-gold) 42%,var(--sb-border));box-shadow:0 22px 42px -22px rgba(15,27,46,.42)}
-  .bw-head{display:flex;flex-direction:column;gap:4px}
+  .bw-head{display:flex;flex-direction:column;gap:5px}
   .bw-kicker{color:var(--sb-gold);font-size:9px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
-  .bw-pattern{color:var(--sb-ink);font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .bw-doc{color:var(--sb-ink);font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .bw-desc{color:var(--sb-ink-soft);font-size:12.5px;line-height:1.45}
 
   .bw-flow{position:relative;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 2px 2px}
   .bw-rail{position:absolute;left:8%;right:8%;top:calc(50% - 4px);height:2px;border-radius:2px;background:var(--sb-border-strong);overflow:hidden}
