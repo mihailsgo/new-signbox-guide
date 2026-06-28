@@ -2,10 +2,10 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// GitHub Pages project site: https://mihailsgo.github.io/new-signbox-guide/
+// Custom domain: https://signbox-guide.trustlynx.com/
 export default defineConfig({
-  site: 'https://mihailsgo.github.io',
-  base: '/new-signbox-guide',
+    site: 'https://signbox-guide.trustlynx.com',
+    base: '/',
   trailingSlash: 'always',
   integrations: [
     starlight({
