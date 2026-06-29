@@ -81,7 +81,7 @@ const benefits = [
   },
   {
     t: 'Audit-ready result',
-    d: 'An ASiC-E container with QES and XAdES-LT signatures and built-in validation - verifiable long after signing.',
+    d: 'A signed PDF or ASiC-E / eDoc document with QES and XAdES-LT signatures and built-in validation - verifiable long after signing.',
     href: u('signing'),
     icon: '<path d="M12 2 4 5v6c0 4.5 3.3 7.6 8 9 4.7-1.4 8-4.5 8-9V5z"/><path d="M9 12l2 2 4-4"/>',
   },
@@ -97,7 +97,7 @@ const docs = [
   { t: 'Before you start', d: 'Concepts, the two portals and prerequisites.', href: u('before-you-start') },
   { t: 'Initiating a signing process', d: 'Upload, add recipients, choose a signing mode.', href: u('initiating') },
   { t: 'Signing with Smart-ID', d: 'Authenticate and sign on the external portal.', href: u('signing') },
-  { t: 'Tracking & status', d: 'Follow a process from draft to finished container.', href: u('tracking') },
+  { t: 'Tracking & status', d: 'Follow a process from draft to a finished signed document.', href: u('tracking') },
 ];
 
 // in-page section navigation (sticky, sits under Starlight's header)
@@ -127,10 +127,10 @@ const methods = [
 ];
 
 const faqs = [
-  { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) in a XAdES-LT, long-term-validatable ASiC-E container - the highest assurance level under eIDAS, with built-in validation.' },
+  { q: 'Are SignBox signatures legally valid?', a: 'Yes. SignBox produces qualified electronic signatures (QES) with XAdES-LT in a long-term-validatable ASiC-E / eDoc document - the highest assurance level under eIDAS, with built-in validation.' },
   { q: 'What does signing look like for the person I invite?', a: 'They open the secure link, choose an e-ID method, confirm their identity and sign - usually in under a minute. No account, and nothing to install.' },
-  { q: 'What do I get at the end?', a: 'A single signed file: an ASiC-E container holding the original document, every signature, trusted timestamps and validation data. You can download it and verify it independently.' },
-  { q: 'Can the signed file be verified later, outside SignBox?', a: 'Yes. The container is a standard eIDAS format any compliant validator can check, with embedded long-term validation data that keeps it verifiable for years.' },
+  { q: 'What do I get at the end?', a: 'A single signed file holding the original document, every signature, trusted timestamps and validation data - delivered as a signed PDF or ASiC-E / eDoc document. You can download it and verify it independently.' },
+  { q: 'Can the signed file be verified later, outside SignBox?', a: 'Yes. The signed document is a standard eIDAS format any compliant validator can check, with embedded long-term validation data that keeps it verifiable for years.' },
   { q: 'Which e-ID methods are supported?', a: 'Smart-ID, Mobile-ID, eParaksts and national ID cards, with country-specific methods selected by the signer on the external portal.' },
   { q: 'Do external signers need an account?', a: 'No. A signer opens a secure invitation link, authenticates with their e-ID and signs - no SignBox account required.' },
   { q: 'What is the difference between Completed and Finished?', a: 'Completed means every recipient has acted. Finished means the final signed document has been generated and the process is closed - two distinct milestones.' },
@@ -151,7 +151,7 @@ const faqs = [
         <a class="btn secondary" href="mailto:sales@trustlynx.io?subject=SignBox%20enquiry">Contact TrustLynx</a>
         <a class="btn text" href="#how">See how it works <span aria-hidden="true">↓</span></a>
       </div>
-      <p class="hero-tech"><strong>For technical &amp; legal teams:</strong> SignBox produces ASiC-E / eDoc containers with QES, XAdES-LT and embedded validation data.</p>
+      <p class="hero-tech"><strong>For technical &amp; legal teams:</strong> SignBox produces signed PDF / ASiC-E / eDoc documents with QES, XAdES-LT and embedded validation data.</p>
       <p class="hero-segments">Built for HR, legal, procurement, finance, public sector, and enterprise document workflows.</p>
     </div>
     <div class="hero-art">
@@ -159,7 +159,7 @@ const faqs = [
     </div>
     <div class="band">
       <span class="band-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-      <p><strong>When to use SignBox.</strong> When your organization needs legally valid electronic signing, multiple signers, national e-ID methods, and a final validated container.</p>
+      <p><strong>When to use SignBox.</strong> When your organization needs legally valid electronic signing, multiple signers, national e-ID methods, and a final validated signed document.</p>
     </div>
   </header>
 
