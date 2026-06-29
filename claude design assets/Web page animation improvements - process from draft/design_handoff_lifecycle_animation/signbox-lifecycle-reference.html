@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignBox — Process Lifecycle (Draft → Finished) · 1:1 reference build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     SignBox · Process Lifecycle (Draft → Started → Completed → Finished)
+     1:1 REFERENCE BUILD — framework-free (HTML + CSS + tiny JS). Open/run it,
+     then port into the Astro/Starlight site as a component. ALL motion is pure
+     CSS keyframes timed as a percentage of one --cycle; JS only handles
+     play/pause, zoom/look/pace selects, and fit-to-width scaling.
+     ========================================================================= */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background:#070b14; min-height:100vh; display:flex; flex-direction:column; align-items:center; gap:14px; padding:24px; font-family:'Manrope',system-ui,sans-serif; }
+  .demo-controls { display:flex; gap:10px; align-items:center; color:#aebbd6; font-size:13px; font-weight:600; flex-wrap:wrap; justify-content:center; }
+  .demo-controls select, .demo-controls button { font:inherit; font-weight:700; color:#dfe7fb; background:#141c30; border:1px solid #2a3550; border-radius:8px; padding:6px 10px; cursor:pointer; }
+
+  @keyframes sbFloat { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-7px) } }
+  @keyframes sbPulse { 0%,100%{ box-shadow: 0 0 0 0 rgba(255,255,255,.4) } 70%,100%{ box-shadow: 0 0 0 13px rgba(255,255,255,0) } }
+  @keyframes sbSweep { 0%{ transform: translateX(-130%) skewX(-18deg) } 100%{ transform: translateX(360%) skewX(-18deg) } }
+  @keyframes sbTwinkle { 0%,100%{ opacity:.15; transform: scale(.6) } 50%{ opacity:.9; transform: scale(1.15) } }
+  @keyframes sbDrift { 0%{ transform: translate(0,0) } 100%{ transform: translate(24px,-26px) } }
+  @keyframes sbSpin { to { transform: rotate(360deg) } }
+  /* rail — percent of --cycle */
+  @keyframes lcFill { 0%,22%{width:4%} 27%{width:37%} 47%{width:37%} 52%{width:70%} 72%{width:70%} 77%{width:100%} 96%{width:100%} 98%{width:0} 100%{width:0} }
+  @keyframes lcTravel { 0%,22%{left:0%} 27%{left:33.33%} 47%{left:33.33%} 52%{left:66.66%} 72%{left:66.66%} 77%{left:100%} 96%{left:100%} 98%{left:0%} 100%{left:0%} }
+  @keyframes reach1 { 0%,1%{opacity:0} 3%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes reach2 { 0%,24%{opacity:0} 27%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes reach3 { 0%,49%{opacity:0} 52%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes reach4 { 0%,74%{opacity:0} 77%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes act1 { 0%{opacity:1} 22%{opacity:1} 24%{opacity:0} 99%{opacity:0} 100%{opacity:1} }
+  @keyframes act2 { 0%,24%{opacity:0} 27%{opacity:1} 47%{opacity:1} 49%{opacity:0} 100%{opacity:0} }
+  @keyframes act3 { 0%,49%{opacity:0} 52%{opacity:1} 72%{opacity:1} 74%{opacity:0} 100%{opacity:0} }
+  @keyframes act4 { 0%,74%{opacity:0} 77%{opacity:1} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  /* document state crossfades */
+  @keyframes bD { 0%,21%{opacity:1} 25%{opacity:0} 99%{opacity:0} 100%{opacity:1} }
+  @keyframes bS { 0%,24%{opacity:0} 27%{opacity:1} 46%{opacity:1} 50%{opacity:0} 100%{opacity:0} }
+  @keyframes bC { 0%,49%{opacity:0} 52%{opacity:1} 71%{opacity:1} 75%{opacity:0} 100%{opacity:0} }
+  @keyframes bF { 0%,74%{opacity:0} 77%{opacity:1} 96%{opacity:1} 99%{opacity:0} 100%{opacity:0} }
+  @keyframes docSig { 0%,26%{stroke-dashoffset:200} 44%{stroke-dashoffset:0} 96%{stroke-dashoffset:0} 98%{stroke-dashoffset:200} 100%{stroke-dashoffset:200} }
+  @keyframes compRow { 0%,49%{opacity:0;transform:translateY(6px)} 53%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes sealStamp { 0%,74%{opacity:0;transform:scale(1.7) rotate(-12deg)} 78%{opacity:1;transform:scale(1) rotate(-12deg)} 96%{opacity:1;transform:scale(1) rotate(-12deg)} 98%{opacity:0;transform:scale(1) rotate(-12deg)} 100%{opacity:0} }
+  @keyframes chipsIn { 0%,76%{opacity:0;transform:translateY(6px)} 80%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  /* event log */
+  @keyframes log1 { 0%,1%{opacity:0;transform:translateY(8px)} 4%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes log2 { 0%,25%{opacity:0;transform:translateY(8px)} 28%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes log3 { 0%,50%{opacity:0;transform:translateY(8px)} 53%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+  @keyframes log4 { 0%,75%{opacity:0;transform:translateY(8px)} 78%{opacity:1;transform:translateY(0)} 96%{opacity:1} 98%{opacity:0} 100%{opacity:0} }
+
+  @media (prefers-reduced-motion: reduce) { .frame *, .frame { animation: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- demo controls (remove when embedding) -->
+<div class="demo-controls">
+  <button id="playBtn">Pause</button>
+  <label>Zoom <select id="zoomSel"><option>Comfortable</option><option selected>Standard</option><option>Large</option><option>Extra large</option></select></label>
+  <label>Look <select id="lookSel"><option selected>Midnight glass</option><option>Aurora bloom</option><option>Blueprint</option><option>Onyx minimal</option><option>Royal violet</option></select></label>
+  <label>Pace <select id="paceSel"><option>Calm</option><option selected>Standard</option><option>Snappy</option></select></label>
+</div>
+
+<!-- WRAPPER (fluid) → FRAME (fixed design, scaled to fit width) -->
+<div id="wrap" style="width:100%; max-width:1280px; margin:0 auto; position:relative; overflow:hidden;">
+<div id="frame" class="frame" style="--cycle:13s; --pstate:running; --acc1:#3D7BFF; --acc2:#6AA1FF; --glow:61,123,255; --panel-bg:linear-gradient(165deg,#0c1326 0%,#0a0f1f 55%,#0b1024 100%); --panel-border:rgba(120,150,220,.14); --panel-bloom:radial-gradient(620px 320px at 25% -10%, rgba(61,123,255,.2), transparent 60%), radial-gradient(520px 320px at 100% 110%, rgba(45,210,126,.15), transparent 60%); --grid-op:.5; --grid-col:rgba(140,165,225,.05); width:1360px; height:940px; transform-origin:top left; background:radial-gradient(1200px 600px at 50% -10%, #eef2f9, #e1e7f1 60%, #d8dfeb); font-family:'Manrope',system-ui,sans-serif; color:#1B2436; padding:40px; display:flex; flex-direction:column; overflow:hidden;">
+
+  <!-- HEADER -->
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:22px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="width:9px; height:9px; border-radius:3px; background:linear-gradient(135deg,#3D7BFF,#6AA1FF);"></div>
+        <span style="font-size:12.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:#6B7689;">TrustLynx SignBox · process lifecycle</span>
+      </div>
+      <h1 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; letter-spacing:-.5px; color:#141B2B;">From draft to a finished, valid document</h1>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; font-weight:600; color:#5b6b85;">
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#8DA0C8;"></span>Draft</span>
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#3D7BFF;"></span>Started</span>
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#8B6BFF;"></span>Completed</span>
+      <span style="display:flex; align-items:center; gap:7px;"><span style="width:10px;height:10px;border-radius:3px;background:#2DD27E;"></span>Finished</span>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div style="position:relative; flex:1; min-height:0; border-radius:22px; padding:30px 34px; display:flex; flex-direction:column; overflow:hidden; background:var(--panel-bg); border:1px solid var(--panel-border); box-shadow:0 30px 70px -30px rgba(10,16,36,.8), inset 0 1px 0 rgba(255,255,255,.05);">
+    <div style="position:absolute; inset:0; pointer-events:none; background:var(--panel-bloom);"></div>
+    <div style="position:absolute; inset:0; pointer-events:none; opacity:var(--grid-op); background-image:linear-gradient(var(--grid-col) 1px, transparent 1px), linear-gradient(90deg, var(--grid-col) 1px, transparent 1px); background-size:34px 34px;"></div>
+    <div style="position:absolute; top:0; left:0; width:120px; height:100%; pointer-events:none; background:linear-gradient(90deg, transparent, rgba(255,255,255,.05), transparent); animation:sbSweep 8s ease-in-out infinite; animation-play-state:var(--pstate);"></div>
+    <div class="ambient" style="position:absolute; inset:0; pointer-events:none;">
+      <span style="position:absolute; left:14%; top:60%; width:4px; height:4px; border-radius:50%; background:#6AA1FF; animation:sbTwinkle 4s ease-in-out infinite; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:88%; top:30%; width:3px; height:3px; border-radius:50%; background:#9bd9b8; animation:sbTwinkle 5.5s ease-in-out infinite .6s; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:70%; top:78%; width:5px; height:5px; border-radius:50%; background:#6AA1FF; animation:sbDrift 9s linear infinite alternate; animation-play-state:var(--pstate);"></span>
+      <span style="position:absolute; left:40%; top:86%; width:3px; height:3px; border-radius:50%; background:#cbd9ff; animation:sbTwinkle 6s ease-in-out infinite 1.2s; animation-play-state:var(--pstate);"></span>
+    </div>
+
+    <!-- LIFECYCLE RAIL -->
+    <div style="position:relative; height:126px; flex:none;">
+      <div style="position:relative; margin:0 70px; height:126px;">
+        <div style="position:absolute; top:46px; left:0; right:0; height:4px; transform:translateY(-50%); background:rgba(255,255,255,.08); border-radius:99px;"></div>
+        <div style="position:absolute; top:46px; left:0; height:4px; transform:translateY(-50%); border-radius:99px; background:linear-gradient(90deg,#8DA0C8,var(--acc1),#8B6BFF,#2DD27E); box-shadow:0 0 14px rgba(var(--glow),.5); width:4%; animation:lcFill var(--cycle) linear infinite; animation-play-state:var(--pstate);"></div>
+        <div style="position:absolute; top:8px; left:0%; transform:translateX(-50%); z-index:4; animation:lcTravel var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <div style="width:30px; height:38px; border-radius:6px; background:linear-gradient(160deg,#ffffff,#dbe6ff); box-shadow:0 10px 22px rgba(var(--glow),.5), 0 0 0 1px rgba(255,255,255,.5); animation:sbFloat 3s ease-in-out infinite; animation-play-state:var(--pstate); position:relative;">
+            <span style="position:absolute; top:7px; left:5px; right:5px; height:2px; background:#9bb4e8; border-radius:2px;"></span>
+            <span style="position:absolute; top:13px; left:5px; right:9px; height:2px; background:#bcccf0; border-radius:2px;"></span>
+            <span style="position:absolute; top:19px; left:5px; right:7px; height:2px; background:#bcccf0; border-radius:2px;"></span>
+          </div>
+        </div>
+        <!-- node 1: Draft -->
+        <div style="position:absolute; top:46px; left:0%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act1 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(141,160,200,.6); animation:sbPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,#8DA0C8,#6f82a8); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(141,160,200,.4); animation:reach1 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:0%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Draft</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">Prepared</div></div>
+        <!-- node 2: Started -->
+        <div style="position:absolute; top:46px; left:33.33%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act2 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(var(--glow),.7); animation:sbPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,var(--acc1),var(--acc2)); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(var(--glow),.45); animation:reach2 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:33.33%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Started</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">Collecting signatures</div></div>
+        <!-- node 3: Completed -->
+        <div style="position:absolute; top:46px; left:66.66%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act3 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(139,107,255,.7); animation:sbPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L13 8"/><path d="M11 16l3 3 7-9"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,#8B6BFF,#b49bff); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(139,107,255,.45); animation:reach3 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L13 8"/><path d="M11 16l3 3 7-9"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:66.66%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Completed</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">All parties signed</div></div>
+        <!-- node 4: Finished -->
+        <div style="position:absolute; top:46px; left:100%; transform:translate(-50%,-50%); z-index:2;">
+          <div style="position:absolute; inset:-6px; border-radius:50%; opacity:0; animation:act4 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><div style="position:absolute; inset:0; border-radius:50%; border:1px solid rgba(45,210,126,.7); animation:sbPulse 2s ease-out infinite; animation-play-state:var(--pstate);"></div></div>
+          <div style="position:relative; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(220,230,255,.4);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div style="position:absolute; inset:0; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; color:#fff; opacity:0; box-shadow:0 12px 26px rgba(45,210,126,.45); animation:reach4 var(--cycle) linear infinite; animation-play-state:var(--pstate);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        </div>
+        <div style="position:absolute; top:78px; left:100%; transform:translateX(-50%); white-space:nowrap; text-align:center;"><div style="font-size:13px; font-weight:700; color:#dfe7fb;">Finished</div><div style="font-size:10.5px; color:#8da0c8; margin-top:1px;">Sealed &amp; archived</div></div>
+      </div>
+    </div>
+
+    <!-- BODY: document + event log -->
+    <div style="position:relative; flex:1; min-height:0; display:flex; gap:38px; align-items:center; padding:8px 20px 0;">
+      <!-- DOCUMENT -->
+      <div style="flex:none; display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div style="position:relative; width:280px; height:354px; border-radius:16px; background:linear-gradient(160deg,#ffffff,#eaf1fb); box-shadow:0 36px 70px -26px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.4); padding:50px 24px 24px; animation:sbFloat 5s ease-in-out infinite; animation-play-state:var(--pstate); overflow:hidden;">
+          <span style="position:absolute; top:0; right:0; border-width:0 26px 26px 0; border-style:solid; border-color:transparent #cdd9ee transparent transparent;"></span>
+          <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; animation:bD var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="font-family:'Space Grotesk',sans-serif; font-size:54px; font-weight:700; color:rgba(141,160,200,.16); transform:rotate(-22deg); letter-spacing:3px;">DRAFT</span></div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:#1b2436;">Agreement.pdf</span>
+            <span style="margin-left:auto; font-size:8px; font-weight:800; color:#fff; background:#3D7BFF; border-radius:3px; padding:3px 6px; letter-spacing:.3px;">PDF</span>
+          </div>
+          <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:100%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:94%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#e6ecf6; width:78%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:88%; margin-bottom:9px;"></span>
+          <span style="display:block; height:5px; border-radius:3px; background:#e6ecf6; width:54%;"></span>
+          <div style="position:absolute; left:24px; right:24px; bottom:58px;">
+            <div style="font-size:8px; font-weight:800; letter-spacing:.5px; color:#9aa9c4; text-transform:uppercase;">Signed by · Legal · Finance · Director</div>
+            <svg width="100%" height="40" viewBox="0 0 230 40" preserveAspectRatio="none" style="display:block; margin-top:2px; overflow:visible;"><path d="M4 30 C 12 9 20 8 23 27 C 25 37 33 33 38 22 C 44 9 52 9 56 27 C 59 39 68 33 76 22 C 86 8 96 35 108 24 C 120 13 130 31 144 18 C 156 9 166 28 180 16 C 192 9 204 24 214 14 C 220 10 224 18 226 13" stroke="#2f6bff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="200" style="stroke-dashoffset:200; animation:docSig var(--cycle) linear infinite; animation-play-state:var(--pstate);"/></svg>
+            <div style="border-top:1px solid #d6deec; margin-top:1px; padding-top:5px; display:flex; justify-content:space-between; font-size:8px; color:#9aa9c4; font-family:'Space Mono',monospace;"><span>Smart-ID · PIN2</span><span>2026-06-27</span></div>
+          </div>
+          <div style="position:absolute; left:24px; right:24px; bottom:20px; display:flex; align-items:center; gap:7px; padding:7px 11px; border-radius:9px; background:rgba(139,107,255,.1); border:1px solid rgba(139,107,255,.3); animation:compRow var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <span style="color:#8B6BFF; display:flex;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+            <span style="font-size:10px; font-weight:700; color:#5b4a9e;">All 3 parties signed</span>
+          </div>
+          <div style="position:absolute; top:16px; left:24px;">
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#5b6b85; background:#eef1f6; border:1px solid #dfe5ee; animation:bD var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#8DA0C8;"></span>DRAFT</span>
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#fff; background:linear-gradient(150deg,#3D7BFF,#6AA1FF); animation:bS var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span>IN PROGRESS</span>
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#fff; background:linear-gradient(150deg,#8B6BFF,#b49bff); animation:bC var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span>COMPLETED</span>
+            <span style="position:absolute; display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:7px; font-size:10px; font-weight:800; letter-spacing:.4px; color:#fff; background:linear-gradient(150deg,#2DD27E,#1ea862); animation:bF var(--cycle) linear infinite; animation-play-state:var(--pstate);"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span>FINISHED</span>
+          </div>
+          <div style="position:absolute; top:46px; right:-6px; animation:sealStamp var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="width:92px; height:92px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; box-shadow:0 0 0 5px rgba(45,210,126,.2), 0 18px 36px rgba(45,210,126,.5), inset 0 2px 6px rgba(255,255,255,.35); border:2px solid rgba(255,255,255,.5);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+              <span style="color:#fff; font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px;">VALID</span>
+              <span style="color:#d6ffe7; font-size:7.5px; font-weight:700; letter-spacing:.4px;">QES · eIDAS</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; animation:chipsIn var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+          <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">ASiC-E</span>
+          <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">XAdES-LT</span>
+          <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#8ff0bd; background:rgba(45,210,126,.14); border:1px solid rgba(45,210,126,.32); padding:4px 9px; border-radius:6px;">QES</span>
+        </div>
+      </div>
+      <!-- EVENT LOG -->
+      <div style="flex:1; min-width:0; max-width:480px; padding:22px 24px; border-radius:18px; background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); border:1px solid rgba(140,165,225,.14);">
+        <div style="font-size:11px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:#8da0c8; margin-bottom:18px;">Process timeline</div>
+        <div style="position:relative; display:flex; flex-direction:column; gap:16px;">
+          <div style="position:absolute; left:13px; top:6px; bottom:6px; width:2px; background:rgba(140,165,225,.16);"></div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log1 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,#8DA0C8,#6f82a8); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(141,160,200,.12); z-index:1; color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">Draft created</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">10:02</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Document prepared and recipients added.</div></div>
+          </div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log2 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,var(--acc1),var(--acc2)); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(var(--glow),.14); z-index:1; color:#fff;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">Process started</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">10:05</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Sent to signers · invitations delivered.</div></div>
+          </div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log3 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,#8B6BFF,#b49bff); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(139,107,255,.14); z-index:1; color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">All signatures collected</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">11:48</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Every required party has signed.</div></div>
+          </div>
+          <div style="position:relative; display:flex; gap:14px; align-items:flex-start; animation:log4 var(--cycle) linear infinite; animation-play-state:var(--pstate);">
+            <div style="flex:none; width:28px; height:28px; border-radius:50%; background:linear-gradient(150deg,#2DD27E,#1ea862); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(45,210,126,.14); z-index:1; color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div style="flex:1; padding-top:1px;"><div style="display:flex; align-items:baseline; gap:8px;"><span style="color:#eaf0ff; font-size:14px; font-weight:700;">Finished &amp; sealed</span><span style="font-family:'Space Mono',monospace; font-size:10px; color:#7e8db0;">11:49</span></div><div style="color:#8da0c8; font-size:12px; margin-top:2px;">Timestamped, validated ASiC-E container archived.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* =============================================================================
+   Driver — CSS does all the animating; JS only handles:
+     • play/pause   → toggles the --pstate CSS var (running | paused)
+     • zoom         → sets the design canvas width (ref) so components scale up
+     • look / pace  → swaps a palette / sets --cycle (animation duration)
+     • fit-to-width → scales the fixed-width frame to fill the wrapper
+   Port this logic verbatim into the Astro component's <script>.
+   ============================================================================= */
+(function () {
+  var wrap = document.getElementById('wrap');
+  var frame = document.getElementById('frame');
+  var playBtn = document.getElementById('playBtn');
+  var zoomSel = document.getElementById('zoomSel');
+  var lookSel = document.getElementById('lookSel');
+  var paceSel = document.getElementById('paceSel');
+
+  var ZOOM_REF = { 'Comfortable': 1520, 'Standard': 1360, 'Large': 1200, 'Extra large': 1060 };
+  var PACE     = { 'Calm': '18s', 'Standard': '13s', 'Snappy': '9s' };
+  var FRAME_H  = 940;
+  var LOOKS = {
+    'Midnight glass': { acc1:'#3D7BFF', acc2:'#6AA1FF', glow:'61,123,255',
+      bg:'linear-gradient(165deg,#0c1326 0%,#0a0f1f 55%,#0b1024 100%)', border:'rgba(120,150,220,.14)', gridOp:'.5', gridCol:'rgba(140,165,225,.05)',
+      bloom:'radial-gradient(620px 320px at 25% -10%, rgba(61,123,255,.2), transparent 60%), radial-gradient(520px 320px at 100% 110%, rgba(45,210,126,.15), transparent 60%)' },
+    'Aurora bloom': { acc1:'#5b8cff', acc2:'#b08bff', glow:'130,150,255',
+      bg:'linear-gradient(160deg,#0a0f24 0%,#10173a 55%,#140e2e 100%)', border:'rgba(150,140,230,.18)', gridOp:'.32', gridCol:'rgba(150,150,230,.05)',
+      bloom:'radial-gradient(620px 340px at 20% -10%, rgba(90,140,255,.3), transparent 60%), radial-gradient(560px 340px at 100% 110%, rgba(176,139,255,.24), transparent 60%), radial-gradient(440px 300px at 60% 120%, rgba(45,210,160,.16), transparent 60%)' },
+    'Blueprint': { acc1:'#2bd4d4', acc2:'#74f0e6', glow:'43,212,212',
+      bg:'linear-gradient(160deg,#06141f 0%,#0a1f30 100%)', border:'rgba(80,180,200,.22)', gridOp:'.95', gridCol:'rgba(90,190,210,.09)',
+      bloom:'radial-gradient(620px 320px at 25% -10%, rgba(43,212,212,.16), transparent 60%)' },
+    'Onyx minimal': { acc1:'#4f7fff', acc2:'#7fa3ff', glow:'79,127,255',
+      bg:'linear-gradient(160deg,#0c0f16 0%,#0a0c12 100%)', border:'rgba(120,140,180,.12)', gridOp:'.14', gridCol:'rgba(150,165,200,.05)',
+      bloom:'radial-gradient(560px 320px at 30% -10%, rgba(79,127,255,.12), transparent 60%)' },
+    'Royal violet': { acc1:'#8B6BFF', acc2:'#B49BFF', glow:'139,107,255',
+      bg:'linear-gradient(160deg,#120c26 0%,#1a1030 100%)', border:'rgba(170,150,255,.18)', gridOp:'.4', gridCol:'rgba(170,150,235,.05)',
+      bloom:'radial-gradient(620px 320px at 25% -10%, rgba(139,107,255,.24), transparent 60%), radial-gradient(520px 320px at 100% 110%, rgba(90,140,255,.16), transparent 60%)' }
+  };
+
+  var playing = true;
+  function applyLook() {
+    var L = LOOKS[lookSel.value] || LOOKS['Midnight glass'];
+    frame.style.setProperty('--acc1', L.acc1); frame.style.setProperty('--acc2', L.acc2); frame.style.setProperty('--glow', L.glow);
+    frame.style.setProperty('--panel-bg', L.bg); frame.style.setProperty('--panel-border', L.border);
+    frame.style.setProperty('--panel-bloom', L.bloom); frame.style.setProperty('--grid-op', L.gridOp); frame.style.setProperty('--grid-col', L.gridCol);
+  }
+  function applyPace() { frame.style.setProperty('--cycle', PACE[paceSel.value] || '13s'); }
+  function applyPlay() { frame.style.setProperty('--pstate', playing ? 'running' : 'paused'); playBtn.textContent = playing ? 'Pause' : 'Play'; }
+  function fitScale() {
+    var ref = ZOOM_REF[zoomSel.value] || 1360;
+    frame.style.width = ref + 'px';
+    var scale = (wrap.clientWidth || ref) / ref;
+    frame.style.transform = 'scale(' + scale + ')';
+    wrap.style.height = (FRAME_H * scale) + 'px';
+  }
+  playBtn.addEventListener('click', function () { playing = !playing; applyPlay(); });
+  zoomSel.addEventListener('change', fitScale);
+  lookSel.addEventListener('change', applyLook);
+  paceSel.addEventListener('change', applyPace);
+  new ResizeObserver(fitScale).observe(wrap);
+  window.addEventListener('resize', fitScale);
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { playing = false; }
+  applyLook(); applyPace(); applyPlay(); fitScale();
+})();
+</script>
+</body>
+</html>

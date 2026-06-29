@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  @keyframes sbFloat { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-9px) } }
+  @keyframes sbPulse { 0%,100%{ box-shadow: 0 0 0 0 rgba(61,123,255,.5) } 70%,100%{ box-shadow: 0 0 0 16px rgba(61,123,255,0) } }
+  @keyframes sbSweep { 0%{ transform: translateX(-130%) skewX(-18deg) } 100%{ transform: translateX(360%) skewX(-18deg) } }
+  @keyframes sbFlow { to { background-position: 14px 0 } }
+  @keyframes sbProg { 0%{ width: 6% } 55%{ width: 88% } 100%{ width: 88% } }
+  @keyframes sbTwinkle { 0%,100%{ opacity:.15; transform: scale(.6) } 50%{ opacity:.9; transform: scale(1.15) } }
+  @keyframes sbDrift { 0%{ transform: translate(0,0) } 100%{ transform: translate(26px,-30px) } }
+  @keyframes sbSpin { to { transform: rotate(360deg) } }
+</style>
+</helmet>
+
+<div data-screen-label="SignBox hero — current vs improved" style="width:1640px; height:960px; background:radial-gradient(1200px 600px at 50% -10%, #eef2f9, #e1e7f1 60%, #d8dfeb); font-family:'Manrope',system-ui,sans-serif; color:#1B2436; padding:40px; display:flex; flex-direction:column; overflow:hidden;">
+
+  <!-- HEADER -->
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:26px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="width:9px; height:9px; border-radius:3px; background:linear-gradient(135deg,#3D7BFF,#6AA1FF);"></div>
+        <span style="font-size:12.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:#6B7689;">TrustLynx SignBox · hero animation</span>
+      </div>
+      <h1 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; letter-spacing:-.5px; color:#141B2B;">The 5-step signing flow, reimagined</h1>
+    </div>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+        <div style="font-size:13px; font-weight:700; color:#3a4658;"><span style="font-family:'Space Grotesk',sans-serif; color:#3D7BFF;">Step {{ stepN }} of 5</span> <span style="color:#5b6b85;"> · </span><span style="color:#3a4658;">{{ stepTitle }}</span></div>
+        <div style="width:190px; height:5px; border-radius:99px; background:#cfd8e6; overflow:hidden;"><div style="{{ headerFill }}"></div></div>
+      </div>
+      <button onClick="{{ togglePlay }}" style="cursor:pointer; border:1px solid #cfd8e6; background:rgba(255,255,255,.7); color:#3a4658; font-family:'Manrope',sans-serif; font-weight:700; font-size:13px; padding:9px 16px; border-radius:99px;">{{ playLabel }}</button>
+    </div>
+  </div>
+
+  <!-- PANELS -->
+  <div style="display:flex; gap:34px; flex:1; min-height:0;">
+
+    <!-- ============ BEFORE ============ -->
+    <div style="flex:1; min-width:0; background:#ffffff; border:1px solid #e4e9f2; border-radius:22px; padding:26px 28px; display:flex; flex-direction:column; box-shadow:0 1px 2px rgba(20,30,50,.04);">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <span style="font-size:11px; font-weight:800; letter-spacing:1.4px; color:#8A93A5; background:#f1f4f9; border:1px solid #e4e9f2; padding:5px 11px; border-radius:7px;">BEFORE</span>
+        <span style="font-size:13px; color:#9AA4B6; font-weight:600;">current live site · flat & static</span>
+      </div>
+
+      <!-- current rail -->
+      <div style="position:relative; height:150px; margin-top:4px;">
+        <div style="position:relative; margin:0 44px; height:150px;">
+          <div style="position:absolute; top:86px; left:0; right:0; height:3px; transform:translateY(-50%); background:#e4e9f2; border-radius:99px;"></div>
+          <div style="position:absolute; top:86px; left:0; height:3px; transform:translateY(-50%); border-radius:99px; {{ fillC }}"></div>
+          <div style="{{ ico0 }}">1</div><div style="{{ icl0 }}">Upload</div>
+          <div style="{{ ico1 }}">2</div><div style="{{ icl1 }}">Workflow</div>
+          <div style="{{ ico2 }}">3</div><div style="{{ icl2 }}">Recipients</div>
+          <div style="{{ ico3 }}">4</div><div style="{{ icl3 }}">Sign</div>
+          <div style="{{ ico4 }}">5</div><div style="{{ icl4 }}">Signed</div>
+        </div>
+      </div>
+
+      <!-- current stage -->
+      <div style="position:relative; flex:1; min-height:0; margin-top:8px; border:1px dashed #e4e9f2; border-radius:14px; background:#fbfcfe;">
+        <div style="{{ cs0 }}">
+          <div style="text-align:center;">
+            <div style="width:58px;height:58px;border-radius:12px;border:1px solid #e4e9f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#3D7BFF;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#1B2436;">Upload document</div>
+            <div style="font-size:13.5px;color:#8A93A5;margin-top:6px;">Supports PDF, Word and major formats.</div>
+            <div style="display:inline-block;margin-top:14px;font-size:11px;font-weight:700;color:#3D7BFF;border:1px solid #d6e2ff;background:#eef4ff;padding:4px 10px;border-radius:6px;">PDF</div>
+          </div>
+        </div>
+        <div style="{{ cs1 }}">
+          <div style="text-align:center;">
+            <div style="width:58px;height:58px;border-radius:12px;border:1px solid #e4e9f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#3D7BFF;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.3"/><circle cx="5" cy="18" r="2.3"/><circle cx="19" cy="12" r="2.3"/><path d="M7.2 7 16.8 11M7.2 17 16.8 13"/></svg></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#1B2436;">SignBox Workflow</div>
+            <div style="font-size:13.5px;color:#8A93A5;margin-top:6px;">Applies routing order and document profiles.</div>
+          </div>
+        </div>
+        <div style="{{ cs2 }}">
+          <div style="width:280px;">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid #e4e9f2;border-radius:10px;"><span style="width:8px;height:8px;border-radius:50%;background:#3D7BFF;"></span><span style="font-size:14px;font-weight:600;color:#1B2436;">Signer 1</span><span style="margin-left:auto;font-size:11.5px;color:#8A93A5;">must sign</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid #e4e9f2;border-radius:10px;"><span style="width:8px;height:8px;border-radius:50%;background:#3D7BFF;"></span><span style="font-size:14px;font-weight:600;color:#1B2436;">Signer 2</span><span style="margin-left:auto;font-size:11.5px;color:#8A93A5;">must sign</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid #e4e9f2;border-radius:10px;"><span style="width:8px;height:8px;border-radius:50%;background:#8A93A5;"></span><span style="font-size:14px;font-weight:600;color:#1B2436;">Approver</span><span style="margin-left:auto;font-size:11.5px;color:#8A93A5;">approves</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="{{ cs3 }}">
+          <div style="text-align:center;">
+            <div style="width:58px;height:58px;border-radius:12px;border:1px solid #e4e9f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#3D7BFF;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#1B2436;">Smart-ID / eID</div>
+            <div style="font-size:13.5px;color:#8A93A5;margin-top:6px;">PIN2 code authenticates the signer.</div>
+          </div>
+        </div>
+        <div style="{{ cs4 }}">
+          <div style="text-align:center;">
+            <div style="width:58px;height:58px;border-radius:12px;border:1px solid #e4e9f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#2D9E63;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="6.5"/><path d="M9 10l2 2 4-4"/><path d="M8.5 15.5 7 21l5-2L17 21l-1.5-5.5"/></svg></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#1B2436;">Signed document</div>
+            <div style="display:flex;gap:7px;justify-content:center;margin-top:12px;">
+              <span style="font-size:11px;font-weight:700;color:#5b6b85;border:1px solid #e4e9f2;padding:4px 9px;border-radius:6px;">QES</span>
+              <span style="font-size:11px;font-weight:700;color:#5b6b85;border:1px solid #e4e9f2;padding:4px 9px;border-radius:6px;">XAdES-LT</span>
+              <span style="font-size:11px;font-weight:700;color:#2D9E63;border:1px solid #c7ecd6;background:#edfaf2;padding:4px 9px;border-radius:6px;">Valid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ AFTER ============ -->
+    <div style="flex:1; min-width:0; position:relative; border-radius:22px; padding:26px 28px; display:flex; flex-direction:column; overflow:hidden; background:linear-gradient(165deg,#0c1326 0%,#0a0f1f 55%,#0b1024 100%); border:1px solid rgba(120,150,220,.14); box-shadow:0 30px 70px -30px rgba(10,16,36,.8), inset 0 1px 0 rgba(255,255,255,.05);">
+      <!-- ambient bg -->
+      <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(620px 320px at 30% -10%, rgba(61,123,255,.22), transparent 60%), radial-gradient(520px 320px at 95% 110%, rgba(45,210,126,.16), transparent 60%);"></div>
+      <div style="position:absolute; inset:0; pointer-events:none; opacity:.5; background-image:linear-gradient(rgba(140,165,225,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(140,165,225,.05) 1px, transparent 1px); background-size:34px 34px; transform:perspective(600px) rotateX(0deg);"></div>
+      <div style="position:absolute; top:0; left:0; width:120px; height:100%; pointer-events:none; background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); animation:sbSweep 7s ease-in-out infinite;"></div>
+      <sc-if value="{{ ambient }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute; inset:0; pointer-events:none;">
+          <span style="position:absolute; left:14%; top:30%; width:4px; height:4px; border-radius:50%; background:#6AA1FF; animation:sbTwinkle 4s ease-in-out infinite;"></span>
+          <span style="position:absolute; left:78%; top:22%; width:3px; height:3px; border-radius:50%; background:#9bd9b8; animation:sbTwinkle 5.5s ease-in-out infinite .6s;"></span>
+          <span style="position:absolute; left:62%; top:64%; width:5px; height:5px; border-radius:50%; background:#6AA1FF; animation:sbDrift 9s linear infinite alternate;"></span>
+          <span style="position:absolute; left:30%; top:74%; width:3px; height:3px; border-radius:50%; background:#cbd9ff; animation:sbTwinkle 6s ease-in-out infinite 1.2s;"></span>
+          <span style="position:absolute; left:88%; top:54%; width:4px; height:4px; border-radius:50%; background:#7fe0ad; animation:sbDrift 11s linear infinite alternate;"></span>
+          <span style="position:absolute; left:8%; top:60%; width:3px; height:3px; border-radius:50%; background:#6AA1FF; animation:sbTwinkle 5s ease-in-out infinite .3s;"></span>
+        </div>
+      </sc-if>
+
+      <div style="position:relative; display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <span style="font-size:11px; font-weight:800; letter-spacing:1.4px; color:#bcd0ff; background:linear-gradient(135deg,rgba(61,123,255,.35),rgba(106,161,255,.18)); border:1px solid rgba(140,170,255,.35); padding:5px 11px; border-radius:7px;">AFTER</span>
+        <span style="font-size:13px; color:#8da0c8; font-weight:600;">proposed · cinematic, layered, alive</span>
+      </div>
+
+      <!-- improved rail -->
+      <div style="position:relative; height:150px; margin-top:4px;">
+        <div style="position:relative; margin:0 44px; height:150px;">
+          <div style="position:absolute; top:86px; left:0; right:0; height:4px; transform:translateY(-50%); background:rgba(255,255,255,.07); border-radius:99px;"></div>
+          <div style="position:absolute; top:86px; left:0; height:4px; transform:translateY(-50%); border-radius:99px; box-shadow:0 0 14px rgba(61,123,255,.6); {{ fillI }}"></div>
+          <!-- traveling document -->
+          <div style="position:absolute; top:30px; transform:translateX(-50%); z-index:4; {{ docStyle }}">
+            <div style="position:relative; width:34px; height:42px; border-radius:7px; background:linear-gradient(160deg,#ffffff,#dbe6ff); box-shadow:0 12px 24px rgba(61,123,255,.5), 0 0 0 1px rgba(255,255,255,.5); animation:sbFloat 3s ease-in-out infinite;">
+              <span style="position:absolute; top:7px; left:6px; right:6px; height:2px; background:#9bb4e8; border-radius:2px;"></span>
+              <span style="position:absolute; top:13px; left:6px; right:10px; height:2px; background:#bcccf0; border-radius:2px;"></span>
+              <span style="position:absolute; top:19px; left:6px; right:8px; height:2px; background:#bcccf0; border-radius:2px;"></span>
+              <span style="position:absolute; bottom:5px; right:5px; width:14px; height:9px; border-radius:3px; background:#3D7BFF; color:#fff; font-size:6px; font-weight:800; display:flex; align-items:center; justify-content:center; letter-spacing:.3px;">PDF</span>
+            </div>
+          </div>
+          <div style="{{ io0 }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+          <div style="{{ il0 }}">Upload</div>
+          <div style="{{ io1 }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.3"/><circle cx="5" cy="18" r="2.3"/><circle cx="19" cy="12" r="2.3"/><path d="M7.2 7 16.8 11M7.2 17 16.8 13"/></svg></div>
+          <div style="{{ il1 }}">Workflow</div>
+          <div style="{{ io2 }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M16.5 13.2A5.5 5.5 0 0 1 20.5 19"/></svg></div>
+          <div style="{{ il2 }}">Recipients</div>
+          <div style="{{ io3 }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div style="{{ il3 }}">Sign</div>
+          <div style="{{ io4 }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="6.5"/><path d="M9 10l2 2 4-4"/><path d="M8.5 15.5 7 21l5-2L17 21l-1.5-5.5"/></svg></div>
+          <div style="{{ il4 }}">Signed</div>
+        </div>
+      </div>
+
+      <!-- improved stage -->
+      <div style="position:relative; flex:1; min-height:0; margin-top:8px; border-radius:16px; background:linear-gradient(160deg, rgba(255,255,255,.04), rgba(255,255,255,.01)); border:1px solid rgba(140,165,225,.12); overflow:hidden;">
+        <div style="position:absolute; inset:0; {{ parStyle }}">
+          <!-- soft glow follows -->
+          <div style="position:absolute; left:50%; top:50%; width:340px; height:340px; transform:translate(-50%,-50%); background:radial-gradient(circle, rgba(61,123,255,.18), transparent 70%); pointer-events:none;"></div>
+        </div>
+
+        <!-- Scene 0: Upload -->
+        <div style="{{ is0 }}">
+          <div style="width:300px; padding:26px; border-radius:18px; background:linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); border:1.5px dashed rgba(120,160,255,.4); box-shadow:0 24px 50px -20px rgba(61,123,255,.6), inset 0 1px 0 rgba(255,255,255,.08); text-align:center;">
+            <div style="position:relative; width:74px; height:90px; margin:0 auto 16px; border-radius:10px; background:linear-gradient(160deg,#ffffff,#d9e6ff); box-shadow:0 16px 30px rgba(61,123,255,.4); animation:sbFloat 3.4s ease-in-out infinite;">
+              <span style="position:absolute; top:0; right:0; border-width:0 16px 16px 0; border-style:solid; border-color:transparent #b9ccf2 transparent transparent;"></span>
+              <span style="position:absolute; top:18px; left:12px; right:12px; height:3px; background:#a7bdec; border-radius:2px;"></span>
+              <span style="position:absolute; top:27px; left:12px; right:20px; height:3px; background:#c5d4f3; border-radius:2px;"></span>
+              <span style="position:absolute; bottom:9px; left:50%; transform:translateX(-50%); font-size:11px; font-weight:800; color:#3D7BFF; letter-spacing:.5px;">PDF</span>
+            </div>
+            <div style="color:#eaf0ff; font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600;">Agreement.pdf <span style="color:#7e8db0; font-weight:500;">· 248 KB</span></div>
+            <div style="margin-top:14px; height:7px; border-radius:99px; background:rgba(255,255,255,.1); overflow:hidden;"><div style="height:100%; border-radius:99px; background:linear-gradient(90deg,#3D7BFF,#6AA1FF); box-shadow:0 0 12px rgba(61,123,255,.7); animation:sbProg 2.6s cubic-bezier(.4,0,.2,1) infinite;"></div></div>
+            <div style="margin-top:12px; font-size:12px; color:#8da0c8;">Drop a PDF or Word file to begin</div>
+          </div>
+        </div>
+
+        <!-- Scene 1: Workflow -->
+        <div style="{{ is1 }}">
+          <div style="display:flex; align-items:center; gap:0; width:100%; max-width:500px;">
+            <!-- incoming document -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:9px; flex:none; width:84px;">
+              <div style="position:relative; width:54px; height:66px; border-radius:9px; background:linear-gradient(160deg,#fff,#dbe6ff); box-shadow:0 12px 24px rgba(61,123,255,.4);">
+                <span style="position:absolute; top:0; right:0; border-width:0 12px 12px 0; border-style:solid; border-color:transparent #b9ccf2 transparent transparent;"></span>
+                <span style="position:absolute; top:13px; left:9px; right:9px; height:3px; background:#a7bdec; border-radius:2px;"></span>
+                <span style="position:absolute; top:21px; left:9px; right:15px; height:3px; background:#c5d4f3; border-radius:2px;"></span>
+                <span style="position:absolute; bottom:7px; left:50%; transform:translateX(-50%); font-size:8px; font-weight:800; color:#3D7BFF; letter-spacing:.4px;">PDF</span>
+              </div>
+              <span style="font-size:10.5px; font-weight:700; color:#8da0c8; letter-spacing:.3px;">Document</span>
+            </div>
+            <!-- flow in -->
+            <div style="flex:1; height:3px; margin:0 4px; margin-bottom:26px; background:repeating-linear-gradient(90deg,#6AA1FF 0 7px, transparent 7px 14px); background-size:14px 3px; animation:sbFlow .8s linear infinite; border-radius:2px;"></div>
+            <!-- engine -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:9px; flex:none;">
+              <div style="position:relative; width:94px; height:94px; border-radius:22px; background:linear-gradient(150deg,#3D7BFF,#2a5fd6); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; box-shadow:0 0 0 6px rgba(61,123,255,.14), 0 22px 44px rgba(61,123,255,.55); animation:sbFloat 4s ease-in-out infinite;">
+                <div style="position:absolute; inset:-3px; border-radius:24px; border:1px dashed rgba(255,255,255,.3); animation:sbSpin 18s linear infinite;"></div>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.3"/><circle cx="5" cy="18" r="2.3"/><circle cx="19" cy="12" r="2.3"/><path d="M7.2 7 16.8 11M7.2 17 16.8 13"/></svg>
+                <span style="font-size:10px; font-weight:800; color:#fff; letter-spacing:.5px;">SignBox</span>
+              </div>
+              <span style="font-size:10.5px; font-weight:700; color:#bcd0ff; letter-spacing:.3px;">Sets routing + profile</span>
+            </div>
+            <!-- flow out -->
+            <div style="flex:1; height:3px; margin:0 4px; margin-bottom:26px; background:repeating-linear-gradient(90deg,#6AA1FF 0 7px, transparent 7px 14px); background-size:14px 3px; animation:sbFlow .8s linear infinite; border-radius:2px;"></div>
+            <!-- recipients in order -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:9px; flex:none; width:140px;">
+              <div style="display:flex; flex-direction:column; gap:6px; width:140px;">
+                <div style="display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.07); border:1px solid rgba(140,165,225,.18); border-radius:9px; padding:4px 7px 4px 4px;">
+                  <img src="https://i.pravatar.cc/80?img=12" alt="Legal" style="width:24px; height:24px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(120,160,255,.6);"/>
+                  <span style="font-size:11px; font-weight:600; color:#dfe7fb;">Legal</span>
+                  <span style="margin-left:auto; width:18px; height:18px; border-radius:50%; background:linear-gradient(150deg,#3D7BFF,#6AA1FF); color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center;">1</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.07); border:1px solid rgba(140,165,225,.18); border-radius:9px; padding:4px 7px 4px 4px;">
+                  <img src="https://i.pravatar.cc/80?img=47" alt="Finance" style="width:24px; height:24px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(120,160,255,.6);"/>
+                  <span style="font-size:11px; font-weight:600; color:#dfe7fb;">Finance</span>
+                  <span style="margin-left:auto; width:18px; height:18px; border-radius:50%; background:linear-gradient(150deg,#3D7BFF,#6AA1FF); color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center;">2</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.07); border:1px solid rgba(170,150,255,.22); border-radius:9px; padding:4px 7px 4px 4px;">
+                  <img src="https://i.pravatar.cc/80?img=68" alt="Director" style="width:24px; height:24px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(170,150,255,.6);"/>
+                  <span style="font-size:11px; font-weight:600; color:#dfe7fb;">Director</span>
+                  <span style="margin-left:auto; width:18px; height:18px; border-radius:50%; background:linear-gradient(150deg,#8B6BFF,#b49bff); color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center;">3</span>
+                </div>
+              </div>
+              <span style="font-size:10.5px; font-weight:700; color:#8da0c8; letter-spacing:.3px;">Recipients</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 2: Recipients -->
+        <div style="{{ is2 }}">
+          <div style="display:flex; gap:14px;">
+            <div style="width:130px; padding:18px 14px; border-radius:16px; background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03)); border:1px solid rgba(140,165,225,.18); box-shadow:0 16px 32px -16px rgba(0,0,0,.6); text-align:center; animation:sbFloat 4s ease-in-out infinite;">
+              <div style="position:relative;width:54px;height:54px;margin:0 auto 12px;"><img src="https://i.pravatar.cc/140?img=12" alt="Legal" style="width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid rgba(120,160,255,.65);box-shadow:0 10px 20px rgba(61,123,255,.45);"/><span style="position:absolute;right:1px;bottom:1px;width:13px;height:13px;border-radius:50%;background:#2DD27E;border:2px solid #0c1326;box-shadow:0 0 8px rgba(45,210,126,.85);"></span></div>
+              <div style="color:#eaf0ff;font-size:14px;font-weight:700;">Legal</div>
+              <div style="margin-top:8px;font-size:10.5px;font-weight:700;color:#bcd0ff;background:rgba(61,123,255,.18);border:1px solid rgba(120,160,255,.3);padding:3px 8px;border-radius:6px;display:inline-block;">Signer · must sign</div>
+            </div>
+            <div style="width:130px; padding:18px 14px; border-radius:16px; background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03)); border:1px solid rgba(140,165,225,.18); box-shadow:0 16px 32px -16px rgba(0,0,0,.6); text-align:center; animation:sbFloat 4s ease-in-out infinite .5s;">
+              <div style="position:relative;width:54px;height:54px;margin:0 auto 12px;"><img src="https://i.pravatar.cc/140?img=47" alt="Finance" style="width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid rgba(120,160,255,.65);box-shadow:0 10px 20px rgba(61,123,255,.45);"/><span style="position:absolute;right:1px;bottom:1px;width:13px;height:13px;border-radius:50%;background:#2DD27E;border:2px solid #0c1326;box-shadow:0 0 8px rgba(45,210,126,.85);"></span></div>
+              <div style="color:#eaf0ff;font-size:14px;font-weight:700;">Finance</div>
+              <div style="margin-top:8px;font-size:10.5px;font-weight:700;color:#bcd0ff;background:rgba(61,123,255,.18);border:1px solid rgba(120,160,255,.3);padding:3px 8px;border-radius:6px;display:inline-block;">Signer · must sign</div>
+            </div>
+            <div style="width:130px; padding:18px 14px; border-radius:16px; background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03)); border:1px solid rgba(140,165,225,.18); box-shadow:0 16px 32px -16px rgba(0,0,0,.6); text-align:center; animation:sbFloat 4s ease-in-out infinite 1s;">
+              <div style="position:relative;width:54px;height:54px;margin:0 auto 12px;"><img src="https://i.pravatar.cc/140?img=68" alt="Director" style="width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid rgba(170,150,255,.7);box-shadow:0 10px 20px rgba(139,107,255,.45);"/><span style="position:absolute;right:1px;bottom:1px;width:13px;height:13px;border-radius:50%;background:#8B6BFF;border:2px solid #0c1326;box-shadow:0 0 8px rgba(139,107,255,.85);"></span></div>
+              <div style="color:#eaf0ff;font-size:14px;font-weight:700;">Director</div>
+              <div style="margin-top:8px;font-size:10.5px;font-weight:700;color:#d6ccff;background:rgba(139,107,255,.18);border:1px solid rgba(170,150,255,.3);padding:3px 8px;border-radius:6px;display:inline-block;">Approver · approves</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 3: Signing -->
+        <div style="{{ is3 }}">
+          <div style="position:relative; width:172px; height:340px; border-radius:30px; background:linear-gradient(165deg,#161d33,#0e1426); border:1px solid rgba(150,175,235,.22); box-shadow:0 30px 60px -20px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.08); padding:18px 16px; animation:sbFloat 4.5s ease-in-out infinite;">
+            <div style="position:absolute; inset:-30px; border-radius:50px; background:radial-gradient(circle, rgba(139,107,255,.25), transparent 70%); z-index:-1;"></div>
+            <div style="width:46px; height:5px; border-radius:99px; background:rgba(255,255,255,.18); margin:0 auto 18px;"></div>
+            <div style="display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:18px;">
+              <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(150deg,#8B6BFF,#b49bff);display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+              <span style="color:#eaf0ff; font-size:13px; font-weight:700; font-family:'Space Grotesk',sans-serif;">Smart-ID</span>
+            </div>
+            <div style="font-size:11px; color:#8da0c8; text-align:center; margin-bottom:10px;">Enter PIN2 to sign</div>
+            <div style="display:flex; gap:9px; justify-content:center; margin-bottom:22px;">
+              <span style="width:13px;height:13px;border-radius:50%;background:#8B6BFF;box-shadow:0 0 10px rgba(139,107,255,.8);"></span>
+              <span style="width:13px;height:13px;border-radius:50%;background:#8B6BFF;box-shadow:0 0 10px rgba(139,107,255,.8);"></span>
+              <span style="width:13px;height:13px;border-radius:50%;background:#8B6BFF;box-shadow:0 0 10px rgba(139,107,255,.8);"></span>
+              <span style="width:13px;height:13px;border-radius:50%;background:#8B6BFF;box-shadow:0 0 10px rgba(139,107,255,.8);"></span>
+            </div>
+            <div style="margin-top:6px; padding:14px; border-radius:14px; background:rgba(45,210,126,.12); border:1px solid rgba(45,210,126,.35); text-align:center;">
+              <div style="width:42px;height:42px;border-radius:50%;margin:0 auto 8px;background:linear-gradient(150deg,#2DD27E,#23b76d);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(45,210,126,.7); animation:sbPulse 2.2s ease-out infinite;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></div>
+              <div style="color:#8ff0bd; font-size:13px; font-weight:700;">Signature applied</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 4: Signed -->
+        <div style="{{ is4 }}">
+          <div style="display:flex; align-items:center; gap:30px;">
+            <!-- sealed layers legend -->
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; align-items:center; gap:9px; width:170px; padding:9px 12px; border-radius:11px; background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.03)); border:1px solid rgba(140,165,225,.2); transform:translateX(0);"><span style="width:7px;height:7px;border-radius:2px;background:#6AA1FF;"></span><span style="color:#dfe7fb;font-size:12px;font-weight:600;">Original document</span><span style="margin-left:auto;color:#7fe0ad;display:flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span></div>
+              <div style="display:flex; align-items:center; gap:9px; width:170px; padding:9px 12px; border-radius:11px; background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.03)); border:1px solid rgba(140,165,225,.2); transform:translateX(12px);"><span style="width:7px;height:7px;border-radius:2px;background:#8B6BFF;"></span><span style="color:#dfe7fb;font-size:12px;font-weight:600;">Digital signature</span><span style="margin-left:auto;color:#7fe0ad;display:flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span></div>
+              <div style="display:flex; align-items:center; gap:9px; width:170px; padding:9px 12px; border-radius:11px; background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.03)); border:1px solid rgba(140,165,225,.2); transform:translateX(24px);"><span style="width:7px;height:7px;border-radius:2px;background:#F5C451;"></span><span style="color:#dfe7fb;font-size:12px;font-weight:600;">Trusted timestamp</span><span style="margin-left:auto;color:#7fe0ad;display:flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span></div>
+              <div style="display:flex; align-items:center; gap:9px; width:170px; padding:9px 12px; border-radius:11px; background:linear-gradient(160deg,rgba(45,210,126,.16),rgba(45,210,126,.05)); border:1px solid rgba(45,210,126,.4); transform:translateX(36px);"><span style="width:7px;height:7px;border-radius:2px;background:#2DD27E;"></span><span style="color:#bff3d6;font-size:12px;font-weight:700;">Validation · CRL/OCSP</span><span style="margin-left:auto;color:#7fe0ad;display:flex;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span></div>
+            </div>
+
+            <!-- the document being signed -->
+            <div style="position:relative; animation:sbFloat 5s ease-in-out infinite;">
+              <div style="position:absolute; inset:-26px; border-radius:50%; background:radial-gradient(circle, rgba(45,210,126,.26), transparent 70%);"></div>
+              <div style="position:relative; width:202px; height:252px; border-radius:13px; background:linear-gradient(160deg,#ffffff,#eef3fc); box-shadow:0 28px 54px -18px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.35); padding:20px 18px; overflow:hidden;">
+                <span style="position:absolute; top:0; right:0; border-width:0 22px 22px 0; border-style:solid; border-color:transparent #cdd9ee transparent transparent;"></span>
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:14px;">
+                  <span style="font-family:'Space Grotesk',sans-serif; font-size:12.5px; font-weight:700; color:#1b2436;">Agreement.pdf</span>
+                  <span style="margin-left:auto; font-size:7px; font-weight:800; color:#fff; background:#3D7BFF; border-radius:3px; padding:2px 5px; letter-spacing:.3px;">PDF</span>
+                </div>
+                <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:100%; margin-bottom:8px;"></span>
+                <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:94%; margin-bottom:8px;"></span>
+                <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:97%; margin-bottom:8px;"></span>
+                <span style="display:block; height:5px; border-radius:3px; background:#e6ecf6; width:62%; margin-bottom:8px;"></span>
+                <span style="display:block; height:5px; border-radius:3px; background:#dde5f1; width:90%; margin-bottom:8px;"></span>
+                <span style="display:block; height:5px; border-radius:3px; background:#e6ecf6; width:48%;"></span>
+                <!-- signature block -->
+                <div style="position:absolute; left:18px; right:18px; bottom:16px;">
+                  <div style="font-size:8px; color:#9aa9c4; font-weight:800; letter-spacing:.5px; text-transform:uppercase;">Signed by · Legal</div>
+                  <svg width="156" height="40" viewBox="0 0 156 40" style="display:block; margin-top:1px;">
+                    <path d="M3 30 C 10 9 18 8 20 27 C 21 36 27 36 31 22 C 35 9 41 9 44 27 C 46 38 52 33 58 22 C 65 8 72 34 81 24 C 91 14 98 31 110 18 C 119 9 125 27 136 16 C 142 11 148 21 153 14" stroke="#2f6bff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="330" style="{{ sigDraw }}"></path>
+                  </svg>
+                  <div style="border-top:1px solid #d6deec; margin-top:1px; padding-top:5px; display:flex; justify-content:space-between; font-size:8px; color:#9aa9c4; font-family:'Space Mono',monospace;"><span>Smart-ID · PIN2</span><span>2026-06-26</span></div>
+                </div>
+              </div>
+              <!-- QES seal stamping onto the document -->
+              <span style="position:absolute; left:-14px; top:14px; width:5px;height:5px;border-radius:50%;background:#7fe0ad; animation:sbTwinkle 2.2s ease-in-out infinite;"></span>
+              <span style="position:absolute; right:-2px; top:-14px; width:4px;height:4px;border-radius:50%;background:#fff; animation:sbTwinkle 2.6s ease-in-out infinite .4s;"></span>
+              <span style="position:absolute; right:-30px; bottom:30px; width:5px;height:5px;border-radius:50%;background:#7fe0ad; animation:sbTwinkle 2.4s ease-in-out infinite .8s;"></span>
+              <div style="position:absolute; top:-20px; right:-34px;">
+                <div style="{{ seal }}">
+                  <div style="width:98px;height:98px;border-radius:50%;background:linear-gradient(150deg,#2DD27E,#1ea862);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 0 0 5px rgba(45,210,126,.2), 0 20px 40px rgba(45,210,126,.55), inset 0 2px 6px rgba(255,255,255,.35); border:2px solid rgba(255,255,255,.5);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+                    <span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;">VALID</span>
+                    <span style="color:#d6ffe7;font-size:8px;font-weight:700;letter-spacing:.4px;">QES · eIDAS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute; bottom:18px; left:0; right:0; display:flex; gap:8px; justify-content:center;">
+            <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">ASiC-E</span>
+            <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#bcd0ff; background:rgba(61,123,255,.14); border:1px solid rgba(120,160,255,.28); padding:4px 9px; border-radius:6px;">XAdES-LT</span>
+            <span style="font-family:'Space Mono',monospace; font-size:10.5px; color:#8ff0bd; background:rgba(45,210,126,.14); border:1px solid rgba(45,210,126,.32); padding:4px 9px; border-radius:6px;">QES</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1640,&quot;height&quot;:960},&quot;pace&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Calm&quot;,&quot;Standard&quot;,&quot;Snappy&quot;],&quot;default&quot;:&quot;Standard&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Signal blue&quot;,&quot;Royal violet&quot;,&quot;Emerald&quot;],&quot;default&quot;:&quot;Signal blue&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ambient&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { step: 0, playing: true };
+
+  paceMs() {
+    return { Calm: 3400, Standard: 2600, Snappy: 1800 }[this.props.pace || 'Standard'] || 2600;
+  }
+  startTimer() {
+    clearInterval(this._t);
+    if (!this.state.playing) return;
+    this._t = setInterval(() => this.setState(s => ({ step: (s.step + 1) % 5 })), this.paceMs());
+  }
+  componentDidMount() { this.startTimer(); }
+  componentDidUpdate(pp) { if (pp.pace !== this.props.pace) this.startTimer(); }
+  componentWillUnmount() { clearInterval(this._t); }
+  togglePlay() { this.setState(s => ({ playing: !s.playing }), () => this.startTimer()); }
+
+  renderVals() {
+    const step = this.state.step;
+    const N = 5;
+    const spring = 'cubic-bezier(.34,1.5,.5,1)';
+    const ease = 'cubic-bezier(.22,1,.36,1)';
+    const accents = {
+      'Signal blue': { c1: '#3D7BFF', c2: '#6AA1FF', glow: '61,123,255' },
+      'Royal violet': { c1: '#8B6BFF', c2: '#B49BFF', glow: '139,107,255' },
+      'Emerald': { c1: '#16C784', c2: '#4BE0A8', glow: '22,199,132' },
+    };
+    const A = accents[this.props.accent || 'Signal blue'] || accents['Signal blue'];
+    const steps = [
+      { title: 'Upload document', desc: 'Drop a PDF or Word file to start the signing process.' },
+      { title: 'SignBox Workflow', desc: 'Routing order and document profiles are applied automatically.' },
+      { title: 'Recipients & Roles', desc: 'Assign Signers, Approvers and Viewers with enforced permissions.' },
+      { title: 'National e-ID', desc: 'Sign with Smart-ID, Mobile-ID or eParaksts — PIN2 confirms.' },
+      { title: 'Signed document', desc: 'A legally valid, validated ASiC-E container is sealed.' },
+    ];
+    const pc = v => v + '%';
+    const at = i => pc((i / (N - 1)) * 100);
+    const fillPct = pc((step / (N - 1)) * 100);
+
+    const out = {
+      step,
+      stepN: step + 1,
+      stepTitle: steps[step].title,
+      stepDesc: steps[step].desc,
+      ambient: this.props.ambient !== false,
+      playing: this.state.playing,
+      playLabel: this.state.playing ? 'Pause' : 'Play',
+      togglePlay: () => this.togglePlay(),
+      headerFill: { width: fillPct, height: '100%', borderRadius: '99px', transition: 'width .6s ' + ease, background: 'linear-gradient(90deg,' + A.c1 + ',' + A.c2 + ')' },
+      fillI: { width: fillPct, transition: 'width .8s ' + ease, background: 'linear-gradient(90deg,#2DD27E,' + A.c1 + ')' },
+      fillC: { width: fillPct, transition: 'width .35s linear', background: '#3D7BFF' },
+      docStyle: { left: fillPct, transition: 'left .8s ' + spring },
+      parStyle: { transform: 'translateX(' + (-step * 10) + 'px) translateY(' + (-step * 4) + 'px)', transition: 'transform 1s ' + ease },
+      seal: step === 4
+        ? { transform: 'scale(1) rotate(-12deg)', opacity: 1, transition: 'all .55s ' + spring + ' .15s' }
+        : { transform: 'scale(1.8) rotate(-12deg)', opacity: 0, transition: 'all .25s ease' },
+      sigDraw: step === 4
+        ? { strokeDashoffset: 0, transition: 'stroke-dashoffset 1.15s ease .35s' }
+        : { strokeDashoffset: 330 },
+    };
+
+    for (let i = 0; i < N; i++) {
+      const active = i === step, done = i < step;
+      // improved orb
+      const ib = { width: '52px', height: '52px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'absolute', top: '86px', left: at(i), transition: 'all .6s ' + spring, zIndex: 2 };
+      let io;
+      if (active) io = Object.assign({}, ib, { background: 'linear-gradient(150deg,' + A.c1 + ',' + A.c2 + ')', color: '#fff', boxShadow: '0 0 0 6px rgba(' + A.glow + ',.16), 0 16px 34px rgba(' + A.glow + ',.55)', border: '1px solid rgba(255,255,255,.55)', transform: 'translate(-50%,-50%) scale(1.16)' });
+      else if (done) io = Object.assign({}, ib, { background: 'linear-gradient(150deg,#2DD27E,#23b76d)', color: '#fff', boxShadow: '0 10px 22px rgba(45,210,126,.4)', border: '1px solid rgba(255,255,255,.3)', transform: 'translate(-50%,-50%)' });
+      else io = Object.assign({}, ib, { background: 'rgba(255,255,255,.045)', color: 'rgba(220,230,255,.45)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.06)', transform: 'translate(-50%,-50%)' });
+      out['io' + i] = io;
+      out['il' + i] = { position: 'absolute', top: '124px', left: at(i), transform: 'translateX(-50%)', whiteSpace: 'nowrap', fontSize: '12px', fontWeight: active ? 700 : 600, letterSpacing: '.2px', color: active ? '#fff' : done ? 'rgba(190,255,222,.85)' : 'rgba(170,182,212,.5)', transition: 'all .5s ' + ease };
+
+      // current orb
+      const cb = { width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'absolute', top: '86px', left: at(i), transform: 'translate(-50%,-50%)', transition: 'all .3s linear', fontSize: '14px', fontWeight: 700, fontFamily: "'Space Grotesk',sans-serif", zIndex: 2 };
+      let co;
+      if (active) co = Object.assign({}, cb, { background: '#3D7BFF', color: '#fff', border: '2px solid #3D7BFF', boxShadow: '0 0 0 4px rgba(61,123,255,.15)' });
+      else if (done) co = Object.assign({}, cb, { background: '#EAF1FF', color: '#3D7BFF', border: '2px solid #3D7BFF' });
+      else co = Object.assign({}, cb, { background: '#fff', color: '#9AA4B6', border: '2px solid #DDE3EE' });
+      out['ico' + i] = co;
+      out['icl' + i] = { position: 'absolute', top: '116px', left: at(i), transform: 'translateX(-50%)', whiteSpace: 'nowrap', fontSize: '11.5px', fontWeight: active ? 600 : 500, color: active ? '#1B2436' : '#8A93A5', transition: 'all .3s linear' };
+
+      // scene visibility
+      const sBase = { position: 'absolute', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' };
+      out['is' + i] = active
+        ? Object.assign({}, sBase, { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0px)', transition: 'all .75s ' + ease })
+        : Object.assign({}, sBase, { opacity: 0, transform: 'translateY(30px) scale(.965)', filter: 'blur(7px)', pointerEvents: 'none', transition: 'all .55s ' + ease });
+      out['cs' + i] = active
+        ? Object.assign({}, sBase, { opacity: 1, transform: 'translateY(0)', transition: 'all .3s linear' })
+        : Object.assign({}, sBase, { opacity: 0, transform: 'translateY(10px)', pointerEvents: 'none', transition: 'all .3s linear' });
+    }
+    return out;
+  }
+}
+</script>
+</body>
+</html>
