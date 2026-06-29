@@ -11,7 +11,9 @@ const README = path.join(ROOT, 'README.md');
 const SRC_IMAGES = path.join(ROOT, 'images');
 const DOCS = path.join(SITE, 'src', 'content', 'docs');
 const PUB_IMAGES = path.join(SITE, 'public', 'images');
-const BASE = '/new-signbox-guide';
+// Must match `base` in astro.config.mjs (no trailing slash; usages append `/...`).
+// Root-domain deploy (base '/') => '' ; sub-path deploy => e.g. '/new-signbox-guide'.
+const BASE = '';
 
 // README H2 section number -> stable slug (matches sidebar in astro.config.mjs)
 const SLUG = {
