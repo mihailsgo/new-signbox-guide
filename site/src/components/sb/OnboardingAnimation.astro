@@ -1,0 +1,332 @@
+---
+/**
+ * OnboardingAnimation - "Example: hiring a new employee" walkthrough.
+ *
+ * 1:1 port of the design handoff `onboarding-animation.html`
+ * (claude design assets/Employee onboarding animation). An avatar walks a
+ * 5-stop rail - Upload agreement -> Signing link sent -> Verified & signed ->
+ * Status auto-updates -> Sealed & verifiable - finishing with an "Onboarded!"
+ * badge and a confetti burst. Plays once when scrolled into view (9s), then
+ * holds the finished state.
+ *
+ * Everything is namespaced under `.om-*`, so the styles + `om-*` keyframes live
+ * in <style is:global>: the keyframe references sit inside `.om-*` class rules,
+ * and a scoped <style> would rename the keyframes and break those references
+ * (the footgun StatusLifecycle.astro documents). The `om-*` names don't collide
+ * with the global `lc*` / `sb*` keyframes the other homepage animations use.
+ *
+ * Fonts (Manrope) are already loaded globally in Head.astro, so the handoff's
+ * Google Fonts <link> is dropped - no external network request.
+ *
+ * The card is a fixed dark panel (#0E131D), matching the page's other animation
+ * components; it does not theme to light/dark. The scene has a 760px min-width,
+ * so on narrower screens the JS scales it to fit (no horizontal scroll), the
+ * same fit-to-width idea used by StatusLifecycle.astro.
+ */
+interface Props { class?: string; }
+const { class: className = '' } = Astro.props;
+---
+
+<figure class={`om-onboard ${className}`} role="group" aria-label="Example: hiring a new employee - one document travels from HR through identity-verified signing to a sealed, independently verifiable result">
+  <div class="om-eyebrow">Example · Hiring a new employee</div>
+  <div class="om-sub">Watch one document travel from HR to a sealed, independently verifiable signature.</div>
+
+  <div class="om-scene-wrap">
+    <div class="om-scene" data-om-scene>
+
+      <div class="om-rail"><div class="om-rail-fill"></div></div>
+
+      <div class="om-dot" style="left:10%;--c:#4F8EF7;animation-delay:.7s;"></div>
+      <div class="om-dot" style="left:30%;--c:#6E78F2;animation-delay:2.5s;"></div>
+      <div class="om-dot" style="left:50%;--c:#8B5CF6;animation-delay:4.1s;"></div>
+      <div class="om-dot" style="left:70%;--c:#5FB89A;animation-delay:5.8s;"></div>
+      <div class="om-dot" style="left:90%;--c:#34D399;animation-delay:7.4s;"></div>
+
+      <div class="om-avatar">
+        <div class="om-avatar-inner">
+          <div class="om-shadow"></div>
+          <div class="om-leg a"></div>
+          <div class="om-leg b"></div>
+          <div class="om-arm back"></div>
+          <div class="om-body"></div>
+          <div class="om-doc"><i style="top:3px;right:3px;"></i><i style="top:6px;right:3px;"></i><i style="top:9px;right:5px;"></i></div>
+          <div class="om-arm front"></div>
+          <div class="om-head">
+            <div class="om-hair"></div>
+            <div class="om-eye" style="left:8px;"></div>
+            <div class="om-eye" style="left:18px;"></div>
+            <div class="om-smile"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="om-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Onboarded!
+      </div>
+
+      <div class="om-confetti-origin" data-om-confetti></div>
+
+      <div class="om-card" style="left:10%;--c:#4F8EF7;--d:.7s;">
+        <div class="om-conn"></div>
+        <div class="om-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div>
+        <div class="om-step">Step 1</div>
+        <div class="om-title">Upload agreement</div>
+        <div class="om-desc">HR uploads the employment agreement.</div>
+      </div>
+
+      <div class="om-card" style="left:30%;--c:#6E78F2;--d:2.5s;">
+        <div class="om-conn"></div>
+        <div class="om-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg></div>
+        <div class="om-step">Step 2</div>
+        <div class="om-title">Signing link sent</div>
+        <div class="om-desc">A secure link arrives by email — no account needed.</div>
+      </div>
+
+      <div class="om-card" style="left:50%;--c:#8B5CF6;--d:4.1s;">
+        <div class="om-conn"></div>
+        <div class="om-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><polyline points="9.3 11 11 12.7 14.5 9.3"></polyline></svg></div>
+        <div class="om-step">Step 3</div>
+        <div class="om-title">Verified &amp; signed</div>
+        <div class="om-desc">Identity confirmed and signed on their phone with Smart-ID.</div>
+      </div>
+
+      <div class="om-card" style="left:70%;--c:#5FB89A;--d:5.8s;">
+        <div class="om-conn"></div>
+        <div class="om-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+        <div class="om-step">Step 4</div>
+        <div class="om-title">Status auto-updates</div>
+        <div class="om-desc">HR sees the status update automatically.</div>
+      </div>
+
+      <div class="om-card" style="left:90%;--c:#34D399;--d:7.4s;">
+        <div class="om-conn"></div>
+        <div class="om-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11.5 14.5 16 9.5"></polyline></svg></div>
+        <div class="om-step">Step 5</div>
+        <div class="om-title">Sealed &amp; verifiable</div>
+        <div class="om-desc">The signed file is stored and independently verifiable.</div>
+      </div>
+
+    </div>
+  </div>
+</figure>
+
+<style is:global>
+  /* ============================================================
+     ONBOARDING ANIMATION - self-contained, namespaced under .om-*.
+     Global (not scoped) so the `animation: om-*` references inside
+     these class rules keep resolving - Astro would otherwise rename
+     the keyframes in a scoped block and break them. Plays once when
+     scrolled into view (see the script). Total run time: 9s.
+     ============================================================ */
+  .om-onboard *{box-sizing:border-box;}
+  .om-onboard{
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;
+    background:#0E131D;
+    border:1px solid rgba(255,255,255,.08);
+    padding:34px 40px 30px;
+    border-radius:20px;
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    color:#E7ECF4;
+    overflow:hidden;
+  }
+  .om-eyebrow{font-weight:700;letter-spacing:.16em;font-size:13px;color:#E0A43B;text-transform:uppercase;}
+  .om-sub{font-size:15px;color:#94A0B5;margin-top:8px;max-width:640px;}
+
+  /* fit-to-width wrapper added for the port: the scene keeps its 760px
+     min-width and the script scales it down (no horizontal scroll) on
+     narrower screens. The handoff's `margin-top:30px` lives on the wrap so
+     the scaled scene height is exactly 360 * scale. */
+  .om-scene-wrap{width:100%;overflow:hidden;margin-top:30px;}
+
+  /* The scene. --om-ps is flipped from paused -> running by the observer. */
+  .om-scene{--om-ps:paused;position:relative;height:360px;margin-top:0;min-width:760px;}
+
+  .om-rail{position:absolute;left:10%;right:10%;top:130px;height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;}
+  .om-rail-fill{position:absolute;left:0;top:0;height:100%;width:0%;border-radius:6px;
+    background:linear-gradient(90deg,#4F8EF7,#8B5CF6 55%,#34D399);
+    animation:om-fill 9s linear forwards;animation-play-state:var(--om-ps,paused);}
+
+  .om-dot{position:absolute;top:133px;width:16px;height:16px;border-radius:50%;background:#2A3344;
+    transform:translate(-50%,-50%);box-shadow:0 0 0 4px #0E131D;
+    animation:om-dot .5s cubic-bezier(.34,1.56,.64,1) both;animation-play-state:var(--om-ps,paused);}
+
+  .om-avatar{position:absolute;left:4%;top:56px;width:52px;height:80px;transform:translateX(-50%);z-index:6;
+    animation:om-walk 9s ease-in-out forwards;animation-play-state:var(--om-ps,paused);}
+  .om-avatar-inner{position:relative;width:100%;height:100%;
+    animation:om-bob .5s ease-in-out infinite;animation-play-state:var(--om-ps,paused);}
+  .om-shadow{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:34px;height:8px;border-radius:50%;background:rgba(79,142,247,.28);filter:blur(1px);}
+  .om-leg{position:absolute;top:54px;width:7px;height:18px;border-radius:4px;background:#1B2740;transform-origin:top center;animation-play-state:var(--om-ps,paused);}
+  .om-leg.a{left:21px;animation:om-leg-a .5s ease-in-out infinite;}
+  .om-leg.b{left:31px;animation:om-leg-b .5s ease-in-out infinite;}
+  .om-arm{position:absolute;top:36px;width:6px;height:18px;border-radius:4px;transform-origin:top center;animation-play-state:var(--om-ps,paused);}
+  .om-arm.back{left:15px;background:#3D74D6;animation:om-arm .5s ease-in-out infinite;}
+  .om-arm.front{left:37px;background:#5C97F5;z-index:3;animation:om-arm .5s ease-in-out infinite reverse;}
+  .om-body{position:absolute;top:32px;left:50%;transform:translateX(-50%);width:36px;height:28px;border-radius:12px 12px 9px 9px;background:#4F8EF7;}
+  .om-doc{position:absolute;top:40px;left:38px;width:13px;height:16px;border-radius:2px;background:#EEF3FB;box-shadow:0 1px 3px rgba(0,0,0,.4);z-index:2;}
+  .om-doc i{position:absolute;left:2px;height:1.5px;background:#9CB4DA;display:block;}
+  .om-head{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:#E8B98F;}
+  .om-hair{position:absolute;top:-2px;left:-1px;width:32px;height:14px;border-radius:16px 16px 0 0;background:#2A2320;}
+  .om-eye{position:absolute;top:14px;width:3.5px;height:3.5px;border-radius:50%;background:#2A2320;}
+  .om-smile{position:absolute;top:19px;left:11px;width:9px;height:5px;border-radius:0 0 6px 6px;border-bottom:2px solid #C68E62;}
+
+  /* top:14px lifts the pill clear above the avatar's head (head spans ~55-90px,
+     plus the ±3px bob) so the badge and the person are both fully visible at the
+     final stop, instead of the pill landing on the head. */
+  .om-badge{position:absolute;left:90%;top:14px;transform:translateX(-50%) scale(0);opacity:0;
+    display:flex;align-items:center;gap:6px;background:#34D399;color:#062B1C;font-weight:700;font-size:13px;
+    padding:6px 13px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 22px -6px rgba(52,211,153,.6);z-index:7;
+    animation:om-badge .6s cubic-bezier(.34,1.56,.64,1) 7.7s both;animation-play-state:var(--om-ps,paused);}
+
+  .om-confetti-origin{position:absolute;left:90%;top:120px;width:0;height:0;z-index:5;}
+  .om-confetti{position:absolute;left:0;top:0;margin-left:-4px;opacity:0;
+    animation:om-confetti 1.5s cubic-bezier(.2,.6,.3,1) forwards;animation-play-state:var(--om-ps,paused);}
+
+  .om-card{position:absolute;top:172px;width:165px;text-align:center;transform:translateX(-50%);opacity:.4;
+    animation:om-card .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);}
+  .om-conn{position:absolute;top:-42px;left:50%;transform:translateX(-50%);width:2px;height:30px;background:rgba(255,255,255,.1);border-radius:2px;
+    animation:om-conn .4s ease var(--d) both;animation-play-state:var(--om-ps,paused);}
+  .om-icon{margin:0 auto 11px;width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.06);color:#6B7689;
+    display:flex;align-items:center;justify-content:center;
+    animation:om-icon .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);}
+  .om-step{font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6B7689;
+    animation:om-label .5s ease var(--d) both;animation-play-state:var(--om-ps,paused);}
+  .om-title{font-weight:700;font-size:15px;color:#F1F4FA;margin-top:4px;}
+  .om-desc{font-size:12.5px;line-height:1.45;color:#8B97AC;margin-top:5px;}
+
+  /* keyframes */
+  @keyframes om-walk{
+    0%{left:4%} 8%{left:10%} 18%{left:10%} 28%{left:30%} 38%{left:30%}
+    46%{left:50%} 56%{left:50%} 64%{left:70%} 74%{left:70%} 82%{left:90%} 100%{left:90%}
+  }
+  @keyframes om-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @keyframes om-fill{
+    0%{width:0%}8%{width:0%}18%{width:0%}28%{width:25%}38%{width:25%}
+    46%{width:50%}56%{width:50%}64%{width:75%}74%{width:75%}82%{width:100%}100%{width:100%}
+  }
+  @keyframes om-card{0%{transform:translateX(-50%) translateY(0);opacity:.4}100%{transform:translateX(-50%) translateY(-9px);opacity:1}}
+  @keyframes om-icon{
+    0%{background:rgba(255,255,255,.06);color:#6B7689;transform:scale(1);box-shadow:none}
+    45%{transform:scale(1.26)}65%{transform:scale(.93)}
+    100%{background:var(--c);color:#0B0F18;transform:scale(1);box-shadow:0 6px 18px -4px var(--c)}
+  }
+  @keyframes om-dot{
+    0%{background:#2A3344;transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 4px #0E131D}
+    45%{transform:translate(-50%,-50%) scale(1.7)}
+    100%{background:var(--c);transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 4px #0E131D,0 0 14px 1px var(--c)}
+  }
+  @keyframes om-conn{0%{background:rgba(255,255,255,.1)}100%{background:var(--c)}}
+  @keyframes om-label{0%{color:#6B7689}100%{color:var(--c)}}
+  @keyframes om-badge{0%{transform:translateX(-50%) scale(0);opacity:0}60%{transform:translateX(-50%) scale(1.18);opacity:1}100%{transform:translateX(-50%) scale(1);opacity:1}}
+  @keyframes om-confetti{0%{transform:translate(0,0) rotate(0);opacity:0}12%{opacity:1}100%{transform:translate(var(--tx),var(--ty)) rotate(var(--r));opacity:0}}
+  @keyframes om-leg-a{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-16deg)}}
+  @keyframes om-leg-b{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(16deg)}}
+  @keyframes om-arm{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+
+  /* Respect reduced-motion: show the finished state, no movement. */
+  @media (prefers-reduced-motion: reduce){
+    .om-onboard *{animation:none !important;}
+    .om-rail-fill{width:100%;}
+    .om-card{opacity:1;transform:translateX(-50%) translateY(-9px);}
+    .om-avatar{left:90%;}
+    .om-badge{opacity:1;transform:translateX(-50%) scale(1);}
+  }
+</style>
+
+<script>
+  /* Driver - CSS does all the animating. This (1) builds the confetti burst,
+     (2) flips the scene from paused -> running once it scrolls into view
+     (plays once), and (3) scales the 760px-min scene to fit narrow screens.
+     Wired to ClientRouter so it re-inits on navigation and tears down its
+     observers before the <body> swap (mirrors StatusLifecycle.astro). */
+  const OM_BASE_W = 760; // scene min-width from the handoff
+  const OM_SCENE_H = 360;
+  const OM_COLORS = ['#4F8EF7', '#8B5CF6', '#34D399', '#E0A43B', '#6E78F2'];
+
+  function buildConfetti(origin: HTMLElement) {
+    if (origin.dataset.omBuilt === '1') return; // idempotent across re-inits
+    for (let i = 0; i < 22; i++) {
+      const ang = (i / 22) * Math.PI * 2;
+      const dist = 60 + (i % 4) * 26;
+      const tx = Math.cos(ang) * dist;
+      const ty = Math.sin(ang) * dist - 40;
+      const r = (i % 2 ? 1 : -1) * (200 + (i % 5) * 70);
+      const p = document.createElement('div');
+      p.className = 'om-confetti';
+      p.style.width = (i % 3 === 0 ? 7 : 9) + 'px';
+      p.style.height = (i % 3 === 0 ? 13 : 9) + 'px';
+      p.style.borderRadius = (i % 2 ? '2px' : '50%');
+      p.style.background = OM_COLORS[i % OM_COLORS.length];
+      p.style.animationDelay = (7.6 + (i % 6) * 0.05) + 's';
+      p.style.setProperty('--tx', tx + 'px');
+      p.style.setProperty('--ty', ty + 'px');
+      p.style.setProperty('--r', r + 'deg');
+      origin.appendChild(p);
+    }
+    origin.dataset.omBuilt = '1';
+  }
+
+  function initOnboardingAnimation() {
+    document.querySelectorAll<HTMLElement>('.om-onboard').forEach((root) => {
+      root.querySelectorAll<HTMLElement>('[data-om-confetti]').forEach(buildConfetti);
+
+      const wrap = root.querySelector<HTMLElement>('.om-scene-wrap');
+      const scene = root.querySelector<HTMLElement>('.om-scene');
+      if (!wrap || !scene) return;
+
+      // Fit the 760px-min scene to the container; only scale down when narrower.
+      const fit = () => {
+        const w = wrap.clientWidth || OM_BASE_W;
+        if (w < OM_BASE_W) {
+          const scale = w / OM_BASE_W;
+          scene.style.width = OM_BASE_W + 'px';
+          scene.style.transformOrigin = 'top left';
+          scene.style.transform = 'scale(' + scale + ')';
+          wrap.style.height = OM_SCENE_H * scale + 'px';
+        } else {
+          scene.style.width = '';
+          scene.style.transform = '';
+          wrap.style.height = '';
+        }
+      };
+
+      const prevRO = (root as any).__omRO as ResizeObserver | undefined;
+      if (prevRO) prevRO.disconnect();
+      const ro = new ResizeObserver(fit);
+      ro.observe(wrap);
+      (root as any).__omRO = ro;
+      fit();
+
+      // Play once when the scene scrolls into view.
+      if (!('IntersectionObserver' in window)) {
+        scene.style.setProperty('--om-ps', 'running');
+        return;
+      }
+      const prevIO = (root as any).__omIO as IntersectionObserver | undefined;
+      if (prevIO) prevIO.disconnect();
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).style.setProperty('--om-ps', 'running');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.35 });
+      io.observe(scene);
+      (root as any).__omIO = io;
+    });
+  }
+
+  initOnboardingAnimation();
+  document.addEventListener('astro:page-load', initOnboardingAnimation);
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll<HTMLElement>('.om-onboard').forEach((root) => {
+      const ro = (root as any).__omRO as ResizeObserver | undefined;
+      if (ro) { ro.disconnect(); (root as any).__omRO = undefined; }
+      const io = (root as any).__omIO as IntersectionObserver | undefined;
+      if (io) { io.disconnect(); (root as any).__omIO = undefined; }
+    });
+  });
+</script>

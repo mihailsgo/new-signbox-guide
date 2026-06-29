@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  @keyframes om-walk{
+    0%{left:4%}
+    8%{left:10%} 18%{left:10%}
+    28%{left:30%} 38%{left:30%}
+    46%{left:50%} 56%{left:50%}
+    64%{left:70%} 74%{left:70%}
+    82%{left:90%} 100%{left:90%}
+  }
+  @keyframes om-bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+  @keyframes om-fill{
+    0%{width:0%} 8%{width:0%} 18%{width:0%}
+    28%{width:25%} 38%{width:25%}
+    46%{width:50%} 56%{width:50%}
+    64%{width:75%} 74%{width:75%}
+    82%{width:100%} 100%{width:100%}
+  }
+  @keyframes om-card{
+    0%{transform:translateX(-50%) translateY(0);opacity:.4}
+    100%{transform:translateX(-50%) translateY(-9px);opacity:1}
+  }
+  @keyframes om-icon{
+    0%{background:rgba(255,255,255,.06);color:#6B7689;transform:scale(1);box-shadow:none}
+    45%{transform:scale(1.26)}
+    65%{transform:scale(.93)}
+    100%{background:var(--c);color:#0B0F18;transform:scale(1);box-shadow:0 6px 18px -4px var(--c)}
+  }
+  @keyframes om-dot{
+    0%{background:#2A3344;transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 4px #0E131D}
+    45%{transform:translate(-50%,-50%) scale(1.7)}
+    100%{background:var(--c);transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 4px #0E131D, 0 0 14px 1px var(--c)}
+  }
+  @keyframes om-conn{ 0%{background:rgba(255,255,255,.1)} 100%{background:var(--c)} }
+  @keyframes om-label{ 0%{color:#6B7689} 100%{color:var(--c)} }
+  @keyframes om-badge{
+    0%{transform:translateX(-50%) scale(0);opacity:0}
+    60%{transform:translateX(-50%) scale(1.18);opacity:1}
+    100%{transform:translateX(-50%) scale(1);opacity:1}
+  }
+  @keyframes om-confetti{
+    0%{transform:translate(0,0) rotate(0);opacity:0}
+    12%{opacity:1}
+    100%{transform:translate(var(--tx),var(--ty)) rotate(var(--r));opacity:0}
+  }
+  @keyframes om-leg-a{ 0%,100%{transform:rotate(16deg)} 50%{transform:rotate(-16deg)} }
+  @keyframes om-leg-b{ 0%,100%{transform:rotate(-16deg)} 50%{transform:rotate(16deg)} }
+  @keyframes om-arm{ 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
+</style>
+</helmet>
+<div style="font-family:'Manrope',system-ui,-apple-system,sans-serif;background:#0E131D;border:1px solid rgba(255,255,255,.08);padding:34px 40px 30px;border-radius:20px;width:100%;max-width:1100px;margin:0 auto;color:#E7ECF4;overflow:hidden;">
+
+  <div style="font-family:'Manrope',sans-serif;font-weight:700;letter-spacing:.16em;font-size:13px;color:#E0A43B;text-transform:uppercase;">Example &middot; Hiring a new employee</div>
+  <div style="font-size:15px;color:#94A0B5;margin-top:8px;max-width:640px;">Watch one document travel from HR to a sealed, independently verifiable signature.</div>
+
+  <div ref="{{ setScene }}" style="--om-ps:paused;position:relative;height:360px;margin-top:30px;min-width:760px;">
+
+    <!-- rail -->
+    <div style="position:absolute;left:10%;right:10%;top:130px;height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;">
+      <div style="position:absolute;left:0;top:0;height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,#4F8EF7,#8B5CF6 55%,#34D399);animation:om-fill 9s linear forwards;animation-play-state:var(--om-ps,paused);"></div>
+    </div>
+
+    <!-- station dots -->
+    <div style="position:absolute;left:10%;top:133px;width:16px;height:16px;border-radius:50%;background:#2A3344;transform:translate(-50%,-50%);--c:#4F8EF7;animation:om-dot .5s cubic-bezier(.34,1.56,.64,1) .7s both;animation-play-state:var(--om-ps,paused);box-shadow:0 0 0 4px #0E131D;"></div>
+    <div style="position:absolute;left:30%;top:133px;width:16px;height:16px;border-radius:50%;background:#2A3344;transform:translate(-50%,-50%);--c:#6E78F2;animation:om-dot .5s cubic-bezier(.34,1.56,.64,1) 2.5s both;animation-play-state:var(--om-ps,paused);box-shadow:0 0 0 4px #0E131D;"></div>
+    <div style="position:absolute;left:50%;top:133px;width:16px;height:16px;border-radius:50%;background:#2A3344;transform:translate(-50%,-50%);--c:#8B5CF6;animation:om-dot .5s cubic-bezier(.34,1.56,.64,1) 4.1s both;animation-play-state:var(--om-ps,paused);box-shadow:0 0 0 4px #0E131D;"></div>
+    <div style="position:absolute;left:70%;top:133px;width:16px;height:16px;border-radius:50%;background:#2A3344;transform:translate(-50%,-50%);--c:#5FB89A;animation:om-dot .5s cubic-bezier(.34,1.56,.64,1) 5.8s both;animation-play-state:var(--om-ps,paused);box-shadow:0 0 0 4px #0E131D;"></div>
+    <div style="position:absolute;left:90%;top:133px;width:16px;height:16px;border-radius:50%;background:#2A3344;transform:translate(-50%,-50%);--c:#34D399;animation:om-dot .5s cubic-bezier(.34,1.56,.64,1) 7.4s both;animation-play-state:var(--om-ps,paused);box-shadow:0 0 0 4px #0E131D;"></div>
+
+    <!-- avatar -->
+    <div style="position:absolute;left:4%;top:56px;width:52px;height:80px;transform:translateX(-50%);z-index:6;animation:om-walk 9s ease-in-out forwards;animation-play-state:var(--om-ps,paused);">
+      <div style="position:relative;width:100%;height:100%;animation:om-bob .5s ease-in-out infinite;animation-play-state:var(--om-ps,paused);">
+        <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:34px;height:8px;border-radius:50%;background:rgba(79,142,247,.28);filter:blur(1px);"></div>
+        <!-- legs -->
+        <div style="position:absolute;top:54px;left:21px;width:7px;height:18px;border-radius:4px;background:#1B2740;transform-origin:top center;animation:om-leg-a .5s ease-in-out infinite;animation-play-state:var(--om-ps,paused);"></div>
+        <div style="position:absolute;top:54px;left:31px;width:7px;height:18px;border-radius:4px;background:#1B2740;transform-origin:top center;animation:om-leg-b .5s ease-in-out infinite;animation-play-state:var(--om-ps,paused);"></div>
+        <!-- arm back -->
+        <div style="position:absolute;top:36px;left:15px;width:6px;height:18px;border-radius:4px;background:#3D74D6;transform-origin:top center;animation:om-arm .5s ease-in-out infinite;animation-play-state:var(--om-ps,paused);"></div>
+        <!-- body -->
+        <div style="position:absolute;top:32px;left:50%;transform:translateX(-50%);width:36px;height:28px;border-radius:12px 12px 9px 9px;background:#4F8EF7;"></div>
+        <!-- carried document -->
+        <div style="position:absolute;top:40px;left:38px;width:13px;height:16px;border-radius:2px;background:#EEF3FB;box-shadow:0 1px 3px rgba(0,0,0,.4);z-index:2;">
+          <div style="position:absolute;top:3px;left:2px;right:3px;height:1.5px;background:#9CB4DA;"></div>
+          <div style="position:absolute;top:6px;left:2px;right:3px;height:1.5px;background:#9CB4DA;"></div>
+          <div style="position:absolute;top:9px;left:2px;right:5px;height:1.5px;background:#9CB4DA;"></div>
+        </div>
+        <!-- arm front -->
+        <div style="position:absolute;top:36px;left:37px;width:6px;height:18px;border-radius:4px;background:#5C97F5;transform-origin:top center;z-index:3;animation:om-arm .5s ease-in-out infinite reverse;animation-play-state:var(--om-ps,paused);"></div>
+        <!-- head -->
+        <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:#E8B98F;">
+          <div style="position:absolute;top:-2px;left:-1px;width:32px;height:14px;border-radius:16px 16px 0 0;background:#2A2320;"></div>
+          <div style="position:absolute;top:14px;left:8px;width:3.5px;height:3.5px;border-radius:50%;background:#2A2320;"></div>
+          <div style="position:absolute;top:14px;left:18px;width:3.5px;height:3.5px;border-radius:50%;background:#2A2320;"></div>
+          <div style="position:absolute;top:19px;left:11px;width:9px;height:5px;border-radius:0 0 6px 6px;border-bottom:2px solid #C68E62;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- "Onboarded!" badge -->
+    <div style="position:absolute;left:90%;top:72px;transform:translateX(-50%) scale(0);opacity:0;display:flex;align-items:center;gap:6px;background:#34D399;color:#062B1C;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:6px 13px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 22px -6px rgba(52,211,153,.6);z-index:7;animation:om-badge .6s cubic-bezier(.34,1.56,.64,1) 7.7s both;animation-play-state:var(--om-ps,paused);">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      Onboarded!
+    </div>
+
+    <!-- confetti -->
+    <div style="position:absolute;left:90%;top:120px;width:0;height:0;z-index:5;">{{ confetti }}</div>
+
+    <!-- step cards -->
+    <div style="position:absolute;left:10%;top:172px;width:165px;text-align:center;transform:translateX(-50%);opacity:.4;--c:#4F8EF7;--d:.7s;animation:om-card .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+      <div style="position:absolute;top:-42px;left:50%;transform:translateX(-50%);width:2px;height:30px;background:rgba(255,255,255,.1);border-radius:2px;animation:om-conn .4s ease var(--d) both;animation-play-state:var(--om-ps,paused);"></div>
+      <div style="margin:0 auto 11px;width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.06);color:#6B7689;display:flex;align-items:center;justify-content:center;animation:om-icon .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      </div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6B7689;animation:om-label .5s ease var(--d) both;animation-play-state:var(--om-ps,paused);">Step 1</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#F1F4FA;margin-top:4px;">Upload agreement</div>
+      <div style="font-size:12.5px;line-height:1.45;color:#8B97AC;margin-top:5px;">HR uploads the employment agreement.</div>
+    </div>
+
+    <div style="position:absolute;left:30%;top:172px;width:165px;text-align:center;transform:translateX(-50%);opacity:.4;--c:#6E78F2;--d:2.5s;animation:om-card .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+      <div style="position:absolute;top:-42px;left:50%;transform:translateX(-50%);width:2px;height:30px;background:rgba(255,255,255,.1);border-radius:2px;animation:om-conn .4s ease var(--d) both;animation-play-state:var(--om-ps,paused);"></div>
+      <div style="margin:0 auto 11px;width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.06);color:#6B7689;display:flex;align-items:center;justify-content:center;animation:om-icon .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>
+      </div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6B7689;animation:om-label .5s ease var(--d) both;animation-play-state:var(--om-ps,paused);">Step 2</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#F1F4FA;margin-top:4px;">Signing link sent</div>
+      <div style="font-size:12.5px;line-height:1.45;color:#8B97AC;margin-top:5px;">A secure link arrives by email &mdash; no account needed.</div>
+    </div>
+
+    <div style="position:absolute;left:50%;top:172px;width:165px;text-align:center;transform:translateX(-50%);opacity:.4;--c:#8B5CF6;--d:4.1s;animation:om-card .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+      <div style="position:absolute;top:-42px;left:50%;transform:translateX(-50%);width:2px;height:30px;background:rgba(255,255,255,.1);border-radius:2px;animation:om-conn .4s ease var(--d) both;animation-play-state:var(--om-ps,paused);"></div>
+      <div style="margin:0 auto 11px;width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.06);color:#6B7689;display:flex;align-items:center;justify-content:center;animation:om-icon .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><polyline points="9.3 11 11 12.7 14.5 9.3"></polyline></svg>
+      </div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6B7689;animation:om-label .5s ease var(--d) both;animation-play-state:var(--om-ps,paused);">Step 3</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#F1F4FA;margin-top:4px;">Verified &amp; signed</div>
+      <div style="font-size:12.5px;line-height:1.45;color:#8B97AC;margin-top:5px;">Identity confirmed and signed on their phone with Smart-ID.</div>
+    </div>
+
+    <div style="position:absolute;left:70%;top:172px;width:165px;text-align:center;transform:translateX(-50%);opacity:.4;--c:#5FB89A;--d:5.8s;animation:om-card .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+      <div style="position:absolute;top:-42px;left:50%;transform:translateX(-50%);width:2px;height:30px;background:rgba(255,255,255,.1);border-radius:2px;animation:om-conn .4s ease var(--d) both;animation-play-state:var(--om-ps,paused);"></div>
+      <div style="margin:0 auto 11px;width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.06);color:#6B7689;display:flex;align-items:center;justify-content:center;animation:om-icon .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+      </div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6B7689;animation:om-label .5s ease var(--d) both;animation-play-state:var(--om-ps,paused);">Step 4</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#F1F4FA;margin-top:4px;">Status auto-updates</div>
+      <div style="font-size:12.5px;line-height:1.45;color:#8B97AC;margin-top:5px;">HR sees the status update automatically.</div>
+    </div>
+
+    <div style="position:absolute;left:90%;top:172px;width:165px;text-align:center;transform:translateX(-50%);opacity:.4;--c:#34D399;--d:7.4s;animation:om-card .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+      <div style="position:absolute;top:-42px;left:50%;transform:translateX(-50%);width:2px;height:30px;background:rgba(255,255,255,.1);border-radius:2px;animation:om-conn .4s ease var(--d) both;animation-play-state:var(--om-ps,paused);"></div>
+      <div style="margin:0 auto 11px;width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.06);color:#6B7689;display:flex;align-items:center;justify-content:center;animation:om-icon .6s cubic-bezier(.34,1.56,.64,1) var(--d) both;animation-play-state:var(--om-ps,paused);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11.5 14.5 16 9.5"></polyline></svg>
+      </div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6B7689;animation:om-label .5s ease var(--d) both;animation-play-state:var(--om-ps,paused);">Step 5</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#F1F4FA;margin-top:4px;">Sealed &amp; verifiable</div>
+      <div style="font-size:12.5px;line-height:1.45;color:#8B97AC;margin-top:5px;">The signed file is stored and independently verifiable.</div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:480}}">
+class Component extends DCLogic {
+  setScene = (el) => {
+    this.scene = el;
+    if (el && !this._io) {
+      this._io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            el.style.setProperty('--om-ps', 'running');
+            this._io.disconnect();
+          }
+        });
+      }, { threshold: 0.35 });
+      this._io.observe(el);
+    }
+  };
+
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+  }
+
+  buildConfetti() {
+    const cols = ['#4F8EF7', '#8B5CF6', '#34D399', '#E0A43B', '#6E78F2'];
+    return Array.from({ length: 22 }, (_, i) => {
+      const ang = (i / 22) * Math.PI * 2;
+      const dist = 60 + (i % 4) * 26;
+      const tx = Math.cos(ang) * dist;
+      const ty = Math.sin(ang) * dist - 40;
+      const r = (i % 2 ? 1 : -1) * (200 + (i % 5) * 70);
+      return React.createElement('div', {
+        key: i,
+        style: {
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          width: i % 3 === 0 ? 7 : 9,
+          height: i % 3 === 0 ? 13 : 9,
+          marginLeft: -4,
+          borderRadius: i % 2 ? '2px' : '50%',
+          background: cols[i % cols.length],
+          opacity: 0,
+          animation: 'om-confetti 1.5s cubic-bezier(.2,.6,.3,1) forwards',
+          animationDelay: (7.6 + (i % 6) * 0.05) + 's',
+          animationPlayState: 'var(--om-ps, paused)',
+          '--tx': tx + 'px',
+          '--ty': ty + 'px',
+          '--r': r + 'deg',
+        },
+      });
+    });
+  }
+
+  renderVals() {
+    return { setScene: this.setScene, confetti: this.buildConfetti() };
+  }
+}
+</script>
+</body>
+</html>

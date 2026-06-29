@@ -10,7 +10,7 @@
 import SignBoxHero from './SignBoxHero.astro';
 import PortalSplitAnimation from './PortalSplitAnimation.astro';
 import SigningModesAnimation from './SigningModesAnimation.astro';
-import StatusLifecycle from './StatusLifecycle.astro';
+import OnboardingAnimation from './OnboardingAnimation.astro';
 import ValidContainerAnimation from './ValidContainerAnimation.astro';
 import BusinessWorkflowExamples from './BusinessWorkflowExamples.astro';
 
@@ -48,16 +48,6 @@ const paths = [
     cta: 'Open admin guide',
     icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   },
-];
-
-// Plain-language walkthrough of a single, recognizable scenario. Roles only -
-// no invented people or companies (per the product's anti-reference rules).
-const hrSteps = [
-  'HR uploads the employment agreement.',
-  'The new hire gets a secure signing link by email - no account needed.',
-  'They confirm their identity and sign on their phone with Smart-ID.',
-  'HR sees the status update automatically.',
-  'The final signed file is stored and independently verifiable.',
 ];
 
 const benefits = [
@@ -192,15 +182,7 @@ const faqs = [
       <h2>How SignBox works</h2>
       <p>One document, one workflow - follow it from draft to a sealed, validated signed document.</p>
     </div>
-    <div class="hr-walk">
-      <span class="hr-walk-kicker">Example · hiring a new employee</span>
-      <ol class="hr-walk-steps">
-        {hrSteps.map((s, i) => (
-          <li><span class="hr-step-n">{i + 1}</span><span>{s}</span></li>
-        ))}
-      </ol>
-    </div>
-    <StatusLifecycle class="how-visual" />
+    <OnboardingAnimation class="how-visual" />
   </section>
 
   <!-- ============ INTERNAL & EXTERNAL PORTALS ============ -->
@@ -395,18 +377,6 @@ const faqs = [
   .path-cta svg{width:15px;height:15px;transition:transform .25s ease;}
   .path-card:hover .path-cta svg{transform:translateX(4px);}
 
-  /* plain-language scenario walkthrough (leads "How SignBox works") */
-  .hr-walk{margin-bottom:clamp(20px,3vw,30px);padding:20px 22px;border:1px solid var(--hp-border);border-radius:16px;background:color-mix(in srgb,var(--hp-surface) 58%,transparent);}
-  .hr-walk-kicker{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--hp-eyebrow);margin-bottom:16px;}
-  .hr-walk-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
-  /* Override brand.css's global "ol > li" gold-stepper. Astro scopes styles with
-     :where() (zero specificity), so we lead with the .hr-walk ancestor class to
-     out-specify brand's .sl-markdown-content ol>li rules. This list draws its own
-     .hr-step-n badge, so suppress the injected counter circle and its indent. */
-  .hr-walk .hr-walk-steps li{display:flex;flex-direction:column;gap:9px;margin:0;padding:0;font-size:13.5px;line-height:1.45;color:var(--hp-ink-soft);}
-  .hr-walk .hr-walk-steps li::before{content:none;display:none;}
-  .hr-step-n{width:27px;height:27px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--hp-gold);background:color-mix(in srgb,var(--hp-gold) 13%,transparent);}
-
   .secondary-block{margin-top:22px;padding:24px;border:1px solid var(--hp-border);border-radius:18px;background:color-mix(in srgb,var(--hp-surface) 64%,transparent);}
   .support-copy{margin-bottom:20px;}
   .support-copy .subhead{font-size:19px;letter-spacing:-.015em;margin-bottom:6px;}
@@ -496,10 +466,6 @@ const faqs = [
     .ben-card,.doc-card,.role-card{border-bottom:1px solid var(--hp-border);}
     .ben-card:last-child,.doc-card:last-child,.role-card:last-child{border-bottom:0;}
     .cta{padding:30px 24px;}
-  }
-  @media (max-width:900px){
-    .hr-walk-steps{grid-template-columns:1fr;gap:12px;}
-    .hr-walk .hr-walk-steps li{flex-direction:row;align-items:flex-start;gap:11px;}
   }
   @media (max-width:760px){
     .path-grid{grid-template-columns:1fr;}
